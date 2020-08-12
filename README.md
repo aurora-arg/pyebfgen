@@ -13,7 +13,7 @@ please let me know.
   - python3-tk
 
 ## Installation / Execution
-  - Clone from github: `git clone git@github.com:dpurgert/pyulsbatch`
+  - Clone from github: `git clone git@github.com:dpurgert/pyebfgen`
   - (Optional) add execute permissions: `chmod u+x ebfgen.py`
   - Run with `python3 ebfgen.py`; or if you added execute permissions, 
     `./ebfgen.py` 
