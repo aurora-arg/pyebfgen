@@ -25,3 +25,7 @@ v 0.0.1 - Initial alpha
     - "Standard" Applicant form assumes / hardcodes certain values
     - "Extended" applicant data also available, corresponds directly to
       FCC document.
+      
+ v 0.0.2 - Cosmetic modifications
+  - Changed menu names to adequately reflect information collected from the 605 form.
+  - Made the menu entries more compact for the Individual Amateur radio license data entry window for smaller screens.
