@@ -4,19 +4,26 @@ Python ULS batchfile generator.
 FCC Documentation can be found at:
 https://www.fcc.gov/wireless/systems-utilities/uls-electronic-batch-filing
 
-This should work cross-platform, although at the moment I only have
-Linux machines available.  If you try on Mac / Windows and find bugs,
+This should work cross-platform; however my main development environment
+is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
 ## Requirements
-  - Python 3.5.3 (later versions may work)
+  - Python 3.5.3+
   - python3-tk
 
 ## Installation / Execution
+### Linux
   - Clone from github: `git clone git@github.com:dpurgert/pyebfgen`
   - (Optional) add execute permissions: `chmod u+x ebfgen.py`
   - Run with `python3 ebfgen.py`; or if you added execute permissions, 
     `./ebfgen.py` 
+
+### Windows
+  - Install Python3 (as of writing, 3.8.5 is current)
+  - Download Zip archive of this repository
+  - Unzip to your prefered location (e.g. Desktop)
+  - Double-click "ebfgen.py"
 
 ## changelog
 v 0.0.3 - Rename
