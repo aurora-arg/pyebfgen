@@ -1,5 +1,5 @@
-# pyulsbatch
-Python ULS batchfile generator.
+# ebfgen
+Python batch file generator for use with the FCC EBF system.
 
 FCC Documentation can be found at:
 https://www.fcc.gov/wireless/systems-utilities/uls-electronic-batch-filing
@@ -26,6 +26,9 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.4 - Menu Entries
+  - Updated the location and configuration of menu entries.
+  
 v 0.0.3 - Rename
   - rename ulsbatch.py to ebfgen.py
 
@@ -41,4 +44,3 @@ v 0.0.1 - Initial alpha
     - "Standard" Applicant form assumes / hardcodes certain values
     - "Extended" applicant data also available, corresponds directly to
       FCC document.
-      
