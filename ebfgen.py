@@ -176,12 +176,6 @@ class Window(Frame):
       self.master.config(menu=menu)
 
       fileMenu = Menu(menu)
-<<<<<<< HEAD
-      fileMenu.add_command(label="Amateur Club Application", command=self.extVAwin)
-      fileMenu.add_command(label="Individual License Application", command=self.stdVAwin)
-      fileMenu.add_command(label="Add VEC & Session Numbers",command=self.updVE)
-      fileMenu.add_command(label="Save Current Session",command=self.writeFile)
-=======
       fileMenu.add_command(label="Amateur Club Application",
         command=self.extVAwin)
       fileMenu.add_command(label="Individual License Application",
@@ -192,7 +186,6 @@ class Window(Frame):
         command=self.writeFile)
       fileMenu.add_command(label="Convert Response",
         command=fileManager.convertFile)
->>>>>>> master
       fileMenu.add_command(label="Exit",command=self.exitProgram)
       menu.add_cascade(label="File", menu=fileMenu)
 
