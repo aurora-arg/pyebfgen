@@ -26,18 +26,6 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
-<<<<<<< HEAD
-<<<<<<< HEAD
-v 0.0.4 - Menu Entries
-  - Updated the location and configuration of menu entries.
-  
-=======
-v 0.0.4 - Response Processing
-  - Response file conversion to comma-separated
-  - File menu cleanup 
-
->>>>>>> master
-=======
 v 0.0.5 - Input verification
   - verify input for SSN/FRN fields
 
@@ -45,7 +33,6 @@ v 0.0.4 - Response Processing
   - File menu cleanup
   - Response file conversion to comma-separated
 
->>>>>>> input_verify
 v 0.0.3 - Rename
   - rename ulsbatch.py to ebfgen.py
 
