@@ -2,13 +2,13 @@
 ########################################################################
 #
 #
-#                       script: ulsbatch
+#                       script: ebfgen
 #                           by: Dan Purgert
-#                    copyright: 2016
+#                    copyright: 2020
 #                      version: 0.5
-#                         date: Mon, 10 Aug 2020 14:35:40 -0400
+#                         date: Wed, 12 Aug 2020 13:27:00 -0400
 #                      purpose: Generates a batch file for upload to
-#                             : the FCC ULS system.
+#                             : the FCC EBF system.
 #
 #                      license: GPL v2 (only)
 #                   repository: https://github.com/dpurgert
@@ -145,13 +145,9 @@ class Window(Frame):
       menu = Menu(self.master)
       self.master.config(menu=menu)
 
-      vaMenu = Menu(menu)
-      vaMenu.add_command(label="Amateur Club", command=self.extVAwin)
-      vaMenu.add_command(label="Individual Licensee", command=self.stdVAwin)
-
-
       fileMenu = Menu(menu)
-      fileMenu.add_cascade(label="Add Application",menu=vaMenu)
+      fileMenu.add_command(label="Amateur Club Application", command=self.extVAwin)
+      fileMenu.add_command(label="Individual License Application", command=self.stdVAwin)
       fileMenu.add_command(label="Add VEC & Session Numbers",command=self.updVE)
       fileMenu.add_command(label="Save Current Session",command=self.writeFile)
       fileMenu.add_command(label="Exit",command=self.exitProgram)
@@ -449,7 +445,7 @@ class Window(Frame):
 
   def stdVAwin(self):
       VAwindow = Toplevel(root)
-      VAwindow.title("VA Entry")
+      VAwindow.title("Applicant Data")
 
       va_sec = tk.Label(VAwindow, text="Applicant Information")
       va_sec.grid(row=0, column=5)
