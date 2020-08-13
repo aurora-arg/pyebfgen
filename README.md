@@ -26,6 +26,13 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.5 - Input verification
+  - verify input for SSN/FRN fields
+
+v 0.0.4 - Response Processing
+  - File menu cleanup
+  - Response file conversion to comma-separated
+
 v 0.0.3 - Rename
   - rename ulsbatch.py to ebfgen.py
 
