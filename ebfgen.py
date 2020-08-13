@@ -682,8 +682,17 @@ class Window(Frame):
           showerror(title="SSN Error", message="SSN is not 9 digits.")
           return
 
-      if self.va_felon == "null":
+      if self.va_felon == "null" or self.va_felon == "":
         self.va_felon = ""
+        if self.va_appcd != "AU":
+          showerror(title="Basic Question Error",
+            message="'Basic Question' must be answered.")
+          return
+
+      if self.va_state == "-----":
+        showerror(title="State Error", 
+          message="Please select a valid state.")
+        return
 
       VAs.append(VA( self.va_fn, self.va_call, self.va_ssn, self.va_ent\
         , self.va_fname, self.va_mi, self.va_lname, self.va_nmsuf\
