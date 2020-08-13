@@ -681,6 +681,13 @@ class Window(Frame):
       # FRN supercedes ssn 
       if self.va_frn:
         self.va_ssn = ""
+        if len(self.va_frn)!=10:
+          showerror(title="FRN Error", message="FRN is not 10 digits.")
+          return
+      else:
+        if len(self.va_ssn)!=9:
+          showerror(title="SSN Error", message="SSN is not 9 digits.")
+          return
 
       if self.va_felon == "null":
         self.va_felon = ""
