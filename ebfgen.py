@@ -686,8 +686,8 @@ class Window(Frame):
       if self.va_felon == "null" or self.va_felon == "":
         self.va_felon = ""
         if self.va_appcd != "AU":
-          showerror(title="Basic Question Error",
-            message="'Basic Question' must be answered.")
+          showerror(title="Basic Qualification Question Error",
+            message="'Basic Qualification Question' must be answered.")
           return
 
       if self.va_state == "-----":
