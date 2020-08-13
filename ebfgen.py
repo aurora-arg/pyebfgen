@@ -107,7 +107,8 @@ class fileManager():
     # Read in a FCC Response File, and convert it into CSV
     
     inFN = askopenfilename (title="Select File",
-      filetypes=(("ULS Files","*.dat"),("All Files","*.*")))
+      filetypes=(("EBF Response Files","*.rsp"),
+      ("All Files","*.*")))
     inF = open(inFN, "r") 
 
     outFN = inFN[:-4] + ".csv"
