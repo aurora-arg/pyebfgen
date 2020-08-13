@@ -19,7 +19,8 @@ import tkinter as tk
 from tkinter import *
 #from tkinter import ttk
 from tkinter.ttk import *
-from tkinter.filedialog import asksaveasfile 
+from tkinter.messagebox import *
+from tkinter.filedialog import * 
 from array import *
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
@@ -101,6 +102,24 @@ class VA:
       self.psqa = psqa
       self.felon = felon
 
+class fileManager():
+  def convertFile():
+    # Read in a FCC Response File, and convert it into CSV
+    
+    inFN = askopenfilename (title="Select File",
+      filetypes=(("ULS Files","*.dat"),("All Files","*.*")))
+    inF = open(inFN, "r") 
+
+    outFN = inFN[:-4] + ".csv"
+    outF = open(outFN, "w")
+    inDat=inF.readlines()
+    for line in inDat:
+      outln=line.replace("|",",")
+      outF.writelines(outln)
+    outF.close()
+  
+    showinfo(title="Convert complete", message="Saved as: " + outFN)
+
 class Window(Frame):
   def __init__(self,master=None):
       #VE Record fields
@@ -165,6 +184,8 @@ class Window(Frame):
         command=self.updVE)
       fileMenu.add_command(label="Save Current Session",
         command=self.writeFile)
+      fileMenu.add_command(label="Convert Response",
+        command=fileManager.convertFile)
       fileMenu.add_command(label="Exit",command=self.exitProgram)
       menu.add_cascade(label="File", menu=fileMenu)
 
