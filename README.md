@@ -28,6 +28,7 @@ please let me know.
 ## changelog
 v 0.0.5 - Input verification
   - verify input for SSN/FRN fields
+  - verify input for Basic Question
 
 v 0.0.4 - Response Processing
   - File menu cleanup
