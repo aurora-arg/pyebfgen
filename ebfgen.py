@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.5
+#                      version: 0.0.8
 #                         date: Fri, 14 Aug 2020 11:20:56 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -36,7 +36,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-version="0.0.7"
+version="0.0.8"
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
@@ -269,7 +269,7 @@ class Window(Frame):
 
       global VE_str
   
-      VEC = self.e_VEC.get()
+      VEC = self.e_VEC.get().upper()
       sdt = self.e_sess.get()
       vecity = self.e_vecity.get()
       vestate = self.e_vestate.get()
@@ -782,24 +782,13 @@ class Window(Frame):
   def writeFile(self):
       # Save VEC Header and all applicant records to 
       # user-defined file.
-      #VE Record fields
-      global VEC
-      global sdt
-      global vecity
-      global vestate
-      global appp
-      global appf
-      global elmp
-      global elmf
+      #VE Record string
       global VE_str
       
       F=asksaveasfile(mode='w',defaultextension=".dat")
       if F is None:
         return
 
-      #F.write("VE|" + VEC + "|" + sdt + "|" + vecity + \
-      #    "|" + vestate + "|" + appt + "|" + appp + "|" \
-      #    + appf + "|" + elmp + "|" + elmf + "\r\n")
       F.write (VE_str+"\r\n")
 
       for i in range(len(VAs)):
