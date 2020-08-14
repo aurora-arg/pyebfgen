@@ -23,6 +23,8 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
+version="0.0.6"
+
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
 
@@ -813,5 +815,5 @@ class Window(Frame):
 
 root = Tk()
 app = Window(root)
-root.wm_title("FCC Electronic Batch File Generator")
+root.wm_title("FCC Electronic Batch File Generator v." + version)
 root.mainloop()
