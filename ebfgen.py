@@ -754,6 +754,7 @@ class Window(Frame):
       self.e_waiverreq.delete(0, 'end')
       self.e_updcall.delete(0, 'end')
       self.e_trusteecall.delete(0, 'end')
+      self.e_frn.delete(0, 'end')
       self.e_dob.delete(0, 'end')
       self.e_lnchg.delete(0, 'end')
       self.e_psqcd.delete(0, 'end')
