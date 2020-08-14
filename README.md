@@ -27,6 +27,9 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.7 - Embed GNU Public Liense
+  - Embedded the GNU General Public License statement within source code.
+
 v 0.0.6 - Updated response processing
   - Stick edited response file data into "applicant info" pane after
     importing.
