@@ -14,7 +14,8 @@ please let me know.
 
 ## Installation / Execution
 ### Linux
-  - Clone from github: `git clone git@github.com:dpurgert/pyebfgen`
+  - Clone from github: `git clone
+    https://github.com/dpurgert/pyebfgen.git`
   - (Optional) add execute permissions: `chmod u+x ebfgen.py`
   - Run with `python3 ebfgen.py`; or if you added execute permissions, 
     `./ebfgen.py` 
