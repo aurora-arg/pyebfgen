@@ -26,6 +26,13 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.6 - Updated response processing
+  - Stick edited response file data into "applicant info" pane after
+    importing.
+  - Added button to clear frame on click.
+  - NB: Frame data has no bearing on output file order.  VE Header is
+    ALWAYS first, and ALWAYS followed in [0 .. n] order for VA records.
+
 v 0.0.5 - Input verification
   - verify input for SSN/FRN fields
   - verify input for Basic Qualification Question

@@ -57,7 +57,45 @@ appp = ""
 appf = ""
 elmp = ""
 elmf = ""
-      
+VE_str = ""
+
+#Applicant Attributes
+va_fn = ""
+va_call = ""
+va_ssn = ""
+va_ent = ""
+va_fname = ""
+va_mi = ""
+va_lname = ""
+va_nmsuf = ""
+va_attn = ""
+va_street = ""
+va_pobox = ""
+va_city = ""
+va_state = ""             
+va_zipcd = ""
+va_phone = ""
+va_fax = ""
+va_email = ""
+va_appcd = ""             
+va_opclass = ""              
+va_sigok = ""
+va_physcert = ""
+va_reqexp = ""
+va_waivereq = ""
+va_att = ""
+va_updcall = ""             
+va_trusteecall = ""
+va_apptyp = ""
+va_frn = ""
+va_dob = ""
+va_lnchg = ""
+va_psqcd = ""
+va_psq = ""
+va_psqa = ""
+va_felon = ""
+
+VA_list = None
 
 # Class to create an object to cram into an array, because apparently
 # python doesn't do C-style structures.  Or I'm just an idiot.
@@ -116,10 +154,12 @@ class fileManager():
     inDat=inF.readlines()
     for line in inDat:
       outln=line.replace("|",",")
+      Window.rspUpdate(None, outln)  
       outF.writelines(outln)
     outF.close()
   
     showinfo(title="Convert complete", message="Saved as: " + outFN)
+
 
 class Window(Frame):
   def __init__(self,master=None):
@@ -133,43 +173,10 @@ class Window(Frame):
       global appf
       global elmp
       global elmf
+
+      global VA_list
       vestate = StringVar(root)
 
-      #Applicant Attributes
-      self.va_fn = ""
-      self.va_call = ""
-      self.va_ssn = ""
-      self.va_ent = ""
-      self.va_fname = ""
-      self.va_mi = ""
-      self.va_lname = ""
-      self.va_nmsuf = ""
-      self.va_attn = ""
-      self.va_street = ""
-      self.va_pobox = ""
-      self.va_city = ""
-      self.va_state = StringVar(root)
-      self.va_zipcd = ""
-      self.va_phone = ""
-      self.va_fax = ""
-      self.va_email = ""
-      self.va_appcd = StringVar(root)
-      self.va_opclass = StringVar(root)
-      self.va_sigok = ""
-      self.va_physcert = ""
-      self.va_reqexp = ""
-      self.va_waivereq = ""
-      self.va_att = ""
-      self.va_updcall = StringVar(root)
-      self.va_trusteecall = ""
-      self.va_apptyp = ""
-      self.va_frn = ""
-      self.va_dob = ""
-      self.va_lnchg = ""
-      self.va_psqcd = ""
-      self.va_psq = ""
-      self.va_psqa = ""
-      self.va_felon = ""
 
       Frame.__init__(self,master)
       self.master=master
@@ -216,12 +223,22 @@ class Window(Frame):
       self.l_elmF.pack()
 
       l_VAlist = Label(frame_c, text="Applicant List:")
-      self.VA_list = tk.Text(frame_c, width=150, height=10, bg="white")
       l_VAlist.pack()
-      self.VA_list.pack()
+      VA_list = tk.Text(frame_c, width=150, height=10, bg="white")
+      VA_list.pack()
+
+      b_VAlist = tk.Button(frame_c, text="Clear Frame", 
+        command=self.clrFrame)
+      b_VAlist.pack()
 
       frame_a.pack()
       frame_c.pack()
+
+  def clrFrame(self):
+    VA_list.delete('1.0', END)
+
+  def rspUpdate(self,l):
+    VA_list.insert(END,l)
 
   def sVE(self):
       #VE Record fields
@@ -234,6 +251,8 @@ class Window(Frame):
       global appf
       global elmp
       global elmf
+
+      global VE_str
   
       VEC = self.e_VEC.get()
       sdt = self.e_sess.get()
@@ -254,6 +273,12 @@ class Window(Frame):
       self.l_appF['text']="Applicants Failed:"+ appf
       self.l_elmP['text']="Elements Passed:"+ elmp
       self.l_elmF['text']="Elements Failed:"+ elmf
+
+      VE_str="VE|" + VEC + "|" + sdt + "|" + vecity + \
+          "|" + vestate + "|" + appt + "|" + appp + "|" \
+          + appf + "|" + elmp + "|" + elmf
+  
+      self.rspUpdate(VE_str)
 
 
   def updVE(self):
@@ -346,7 +371,7 @@ class Window(Frame):
       self.e_city = tk.Entry(VAwindow)
       l_state = tk.Label(VAwindow, text="State:")
       self.e_state = Combobox(VAwindow, values=states,
-         textvariable=self.va_state)
+         textvariable=va_state)
       l_zipcd = tk.Label(VAwindow, text="Zip Code:")
       self.e_zipcd = tk.Entry(VAwindow)
       l_phone = tk.Label(VAwindow, text="Phone No.:")
@@ -357,10 +382,10 @@ class Window(Frame):
       self.e_email = tk.Entry(VAwindow)
       l_appcd = tk.Label(VAwindow, text="Application Purpose:")
       self.e_appcd = Combobox(VAwindow, values=apppur,
-         textvariable=self.va_appcd)
+         textvariable=va_appcd)
       l_opclass = tk.Label(VAwindow, text="Operator Class:")
       self.e_opclass = Combobox(VAwindow, values=liccls,
-         textvariable=self.va_opclass)
+         textvariable=va_opclass)
       l_sigok = tk.Label(VAwindow, text="Valid Signature:")
       self.e_sigok = tk.Entry(VAwindow)
       l_physcert = tk.Label(VAwindow, text="Physician Certificate:")
@@ -374,7 +399,7 @@ class Window(Frame):
       l_updcall = tk.Label(VAwindow, 
         text="Change Callsign Systematically?:")
       self.e_updcall = Combobox(VAwindow, values=opts, 
-        textvariable=self.va_updcall)
+        textvariable=va_updcall)
       l_trusteecall = tk.Label(VAwindow, text="Trustee Callsign:")
       self.e_trusteecall = tk.Entry(VAwindow)
       l_apptyp = tk.Label(VAwindow, text="Applicant Type:")
@@ -393,7 +418,7 @@ class Window(Frame):
       self.e_psqa = tk.Entry(VAwindow)
       l_felon = tk.Label(VAwindow, text="Basic Qualification Question:")
       self.e_felon = Combobox(VAwindow, values=felony,
-         textvariable=self.va_felon)
+         textvariable=va_felon)
 
       b_save = tk.Button(VAwindow, text="Save Applicant", command=self.sVA)
       b_close = tk.Button(VAwindow, text="Close Window", 
@@ -471,7 +496,7 @@ class Window(Frame):
       b_close.grid(row=16,column=5)
       
       def change_dropdown(*args):
-          print( self.va_updcall.get() )
+          print( va_updcall.get() )
 
   def stdVAwin(self):
       # Standard Applicant setup.
@@ -508,7 +533,7 @@ class Window(Frame):
       self.e_city = tk.Entry(VAwindow)
       l_state = tk.Label(VAwindow, text="State:")
       self.e_state = Combobox(VAwindow, values=states,
-         textvariable=self.va_state)
+         textvariable=va_state)
       l_zipcd = tk.Label(VAwindow, text="Zip Code:")
       self.e_zipcd = tk.Entry(VAwindow)
       l_phone = tk.Label(VAwindow, text="Phone No.:")
@@ -519,10 +544,10 @@ class Window(Frame):
       self.e_email = tk.Entry(VAwindow)
       l_appcd = tk.Label(VAwindow, text="Application Purpose:")
       self.e_appcd = Combobox(VAwindow, values=apppur,
-         textvariable=self.va_appcd)
+         textvariable=va_appcd)
       l_opclass = tk.Label(VAwindow, text="Operator Class:")
       self.e_opclass = Combobox(VAwindow, values=liccls,
-         textvariable=self.va_opclass)
+         textvariable=va_opclass)
       l_sigok = tk.Label(VAwindow, text="Valid Signature:")
       self.e_sigok = tk.Entry(VAwindow)
       l_physcert = tk.Label(VAwindow, text="Physician Certificate:")
@@ -536,7 +561,7 @@ class Window(Frame):
       l_updcall = tk.Label(VAwindow, 
         text="Change Callsign Systematically?:")
       self.e_updcall = Combobox(VAwindow, values=opts, 
-        textvariable=self.va_updcall)
+        textvariable=va_updcall)
       l_trusteecall = tk.Label(VAwindow, text="Trustee Callsign:")
       self.e_trusteecall = tk.Entry(VAwindow)
       l_apptyp = tk.Label(VAwindow, text="Applicant Type:")
@@ -555,7 +580,7 @@ class Window(Frame):
       self.e_psqa = tk.Entry(VAwindow)
       l_felon = tk.Label(VAwindow, text="Basic Qualification Question:")
       self.e_felon = Combobox(VAwindow, values=felony,
-         textvariable=self.va_felon)
+         textvariable=va_felon)
 
       # Force some static values for attachments, signature, applicant
       # type, and physician certificate
@@ -611,7 +636,7 @@ class Window(Frame):
       b_close.grid(row=15,column=5)
       
       def change_dropdown(*args):
-          print( self.va_updcall.get() )
+          print( va_updcall.get() )
 
   def updVA(self):
       # Update the VA Table listing on the main screen
@@ -632,78 +657,78 @@ class Window(Frame):
         + VAs[c].lnchg + "|" + VAs[c].psqcd + "|" + VAs[c].psq + "|" \
         + VAs[c].psqa + "|" + VAs[c].felon + "\n"
       
-      self.VA_list.insert(END, outTxt)
+      VA_list.insert(END, outTxt)
       c=c+1
 
   def sVA(self):
       # Save applicant data to VA array 
-      self.va_fn = self.e_vafn.get()
-      self.va_call = self.e_call.get()
-      self.va_ssn = self.e_ssn.get()
-      self.va_ent = self.e_ent.get()
-      self.va_fname = self.e_fname.get()
-      self.va_mi = self.e_mi.get()
-      self.va_lname = self.e_lname.get()
-      self.va_nmsuf = self.e_nmsuf.get()
-      self.va_attn = self.e_attn.get()
-      self.va_street = self.e_street.get()
-      self.va_pobox = self.e_pobox.get()
-      self.va_city = self.e_city.get()
-      self.va_state = self.e_state.get()
-      self.va_zipcd = self.e_zipcd.get()
-      self.va_phone = self.e_phone.get()
-      self.va_fax = self.e_fax.get()
-      self.va_email = self.e_email.get()
-      self.va_appcd = self.e_appcd.get()
-      self.va_opclass = self.e_opclass.get()
-      self.va_sigok = self.e_sigok.get()
-      self.va_physcert = self.e_physcert.get()
-      self.va_reqexp = self.e_reqexp.get()
-      self.va_waivereq = self.e_waiverreq.get()
-      self.va_att = self.e_att.get()
-      self.va_updcall = self.e_updcall.get()
-      self.va_trusteecall = self.e_trusteecall.get()
-      self.va_apptyp = self.e_apptyp.get()
-      self.va_frn = self.e_frn.get()
-      self.va_dob = self.e_dob.get()
-      self.va_lnchg = self.e_lnchg.get()
-      self.va_psqcd = self.e_psqcd.get()
-      self.va_psq = self.e_psq.get()
-      self.va_psqa = self.e_psqa.get()
-      self.va_felon = self.e_felon.get()
+      va_fn = self.e_vafn.get()
+      va_call = self.e_call.get()
+      va_ssn = self.e_ssn.get()
+      va_ent = self.e_ent.get()
+      va_fname = self.e_fname.get()
+      va_mi = self.e_mi.get()
+      va_lname = self.e_lname.get()
+      va_nmsuf = self.e_nmsuf.get()
+      va_attn = self.e_attn.get()
+      va_street = self.e_street.get()
+      va_pobox = self.e_pobox.get()
+      va_city = self.e_city.get()
+      va_state = self.e_state.get()
+      va_zipcd = self.e_zipcd.get()
+      va_phone = self.e_phone.get()
+      va_fax = self.e_fax.get()
+      va_email = self.e_email.get()
+      va_appcd = self.e_appcd.get()
+      va_opclass = self.e_opclass.get()
+      va_sigok = self.e_sigok.get()
+      va_physcert = self.e_physcert.get()
+      va_reqexp = self.e_reqexp.get()
+      va_waivereq = self.e_waiverreq.get()
+      va_att = self.e_att.get()
+      va_updcall = self.e_updcall.get()
+      va_trusteecall = self.e_trusteecall.get()
+      va_apptyp = self.e_apptyp.get()
+      va_frn = self.e_frn.get()
+      va_dob = self.e_dob.get()
+      va_lnchg = self.e_lnchg.get()
+      va_psqcd = self.e_psqcd.get()
+      va_psq = self.e_psq.get()
+      va_psqa = self.e_psqa.get()
+      va_felon = self.e_felon.get()
 
       # FRN supercedes ssn 
-      if self.va_frn:
-        self.va_ssn = ""
-        if len(self.va_frn)!=10:
+      if va_frn:
+        va_ssn = ""
+        if len(va_frn)!=10:
           showerror(title="FRN Error", message="FRN is not 10 digits.")
           return
       else:
-        if len(self.va_ssn)!=9:
+        if len(va_ssn)!=9:
           showerror(title="SSN Error", message="SSN is not 9 digits.")
           return
 
-      if self.va_felon == "null" or self.va_felon == "":
-        self.va_felon = ""
-        if self.va_appcd != "AU":
+      if va_felon == "null" or va_felon == "":
+        va_felon = ""
+        if va_appcd != "AU":
           showerror(title="Basic Qualification Question Error",
             message="'Basic Qualification Question' must be answered.")
           return
 
-      if self.va_state == "-----":
+      if va_state == "-----":
         showerror(title="State Error", 
           message="Please select a valid state.")
         return
 
-      VAs.append(VA( self.va_fn, self.va_call, self.va_ssn, self.va_ent\
-        , self.va_fname, self.va_mi, self.va_lname, self.va_nmsuf\
-        , self.va_attn, self.va_street, self.va_pobox, self.va_city\
-        , self.va_state, self.va_zipcd, self.va_phone, self.va_fax\
-        , self.va_email, self.va_appcd, self.va_opclass, self.va_sigok\
-        , self.va_physcert, self.va_reqexp, self.va_waivereq\
-        , self.va_att, self.va_updcall, self.va_trusteecall\
-        , self.va_apptyp, self.va_frn, self.va_dob, self.va_lnchg\
-        , self.va_psqcd, self.va_psq, self.va_psqa, self.va_felon))
+      VAs.append(VA( va_fn, va_call, va_ssn, va_ent\
+        , va_fname, va_mi, va_lname, va_nmsuf\
+        , va_attn, va_street, va_pobox, va_city\
+        , va_state, va_zipcd, va_phone, va_fax\
+        , va_email, va_appcd, va_opclass, va_sigok\
+        , va_physcert, va_reqexp, va_waivereq\
+        , va_att, va_updcall, va_trusteecall\
+        , va_apptyp, va_frn, va_dob, va_lnchg\
+        , va_psqcd, va_psq, va_psqa, va_felon))
       
       
       self.e_vafn.delete(0,'end')
@@ -729,6 +754,7 @@ class Window(Frame):
       self.e_waiverreq.delete(0, 'end')
       self.e_updcall.delete(0, 'end')
       self.e_trusteecall.delete(0, 'end')
+      self.e_frn.delete(0, 'end')
       self.e_dob.delete(0, 'end')
       self.e_lnchg.delete(0, 'end')
       self.e_psqcd.delete(0, 'end')
@@ -750,14 +776,16 @@ class Window(Frame):
       global appf
       global elmp
       global elmf
+      global VE_str
       
       F=asksaveasfile(mode='w',defaultextension=".dat")
       if F is None:
         return
 
-      F.write("VE|" + VEC + "|" + sdt + "|" + vecity + \
-          "|" + vestate + "|" + appt + "|" + appp + "|" \
-          + appf + "|" + elmp + "|" + elmf + "\r\n")
+      #F.write("VE|" + VEC + "|" + sdt + "|" + vecity + \
+      #    "|" + vestate + "|" + appt + "|" + appp + "|" \
+      #    + appf + "|" + elmp + "|" + elmf + "\r\n")
+      F.write (VE_str+"\r\n")
 
       for i in range(len(VAs)):
         F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
