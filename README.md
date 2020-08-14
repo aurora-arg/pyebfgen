@@ -27,6 +27,9 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.8 - Force VEC Code case
+  - VEC Code will always be stored capitalized.
+
 v 0.0.7 - Embed GNU Public Liense
   - Embedded the GNU General Public License statement within source code.
 
