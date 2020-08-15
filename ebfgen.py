@@ -4,8 +4,8 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.1.0
-#                         date: Fri, 14 Aug 2020 11:20:56 -0400
+#                      version: 0.1.1
+#                         date: Fri, 14 Aug 2020 21:45:00 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
 #
@@ -36,7 +36,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-version="0.1.0"
+version="0.1.1"
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
@@ -376,22 +376,22 @@ class Window(Frame):
       self.e_vecity.grid(row=3, column=2)
       l_state.grid(row=4, column=1)
       self.e_vestate.grid(row=4, column=2)
-      l_appT.grid(row=5, column=1)
-      self.e_appT.grid(row=5, column=2)
-      l_appP.grid(row=1, column=4)
-      self.e_appP.grid(row=1, column=5)
-      l_appF.grid(row=2, column=4)
-      self.e_appF.grid(row=2, column=5)
-      l_elmP.grid(row=3, column=4)
-      self.e_elmP.grid(row=3, column=5)
-      l_elmF.grid(row=4, column=4)
-      self.e_elmF.grid(row=4, column=5)
-      l_tloc.grid(row=5, column=4)
-      self.e_tloc.grid(row=5, column=5)
-      l_tcnt.grid(row=6, column=3)
-      self.e_tcnt.grid(row=6, column=4)
-      ve_save.grid(row=8,column=1)
-      ve_close.grid(row=8,column=2)
+      l_appT.grid(row=1, column=4)
+      self.e_appT.grid(row=1, column=5)
+      l_appP.grid(row=2, column=4)
+      self.e_appP.grid(row=2, column=5)
+      l_appF.grid(row=3, column=4)
+      self.e_appF.grid(row=3, column=5)
+      l_elmP.grid(row=4, column=4)
+      self.e_elmP.grid(row=4, column=5)
+      l_elmF.grid(row=5, column=4)
+      self.e_elmF.grid(row=5, column=5)
+      l_tloc.grid(row=9, column=4)
+      self.e_tloc.grid(row=9, column=5)
+      l_tcnt.grid(row=8, column=1)
+      self.e_tcnt.grid(row=8, column=2)
+      ve_save.grid(row=9,column=1)
+      ve_close.grid(row=9,column=2)
       
 
           
