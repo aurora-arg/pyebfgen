@@ -27,6 +27,16 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.9 - Default Filename
+  - Added region code to VEC form
+  - Added default filename as (VEC + mmdd + Region Code + counter).dat
+  - Applicant data is cleared on save
+  - file counter incremented on save.  Can be set in VEC info form if
+    necessary. Zero padding the number is automatic, if required
+  - "working" output frame seems to have visual artifacts after reset.
+    This is just a visual bug in the program, and does not affect
+    output files.
+
 v 0.0.8 - Force VEC Code case
   - VEC Code will always be stored capitalized.
 
