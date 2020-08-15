@@ -1,6 +1,6 @@
 #pyEBFGen Guide
 
-##Overview
+## Overview
 
 This guide is intended to give you a quick overview of how to use the
 pyEBFGen tool to generate the batch files necessary to submit
@@ -9,7 +9,7 @@ creation of non-individual applications is currently outside the scope
 of this tool.  In addition, this document does not cover any special
 requirements the FCC may have for file upload.
 
-##Getting Started
+## Getting Started
 
 When launching the application, you will initially be presented with a
 main window containing several blank data fields that correspond to a
@@ -20,7 +20,7 @@ Session Numbers" menu option. It is assumed that when creating the data
 file, you have already totaled the number of individuals passing (or
 failing) the test(s) they took.
 
-##VEC & Session Information Window
+## VEC & Session Information Window
 
 First time users may not know what the required fields mean.  Here is
 a breakdown of each field:
@@ -70,9 +70,9 @@ When all the data fields have been filled in, press the "Apply" button,
 then close the window.  You will be returned to the main window, and
 will now see that the upper portion of the screen has been populated.
 
-##Adding Applicants
+## Adding Applicants
 
-To add applicant ("VA" record) information to the datafile, use the
+To add applicant ("VA" record) information to the batch file, use the
 "File -> Individual License Application" menu option from the main
 window.  This will open a new window with the same general fields as the
 FCC form 605.  When you complete an application, the "Save Application"
@@ -103,7 +103,7 @@ In the event of one of the above warnings, the form will retain all
 previously entered data (with the exception of dropdown options).
 Correct the error and save.
 
-##Application Fields Explained
+## Application Fields Explained
 
 By now you have completed the first line of data that is read by the
 EBF system when it’s submitted to the FCC.  Each value listed in the 
@@ -204,7 +204,7 @@ submitting an administrative update or renewal, make sure you have correctly
 selected the class of license they hold otherwise it will cause an error in
 the application when it’s uploaded for batch processing with the FCC.  Once
 you have selected the class of license, continue.
- - CHANGE CALLSIGN SYSTEMATICALLY?:  So, if the applicant has upgraded their
+ - Change Callsign Systematically?:  If the applicant has upgraded their
 license, performed an administrative update and asked to change their callsign
 to the next systematically available, you would select "Y" for yes.  If this is
 a new application, leave it blank.  If they have upgraded their license and do
@@ -225,7 +225,7 @@ are submitting an application for an administrative update (i.e. changing their
 mailing address) you must leave that field blank.  Once you are done with this
 field, please click on "Save Application".
 
-##Generating the datafile
+## Generating the batch file
 
 When all applicants have been added, you can generate the session
 information with the "File -> Save Current Session" menu option.  This
@@ -245,7 +245,7 @@ preparation for another session:
   - The data file counter will be incremented.
 
 
-##Converting a response file
+## Converting a response file
 
 After submitting the batch file to the FCC, they will generate a
 response file.  You can use pyEBFGen to read this file and convert the
