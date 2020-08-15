@@ -27,6 +27,9 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.10 - Fix CRLF
+  - CRLF got eaten somewhere.  Replacing it
+
 v 0.0.9 - Default Filename
   - Added region code to VEC form
   - Added default filename as (VEC + mmdd + Region Code + counter).dat
