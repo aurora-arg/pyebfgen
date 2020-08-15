@@ -42,7 +42,6 @@ VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
 
 # List of states / territories / etc.  
-# TODO - make "----" tell the user to pick something else
 states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
@@ -73,6 +72,9 @@ appf = ""
 elmp = ""
 elmf = ""
 VE_str = ""
+tloc = ""
+tcnt = 1
+vestidx = 0
 
 #Applicant Attributes
 va_fn = ""
@@ -162,6 +164,10 @@ class fileManager():
     inFN = askopenfilename (title="Select File",
       filetypes=(("EBF Response Files","*.rsp"),
       ("All Files","*.*")))
+
+    if inFN is None:
+      return
+
     inF = open(inFN, "r") 
 
     outFN = inFN[:-4] + ".csv"
@@ -188,6 +194,9 @@ class Window(Frame):
       global appf
       global elmp
       global elmf
+      global tloc
+      global tcnt
+      global vestidx
 
       global VA_list
       vestate = StringVar(root)
@@ -199,8 +208,8 @@ class Window(Frame):
       self.master.config(menu=menu)
 
       fileMenu = Menu(menu)
-      fileMenu.add_command(label="Amateur Club Application",
-        command=self.extVAwin)
+      #fileMenu.add_command(label="Amateur Club Application",
+      #  command=self.extVAwin)
       fileMenu.add_command(label="Individual License Application",
         command=self.stdVAwin)
       fileMenu.add_command(label="Add VEC & Session Numbers",
@@ -213,6 +222,7 @@ class Window(Frame):
       menu.add_cascade(label="File", menu=fileMenu)
 
       frame_a=tk.Frame(self.master)
+      frame_b=tk.Frame(self.master)
       frame_c=tk.Frame(self.master)
 
       vec_sec = tk.Label(frame_a, text="Session & VEC Information")
@@ -225,6 +235,7 @@ class Window(Frame):
       self.l_appF = tk.Label(frame_a, text="Applicants Failed:"+ appf)
       self.l_elmP = tk.Label(frame_a, text="Elements Passed:"+ elmp)
       self.l_elmF = tk.Label(frame_a, text="Elements Failed:"+ elmf)
+      self.l_tloc = tk.Label(frame_a, text="Regional Identifier"+tloc)
 
       vec_sec.pack()
       self.l_VEC.pack()
@@ -236,8 +247,14 @@ class Window(Frame):
       self.l_appF.pack()
       self.l_elmP.pack()
       self.l_elmF.pack()
+      self.l_tloc.pack()
+      
+      l_blank = Label(frame_b, text=" ")
+      l_blank.pack()
 
-      l_VAlist = Label(frame_c, text="Applicant List:")
+      self.l_VAcnt = Label(frame_c, text="Data File: "+str(tcnt).zfill(2))
+      self.l_VAcnt.pack()
+      l_VAlist = Label(frame_c, text="File Content:")
       l_VAlist.pack()
       VA_list = tk.Text(frame_c, width=150, height=10, bg="white")
       VA_list.pack()
@@ -247,6 +264,7 @@ class Window(Frame):
       b_VAlist.pack()
 
       frame_a.pack()
+      frame_b.pack()
       frame_c.pack()
 
   def clrFrame(self):
@@ -266,6 +284,7 @@ class Window(Frame):
       global appf
       global elmp
       global elmf
+      global tloc
 
       global VE_str
   
@@ -278,6 +297,7 @@ class Window(Frame):
       appf = self.e_appF.get()
       elmp = self.e_elmP.get()
       elmf = self.e_elmF.get()
+      tloc = self.e_tloc.get().upper()
 
       self.l_VEC['text']="VEC Code: " + VEC
       self.l_sess['text']="Session Date: "+ sdt
@@ -288,6 +308,7 @@ class Window(Frame):
       self.l_appF['text']="Applicants Failed:"+ appf
       self.l_elmP['text']="Elements Passed:"+ elmp
       self.l_elmF['text']="Elements Failed:"+ elmf
+      self.l_tloc['text']="Regional Identifier:" +tloc
 
       VE_str="VE|" + VEC + "|" + sdt + "|" + vecity + \
           "|" + vestate + "|" + appt + "|" + appp + "|" \
@@ -297,57 +318,80 @@ class Window(Frame):
 
 
   def updVE(self):
+      global vestidx
       # Set VE / EBF file header record.
       VEwin = Toplevel(root)
       VEwin.title("Session and VEC Info")
-
+      def UpdateStateIdx (event):
+        global vestidx
+        vestidx = self.e_vestate.current()
 
       vec_sec = tk.Label(VEwin, text="")
       vec_sec.grid(row=0, column=2)
       l_VEC = tk.Label(VEwin, text="VEC Code:")
       self.e_VEC = tk.Entry(VEwin)
+      self.e_VEC.insert(0,VEC)    
       l_sess = tk.Label(VEwin, text="Session Date:")
       self.e_sess = tk.Entry(VEwin)
+      self.e_sess.insert(0,sdt)
       l_city = tk.Label(VEwin, text="Exam City:")
       self.e_vecity = tk.Entry(VEwin)
+      self.e_vecity.insert(0,vecity)
       l_state = tk.Label(VEwin, text="Exam State:")
       self.e_vestate = Combobox(VEwin, values=states,
          textvariable=vestate)
+      self.e_vestate.current(vestidx)
+      self.e_vestate.bind("<<ComboboxSelected>>", UpdateStateIdx)
       l_appT = tk.Label(VEwin, text="Applicants Tested:")
       self.e_appT = tk.Entry(VEwin)
+      self.e_appT.insert(0,appt)
       l_appP = tk.Label(VEwin, text="Applicants Passed:")
       self.e_appP = tk.Entry(VEwin)
+      self.e_appP.insert(0,appp)
       l_appF = tk.Label(VEwin, text="Applicants Failed:")
       self.e_appF = tk.Entry(VEwin)
+      self.e_appF.insert(0,appf)
       l_elmP = tk.Label(VEwin, text="Elements Passed:")
       self.e_elmP = tk.Entry(VEwin)
+      self.e_elmP.insert(0,elmp)
       l_elmF = tk.Label(VEwin, text="Elements Failed:")
       self.e_elmF = tk.Entry(VEwin)
-      ve_save = tk.Button(VEwin, text="Save Data",
+      self.e_elmF.insert(0,elmf)
+      l_tloc = tk.Label(VEwin, text="Regional Identifier:")
+      self.e_tloc = tk.Entry(VEwin)
+      self.e_tloc.insert(0,tloc)
+      l_tcnt = tk.Label(VEwin, text="File Counter:")
+      self.e_tcnt = tk.Entry(VEwin)
+      self.e_tcnt.insert(0,tcnt)
+      ve_save = tk.Button(VEwin, text="Apply",
           command=self.sVE)
       ve_close = tk.Button(VEwin, text="Close",
           command=VEwin.destroy)
 
       l_VEC.grid(row=1, column=1)
-      self.e_VEC.grid(row=1, column=3)
+      self.e_VEC.grid(row=1, column=2)
       l_sess.grid(row=2, column=1)
-      self.e_sess.grid(row=2, column=3)
+      self.e_sess.grid(row=2, column=2)
       l_city.grid(row=3, column=1)
-      self.e_vecity.grid(row=3, column=3)
+      self.e_vecity.grid(row=3, column=2)
       l_state.grid(row=4, column=1)
-      self.e_vestate.grid(row=4, column=3)
+      self.e_vestate.grid(row=4, column=2)
       l_appT.grid(row=5, column=1)
-      self.e_appT.grid(row=5, column=3)
-      l_appP.grid(row=6, column=1)
-      self.e_appP.grid(row=6, column=3)
-      l_appF.grid(row=7, column=1)
-      self.e_appF.grid(row=7, column=3)
-      l_elmP.grid(row=8, column=1)
-      self.e_elmP.grid(row=8, column=3)
-      l_elmF.grid(row=9, column=1)
-      self.e_elmF.grid(row=9, column=3)
-      ve_save.grid(row=10,column=1)
-      ve_close.grid(row=10,column=2)
+      self.e_appT.grid(row=5, column=2)
+      l_appP.grid(row=1, column=4)
+      self.e_appP.grid(row=1, column=5)
+      l_appF.grid(row=2, column=4)
+      self.e_appF.grid(row=2, column=5)
+      l_elmP.grid(row=3, column=4)
+      self.e_elmP.grid(row=3, column=5)
+      l_elmF.grid(row=4, column=4)
+      self.e_elmF.grid(row=4, column=5)
+      l_tloc.grid(row=5, column=4)
+      self.e_tloc.grid(row=5, column=5)
+      l_tcnt.grid(row=6, column=3)
+      self.e_tcnt.grid(row=6, column=4)
+      ve_save.grid(row=8,column=1)
+      ve_close.grid(row=8,column=2)
       
 
           
@@ -730,7 +774,7 @@ class Window(Frame):
             message="'Basic Qualification Question' must be answered.")
           return
 
-      if va_state == "-----":
+      if va_state == "-----" or va_state == "":
         showerror(title="State Error", 
           message="Please select a valid state.")
         return
@@ -784,12 +828,32 @@ class Window(Frame):
       # user-defined file.
       #VE Record string
       global VE_str
+      global VEC
+      global sdt
+      global appt
+      global appp
+      global appf
+      global elmp
+      global elmf
+      global tloc
+      global tcnt
+      global c
+
+      fdt = sdt.replace("/","")[:4]
+      deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
+      tcnt+=1
+      appt="0"
+      appp="0"
+      appf="0"
+      elmp="0"
+      elmf="0"
       
-      F=asksaveasfile(mode='w',defaultextension=".dat")
+      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
+        defaultextension=".dat")
       if F is None:
         return
 
-      F.write (VE_str+"\r\n")
+      F.write (VE_str)
 
       for i in range(len(VAs)):
         F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
@@ -808,6 +872,21 @@ class Window(Frame):
           + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
           + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
       F.close()
+
+      #clear VA array
+      VAs.clear()
+      #reset VA Counter
+      c = 0
+      #clear output frame and update VE info
+      self.clrFrame()
+      self.l_appT['text']="Applicants Tested:"+ appt
+      self.l_appP['text']="Applicants Passed:"+ appp
+      self.l_appF['text']="Applicants Failed:"+ appf
+      self.l_elmP['text']="Elements Passed:"+ elmp
+      self.l_elmF['text']="Elements Failed:"+ elmf
+      self.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
+
+      
 
 
 
