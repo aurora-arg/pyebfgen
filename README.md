@@ -27,7 +27,13 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
-v 0.0.10 - Fix CRLF
+v 0.1.1 - Fix VEC & Session Numbers GUI
+  - Fixed the interface to make it easier for the user to separate
+    session date/location from actual numbers.
+  - Moved the Regional Identifier to a location separating it from
+    the remaining slots for organizational purposes.
+
+v 0.1.0 - Fix CRLF
   - CRLF got eaten somewhere.  Replacing it
 
 v 0.0.9 - Default Filename
