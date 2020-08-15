@@ -20,6 +20,52 @@ Session Numbers" menu option. It is assumed that when creating the data
 file, you have already totaled the number of individuals passing (or
 failing) the test(s) they took.
 
+##VEC & Session Information Window
+
+First time users may not know what the required fields mean.  Here is
+a breakdown of each field:
+
+ - VEC Code:  That is the single letter code for your VEC.  You will 
+need to enter that letter in all caps.
+ - Session Date:  You will type in the date using DD/MM/YYYY. Do not
+forget to use the "/" when typing in the date. If you don’t use it,
+the batch file will require manual editing which can delay your session
+from being processed by the FCC. Once you have typed in the date, contunue.
+ - Exam City:  Self explanatory. You need to type in the city where the
+session was held. Once you have typed in the city, continue.
+ - Exam State:  Self explanatory. Select the state or territory from the
+drop down menu in the cell.  If you are submitting a session that was held
+outside the United States, or an APO location, select "DX" for the state.
+Once you have selected the state or territory, continue.
+ - Applicants Tested:  So, this is a cell where you need to type in the
+number of people you had come to take a test. In essence, if you had 4
+candidates to take a test and 3 doing administrative updates, you would
+only indicate that you had 4 people taking a test.  Once you have typed
+in the numeric value, continue.
+ - Applicants Passed:  This is a count of all the candidates that actually
+passed their exams during this session. Even if one or two failed their
+first attempt and passed a second exam, you still count that as a candidate
+that actually came out of the session with a CSCE.  Once you have typed
+in the numeric value, continue.
+ -  Applicants Failed:  This is a number of candidates that did NOT pass
+an exam whatsoever during the session. Once you have typed in the value,
+continue.
+ -  Elements Passed:  This is a count of all the elements that were passed
+during this particular testing session.  In essence, if you had 9 elements,
+5 Technician, 2 General and 2 Amateur Extra with a total of these exams
+receiving a passing score of 7, then you would type in the numeric value
+of 7, which would indicate that 7 of the examinations administered received
+a passing score.  Once you have typed in the numeric value, continue.
+ -  Elements Failed:  This is a count of all the elements that were failed
+during this particular testing session.  In essence, if you had 9 elements,
+5 Technician, 2 General and 2 Amateur Extra with a total of these exams
+receiving a failing score of 2, then you would type in the numeric value of
+2, which would indicate that 2 of the examinations administered received a
+failing score.
+ - Regional Identifier:  This is a single letter code that is used to help
+identify the location where the test session was held.  For a complete list
+of codes, please read the `rid.md` file.  This is a required entry.
+
 When all the data fields have been filled in, press the "Apply" button,
 then close the window.  You will be returned to the main window, and
 will now see that the upper portion of the screen has been populated.
@@ -56,6 +102,128 @@ following actions:
 In the event of one of the above warnings, the form will retain all
 previously entered data (with the exception of dropdown options).
 Correct the error and save.
+
+##Application Fields Explained
+
+By now you have completed the first line of data that is read by the
+EBF system when it’s submitted to the FCC.  Each value listed in the 
+VEC & Session Info windows above gives the NCVEC necessary statistics
+that in turn allows them to see how the corresponding VEC is doing as
+far as candidate numbers during each session. Now, we start with the
+very important data, which is entering in the applicant information
+from the 605 Form.  Let’s go through each field:
+
+ - The first field you will see is labeled "Pending File No.".  This
+corresponds to a question on the 605 Form asking if the applicant has
+another license application on file with the FCC that is awaiting
+action.  Most, if not all applicants, will not have a file awaiting
+action from the FCC unless it is a vanity callsign application or
+another license application where the individual answered "Yes" to
+the felony question.  That will happen from time to time and if you
+encounter an applicant with a pending application like that, you will
+need to enter the file number as it appears in the ULS.  The candidate
+should have that file number for you and include it in that section of
+the 605 Form. If there is no data, or pending application on file with
+the FCC, continue.
+ - Callsign:  This is self explanatory.  If the applicant is already
+licensed, you will need to enter their amateur radio callsign, in ALL
+CAPS.  It is case specific. If the applicant does not have an amateur
+radio license, leave that field blank and continue.
+ - SSN:  Again, another self explanatory item. If the applicant does
+NOT have a FRN and is testing for a new license, they MUST provide a
+Social Security Number or Tax ID number pursuant to the Debt Collection
+Act of 1996. If they refuse to provide that information, you are not
+legally permitted to administer a license examination.  If they are
+testing for a new license and they do not have a FRN, please type in
+the SSN, without the dashes and continue.
+ - First Name:  Self explanatory.  Type in the first name of the
+applicant. If it is a new applicant for a new license, please type in
+their first name by capitalizing the first letter and leaving the rest
+in lower case format. It looks better in the ULS and rather proper.
+Once you have filled in the field, continue.
+ - Middle Initial:  This is for the applicant’s middle initial. If they
+do have a middle initial, please type it in ALL CAPS, without a period.
+Just the letter. If they have more than one middle name, please inform
+the candidate that we can only submit one middle initial on their
+application, as the FCC is not setup for multiple middle names at this
+time.  Once you have typed in the middle initial, if applicable, continue.
+ - Last Name:  You will need to enter the last name, or surname of the
+applicant. If the applicant is applying for a new license, please use
+the same formatting technique for the first name by ONLY capitalizing
+the first letter. Once you have typed in the last name, continue.
+ - Suffix:  If the person is a Sr. Jr. or a Roman Numeral, thus being a I,
+II, III, etc, please type it in, without the period.  Just the letters.
+Once you have typed in the data, or if nothing needs to be placed in
+there, continue.
+ - Mailing Address:  You will type in the mailing address of the
+candidate. If the candidate has a post office box, proper formatting of
+listing a post office box will be as follows: "P.O. Box 1111" without
+the quotes of course.  If they have a street address, type that in and
+continue.
+ - City:  Type in the city as printed on the 605 Form and continue.
+ - State:  Select the state or U.S. Territory from the list as shown on
+the 605 Form and continue.
+ - Zip Code:  So, on the 605 Form, it shows that the zip code can be 5 or
+9 characters. For example, if the zip code is 43180-5108, you will type it
+in as 431805108.  Type in the zip code and continue.
+ - Phone No.:  When you type in the telephone number, we only need the
+numbers, no parenthesis or dashes.  For example, if the applicant gives you
+a phone number of (907) 465-3781, you will type it in as follows: 9074653781.
+Once you have typed in the telephone number, continue.
+ - E-Mail Address:  Providing an email address is very helpful, because it
+allows for the FCC to send out a pdf copy of their license once it’s granted.
+As of February 2015, the Commission no longer sends out a paper copy unless you
+file the FCC form 605 asking for one.  Providing an email address allows them
+to send one via email that you can download, archive and print from home.
+Much faster than waiting almost two weeks for a paper copy.  Once you have
+typed in the email address, continue.
+ - Application Purpose:  There are five options to chose from, depending on
+the reason for having an applicant at your session.  Here is a breakdown of
+each option and how it applies:
+     - AU:  Simply means the applicant is here to perform an administrative
+update, which includes changing their mailing address.
+     - MD:  Modification of license...this is the selection you would make if
+an applicant was testing for a license upgrade, or you were performing an
+administrative update and the applicant wanted to also change their callsign
+systematically.
+     - NE:  New license.  Select this if the applicant is here taking a test
+for the very first time, for a new amateur radio license.
+     - RM:  Renewal and Modification...this is selected if the candidate is
+here to renew their license, whether it is within 90 days of expiration or
+within the two year grace period.  Also would include a license upgrade. If
+they are taking a test to upgrade their license as well as seeking a renewal,
+you would select this option.
+     - RO:  Renewal Only...select this if you are processing a renewal for a
+current licensee.  Make sure the license is within 90 days of expiring or if
+it has already expired, within the two year grace period.
+     - Once you have selected the purpose of this specific application,
+continue.
+ - Operator Class:  If you have a new candidate and they take a test, you
+will select the class of license they have received a CSCE for. If you are
+submitting an administrative update or renewal, make sure you have correctly
+selected the class of license they hold otherwise it will cause an error in
+the application when it’s uploaded for batch processing with the FCC.  Once
+you have selected the class of license, continue.
+ - CHANGE CALLSIGN SYSTEMATICALLY?:  So, if the applicant has upgraded their
+license, performed an administrative update and asked to change their callsign
+to the next systematically available, you would select "Y" for yes.  If this is
+a new application, leave it blank.  If they have upgraded their license and do
+not want to change their callsign you must select "N" for no.  Continue when
+completed with this field.
+ - Federal Registration Number:  If the applicant is already licensed, you MUST
+type in their FRN. If the applicant already has an FRN but no other licenses
+with the FCC, please enter it in here, even if it has leading zeros. If an FRN
+needs to be entered here, type it in and continue.
+ - Licensee Name Change:  If an applicant needs to make a name change, whatever
+type of name change, you must select "Y" for yes.  If the applicant is doing a
+name change, make sure you have their name entered that is to be reflected on
+their license. Otherwise, leave it blank and continue.
+ - Basic Qualification Question:  If this is for a new amateur radio license
+application, license upgrade, systematic callsign change or any type of renewal
+that is being submitted with this session, the question MUST be answered. If you
+are submitting an application for an administrative update (i.e. changing their
+mailing address) you must leave that field blank.  Once you are done with this
+field, please click on "Save Application".
 
 ##Generating the datafile
 
