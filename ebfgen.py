@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.0.10
+#                      version: 0.1.0
 #                         date: Fri, 14 Aug 2020 11:20:56 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -36,7 +36,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-version="0.0.10"
+version="0.1.0"
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
