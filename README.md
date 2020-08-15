@@ -22,6 +22,7 @@ please let me know.
 
 ### Windows
   - Install Python3 (as of writing, 3.8.5 is current)
+    - Python can be downloaded by going to https://www.python.org/downloads/
   - Download Zip archive of this repository
   - Unzip to your prefered location (e.g. Desktop)
   - Double-click "ebfgen.py"
