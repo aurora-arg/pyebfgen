@@ -55,3 +55,7 @@
 -- Y ---    Yakutat Borough [Alaska]
 
 -- Z ---    Remote and International Sessions
+
+-- a ---    Puerto Rico and U.S. Virgin Islands
+
+-- b ---    American Samoa, Guam, Hawaii and Northern Mariana Islands
