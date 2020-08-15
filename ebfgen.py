@@ -74,6 +74,7 @@ elmf = ""
 VE_str = ""
 tloc = ""
 tcnt = 1
+vestidx = 0
 
 #Applicant Attributes
 va_fn = ""
@@ -195,6 +196,7 @@ class Window(Frame):
       global elmf
       global tloc
       global tcnt
+      global vestidx
 
       global VA_list
       vestate = StringVar(root)
@@ -316,38 +318,52 @@ class Window(Frame):
 
 
   def updVE(self):
+      global vestidx
       # Set VE / EBF file header record.
       VEwin = Toplevel(root)
       VEwin.title("Session and VEC Info")
-
+      def UpdateStateIdx (event):
+        global vestidx
+        vestidx = self.e_vestate.current()
 
       vec_sec = tk.Label(VEwin, text="")
       vec_sec.grid(row=0, column=2)
       l_VEC = tk.Label(VEwin, text="VEC Code:")
       self.e_VEC = tk.Entry(VEwin)
+      self.e_VEC.insert(0,VEC)    
       l_sess = tk.Label(VEwin, text="Session Date:")
       self.e_sess = tk.Entry(VEwin)
+      self.e_sess.insert(0,sdt)
       l_city = tk.Label(VEwin, text="Exam City:")
       self.e_vecity = tk.Entry(VEwin)
+      self.e_vecity.insert(0,vecity)
       l_state = tk.Label(VEwin, text="Exam State:")
       self.e_vestate = Combobox(VEwin, values=states,
          textvariable=vestate)
+      self.e_vestate.current(vestidx)
+      self.e_vestate.bind("<<ComboboxSelected>>", UpdateStateIdx)
       l_appT = tk.Label(VEwin, text="Applicants Tested:")
       self.e_appT = tk.Entry(VEwin)
+      self.e_appT.insert(0,appt)
       l_appP = tk.Label(VEwin, text="Applicants Passed:")
       self.e_appP = tk.Entry(VEwin)
+      self.e_appP.insert(0,appp)
       l_appF = tk.Label(VEwin, text="Applicants Failed:")
       self.e_appF = tk.Entry(VEwin)
+      self.e_appF.insert(0,appf)
       l_elmP = tk.Label(VEwin, text="Elements Passed:")
       self.e_elmP = tk.Entry(VEwin)
+      self.e_elmP.insert(0,elmp)
       l_elmF = tk.Label(VEwin, text="Elements Failed:")
       self.e_elmF = tk.Entry(VEwin)
+      self.e_elmF.insert(0,elmf)
       l_tloc = tk.Label(VEwin, text="Regional Identifier:")
       self.e_tloc = tk.Entry(VEwin)
+      self.e_tloc.insert(0,tloc)
       l_tcnt = tk.Label(VEwin, text="File Counter:")
       self.e_tcnt = tk.Entry(VEwin)
       self.e_tcnt.insert(0,tcnt)
-      ve_save = tk.Button(VEwin, text="Save Data",
+      ve_save = tk.Button(VEwin, text="Apply",
           command=self.sVE)
       ve_close = tk.Button(VEwin, text="Close",
           command=VEwin.destroy)
@@ -826,11 +842,11 @@ class Window(Frame):
       fdt = sdt.replace("/","")[:4]
       deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
       tcnt+=1
-      appt=0
-      appp=0
-      appf=0
-      elmp=0
-      elmf=0
+      appt="0"
+      appp="0"
+      appf="0"
+      elmp="0"
+      elmf="0"
       
       F=asksaveasfile(initialfile=deffn+".dat", mode='w',
         defaultextension=".dat")
@@ -863,7 +879,11 @@ class Window(Frame):
       c = 0
       #clear output frame and update VE info
       self.clrFrame()
-      self.sVE()
+      self.l_appT['text']="Applicants Tested:"+ appt
+      self.l_appP['text']="Applicants Passed:"+ appp
+      self.l_appF['text']="Applicants Failed:"+ appf
+      self.l_elmP['text']="Elements Passed:"+ elmp
+      self.l_elmF['text']="Elements Failed:"+ elmf
       self.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
 
       
