@@ -42,7 +42,6 @@ VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
 
 # List of states / territories / etc.  
-# TODO - make "----" tell the user to pick something else
 states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
@@ -862,10 +861,12 @@ class Window(Frame):
       VAs.clear()
       #reset VA Counter
       c = 0
-      #clear output frame and stick the VE info back in
+      #clear output frame and update VE info
       self.clrFrame()
-      self.rspUpdate(VE_str)
+      self.sVE()
       self.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
+
+      
 
 
 
