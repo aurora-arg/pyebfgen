@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.1.1
+#                      version: 0.0.12
 #                         date: Fri, 14 Aug 2020 21:45:00 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -36,7 +36,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-version="0.1.1"
+version="0.0.12"
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
@@ -297,7 +297,7 @@ class Window(Frame):
       appf = self.e_appF.get()
       elmp = self.e_elmP.get()
       elmf = self.e_elmF.get()
-      tloc = self.e_tloc.get().upper()
+      tloc = self.e_tloc.get()
 
       self.l_VEC['text']="VEC Code: " + VEC
       self.l_sess['text']="Session Date: "+ sdt
