@@ -28,6 +28,11 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.14 - Added missing applicant field
+  - Added the name suffix field back into the application.
+  - Tested...present and works.
+  - Moved the callsign entry box to right side of same row.
+
 v 0.0.13 - Updated applicant interface
   - Updated interface to follow the 605 form.
 

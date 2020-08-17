@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.0.13
+#                      version: 0.0.14
 #                         date: Fri, 14 Aug 2020 21:45:00 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -36,7 +36,7 @@ from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-version="0.0.13"
+version="0.0.14"
 
 VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
@@ -568,7 +568,7 @@ class Window(Frame):
 
       l_vafn = tk.Label(VAwindow, text="Pending File Number")
       self.e_vafn = tk.Entry(VAwindow)
-      l_call = tk.Label(VAwindow, text="Callsign")
+      l_call = tk.Label(VAwindow, text="Callsign, if licensed")
       self.e_call = tk.Entry(VAwindow)
       l_ssn = tk.Label(VAwindow, text="Social Security Number")
       self.e_ssn = tk.Entry(VAwindow)
@@ -659,8 +659,10 @@ class Window(Frame):
       l_mi.grid(row=1,column=3)
       self.e_mi.grid(row=2,column=3)
 
-      l_call.grid(row=4, column=1)
-      self.e_call.grid(row=5, column=1)
+      l_nmsuf.grid(row=4,column=1)
+      self.e_nmsuf.grid(row=5,column=1)
+      l_call.grid(row=4, column=3)
+      self.e_call.grid(row=5, column=3)
      
       l_street.grid(row=6,column=1)
       self.e_street.grid(row=7,column=1)
