@@ -28,6 +28,10 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.1.0 - Stable Beta
+  - Should be stable now.  Future patches, etc. based on user experience
+    requests
+
 v. 0.0.16 - version string
   - broke the version string up into individual vars.
 
