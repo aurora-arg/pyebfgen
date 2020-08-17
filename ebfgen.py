@@ -42,7 +42,7 @@ VAs=[]  # Array of VA objects.  Filled in as applicants are saved
 c=0     # Array counter
 
 # List of states / territories / etc.  
-states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
+states=['','AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
         ,'ND','MP','OH','OK','OR','PA','PR','RI','SC','SD','TN','TX'\
