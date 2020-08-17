@@ -30,7 +30,6 @@ please let me know.
 ## changelog
 v 0.0.13 - Updated applicant interface
   - Updated interface to follow the 605 form.
-  - Added a "null" on the exam state for the VEC & Session Information window.
 
 v 0.0.12 - Update regional ID
   - Allow lowercase region IDs
