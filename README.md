@@ -28,6 +28,9 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v. 0.0.16 - version string
+  - broke the version string up into individual vars.
+
 v 0.0.15 - UI Fixes
   - Force callsign to uppercase
   - Zero-pad the FRN (if provided) to 10 digits
