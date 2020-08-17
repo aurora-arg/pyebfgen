@@ -279,3 +279,7 @@ such as LibreOffice Calc or Microsoft Excel.
 
 Files saved in such a manner will be saved to the same directory /
 folder as you imported the response file from.
+
+## FCC Response Codes
+FCC EBF Response codes can be found
+[here](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf).
