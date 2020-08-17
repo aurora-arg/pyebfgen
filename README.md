@@ -28,6 +28,8 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.13 - Updated applicant interface to follow the 605 form.
+
 v 0.0.12 - Update regional ID
   - Allow lowercase region IDs
 
