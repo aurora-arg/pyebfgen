@@ -28,6 +28,15 @@ please let me know.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.0.15 - UI Fixes
+  - Force callsign to uppercase
+  - Zero-pad the FRN (if provided) to 10 digits
+  - Remove formatting (parenthesis, dashes, etc.) from SSN, Phone
+    Number, etc.
+  - Limit name fields to lengths imposed by FCC
+  - Limit mailing address fields to lengths imposed by FCC
+  - Updated user guide for readability & noted changes.
+
 v 0.0.14 - Added missing applicant field
   - Added the name suffix field back into the application.
   - Tested...present and works.

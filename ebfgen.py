@@ -702,6 +702,15 @@ class Window(Frame):
 
       b_save.grid(row=18,column=1)
       b_close.grid(row=18,column=2)
+
+      #set the widget tab-order properly.
+      taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
+        self.e_call, self.e_street,self.e_city, self.e_state,\
+        self.e_zipcd, self.e_ssn, self.e_frn,self.e_phone,\
+        self.e_email, self.e_felon, self.e_appcd, self.e_updcall,\
+        self.e_lnchg, self.e_opclass, self.e_vafn)
+      for wid in taborder:
+        wid.lift()
       
       def change_dropdown(*args):
           print( va_updcall.get() )
@@ -729,24 +738,27 @@ class Window(Frame):
       c=c+1
 
   def sVA(self):
+      frn = ""
       # Save applicant data to VA array 
       va_fn = self.e_vafn.get()
-      va_call = self.e_call.get()
-      va_ssn = self.e_ssn.get()
+      va_call = self.e_call.get().upper()
+      va_ssn = self.e_ssn.get().replace("-","")
       va_ent = self.e_ent.get()
-      va_fname = self.e_fname.get()
-      va_mi = self.e_mi.get()
-      va_lname = self.e_lname.get()
-      va_nmsuf = self.e_nmsuf.get()
+      va_fname = self.e_fname.get()[0:20]
+      va_mi = self.e_mi.get().upper()[0:1]
+      va_lname = self.e_lname.get()[0:20]
+      va_nmsuf = self.e_nmsuf.get()[0:3]
       va_attn = self.e_attn.get()
-      va_street = self.e_street.get()
-      va_pobox = self.e_pobox.get()
-      va_city = self.e_city.get()
+      va_street = self.e_street.get()[0:60]
+      va_pobox = self.e_pobox.get()[0:20]
+      va_city = self.e_city.get()[0:20]
       va_state = self.e_state.get()
-      va_zipcd = self.e_zipcd.get()
-      va_phone = self.e_phone.get()
-      va_fax = self.e_fax.get()
-      va_email = self.e_email.get()
+      va_zipcd = self.e_zipcd.get().replace("-","")
+      va_phone = self.e_phone.get().replace("(","").\
+        replace(")","").replace("-","")
+      va_fax = self.e_fax.get().replace("(","").\
+        replace(")","").replace("-","")
+      va_email = self.e_email.get()[0:50]
       va_appcd = self.e_appcd.get()
       va_opclass = self.e_opclass.get()
       va_sigok = self.e_sigok.get()
@@ -768,9 +780,7 @@ class Window(Frame):
       # FRN supercedes ssn 
       if va_frn:
         va_ssn = ""
-        if len(va_frn)!=10:
-          showerror(title="FRN Error", message="FRN is not 10 digits.")
-          return
+        frn = va_frn.zfill(10)
       else:
         if len(va_ssn)!=9:
           showerror(title="SSN Error", message="SSN is not 9 digits.")
@@ -795,7 +805,7 @@ class Window(Frame):
         , va_email, va_appcd, va_opclass, va_sigok\
         , va_physcert, va_reqexp, va_waivereq\
         , va_att, va_updcall, va_trusteecall\
-        , va_apptyp, va_frn, va_dob, va_lnchg\
+        , va_apptyp, frn, va_dob, va_lnchg\
         , va_psqcd, va_psq, va_psqa, va_felon))
       
       
