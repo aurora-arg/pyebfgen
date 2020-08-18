@@ -1,5 +1,11 @@
 # pyEBFGen Guide
 
+** v 0.2.x Branch **
+This branch represents a relatively heavy re-write of the codebase,
+mainly to clean things up and ensure the codebase will remain updatable
+long term.  At the present time (2020-08-18), this branch should be
+considered to be extremely unstable. 
+
 ## Overview
 
 This guide is intended to give you a quick overview of how to use the

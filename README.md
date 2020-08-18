@@ -8,6 +8,12 @@ This should work cross-platform; however my main development environment
 is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
+** v 0.2.x Branch **
+This branch represents a relatively heavy re-write of the codebase,
+mainly to clean things up and ensure the codebase will remain updatable
+long term.  At the present time (2020-08-18), this branch should be
+considered to be extremely unstable. 
+
 ## Requirements
   - Python 3.5.3+
   - python3-tk
