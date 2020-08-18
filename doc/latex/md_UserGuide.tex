@@ -1,0 +1,114 @@
+$\ast$$\ast$ Version 0.\+2 base $\ast$$\ast$ Version 0.\+2 represents a pretty big sway from version 0.\+1, in hopes that it\textquotesingle{}ll make things considerably more maintainable. This version should be considered unstable, and should not be used.
+
+\subsection*{Overview}
+
+This guide is intended to give you a quick overview of how to use the py\+E\+B\+F\+Gen tool to generate the batch files necessary to submit {\itshape individual} applications to the F\+CC automated processing system. The creation of non-\/individual applications is currently outside the scope of this tool. In addition, this document does not cover any special requirements the F\+CC may have for file upload.
+
+\subsection*{Getting Started}
+
+When launching the application, you will initially be presented with a main window containing several blank data fields that correspond to a given testing session (V\+EC Code, \# tested, elements passed, and so on). Before adding applicant information, the V\+EC information should be supplied. You can enter this information from the \char`\"{}\+File -\/$>$ Add V\+E\+C \&
+\+Session Numbers\char`\"{} menu option. It is assumed that when creating the data file, you have already totaled the number of individuals passing (or failing) the test(s) they took.
+
+\subsection*{V\+EC \& Session Information Window}
+
+First time users may not know what the required fields mean. Here is a breakdown of each field\+:
+
+
+\begin{DoxyItemize}
+\item V\+EC Code\+: That is the single letter code for your V\+EC. You will need to enter that letter in all caps.
+\item Session Date\+: You will type in the date using D\+D/\+M\+M/\+Y\+Y\+YY. Do not forget to use the \char`\"{}/\char`\"{} when typing in the date. If you don’t use it, the batch file will require manual editing which can delay your session from being processed by the F\+CC. Once you have typed in the date, contunue.
+\item Exam City\+: Self explanatory. You need to type in the city where the session was held. Once you have typed in the city, continue.
+\item Exam State\+: Self explanatory. Select the state or territory from the drop down menu in the cell. If you are submitting a session that was held outside the United States, or an A\+PO location, select \char`\"{}\+D\+X\char`\"{} for the state. Once you have selected the state or territory, continue.
+\item Applicants Tested\+: So, this is a cell where you need to type in the number of people you had come to take a test. In essence, if you had a total of 7 applicants at your session with 4 candidates to take a test and 3 doing administrative updates, you would only indicate that you had 4 people taking a test. Once you have typed in the numeric value, continue.
+\item Applicants Passed\+: This is a count of all the candidates that actually passed their exams during this session. Even if one or two failed their first attempt and passed a second exam, you still count that as a candidate that actually came out of the session with a C\+S\+CE. Once you have typed in the numeric value, continue.
+\item Applicants Failed\+: This is a number of candidates that did N\+OT pass an exam whatsoever during the session. Once you have typed in the value, continue.
+\item Elements Passed\+: This is a count of all the elements that were passed during this particular testing session. In essence, if you had 9 elements, 5 Technician, 2 General and 2 Amateur Extra with a total of these exams receiving a passing score of 7, then you would type in the numeric value of 7, which would indicate that 7 of the examinations administered received a passing score. Once you have typed in the numeric value, continue.
+\item Elements Failed\+: This is a count of all the elements that were failed during this particular testing session. In essence, if you had 9 elements, 5 Technician, 2 General and 2 Amateur Extra with a total of these exams receiving a failing score of 2, then you would type in the numeric value of 2, which would indicate that 2 of the examinations administered received a failing score.
+\item Regional Identifier\+: This is a single letter code that is used to help identify the location where the test session was held. For a complete list of codes, please read the {\ttfamily rid.\+md} file. This is a required entry.
+\end{DoxyItemize}
+
+When all the data fields have been filled in, press the \char`\"{}\+Apply\char`\"{} button, then close the window. You will be returned to the main window, and will now see that the upper portion of the screen has been populated.
+
+\subsection*{Adding Applicants}
+
+To add applicant (\char`\"{}\+V\+A\char`\"{} record) information to the batch file, use the \char`\"{}\+File -\/$>$ Individual License Application\char`\"{} menu option from the main window. This will open a new window with the same general fields as the F\+CC form 605. When you complete an application, the \char`\"{}\+Save Application\char`\"{} button will clear the form to allow you to enter additional applicants. When you have added (and saved) the final applicant for a session, you can click the \char`\"{}\+Close Window\char`\"{} button.
+
+This form will validate the following data fields, or perform the following actions, in accordance with the F\+CC\textquotesingle{}s E\+BF Userguide.
+
+
+\begin{DoxyItemize}
+\item First name will be truncated to twenty (20) characters.
+\item MI will be truncated to one (1) character, and forced uppercase.
+\item Last name will be truncated to twenty (20) characters.
+\item If the applicant has provided an S\+SN, and it is not equal to 9 digits (after removing any dashes), you will receive a warning and data will not be saved to the batch file.
+\item If the applicant has provided a F\+RN, and it is not equal to 10 digits, the application will zero-\/pad the F\+RN to 10 digits.
+\item If the application form has both an S\+SN and F\+RN, the F\+RN takes precedence, and S\+SN will be removed from the application record, in accordance with F\+CC guidelines.
+\item If the application purpose is not \char`\"{}\+A\+U\char`\"{}, and the Basic Qualification Question is not answered, you will receive a warning and the application information will not be saved.
+\item If a state / territorry separator is selected (i.\+e. \char`\"{}-\/-\/-\/-\/-\/\char`\"{}), you will receive a warning and the application information will not be saved to the batch file.
+\end{DoxyItemize}
+
+In the event of one of the above warnings, the form will retain all previously entered data (with the exception of dropdown options). Correct the error and save.
+
+\subsection*{Application Fields Explained}
+
+By now you have completed the first line of data that is read by the E\+BF system when it’s submitted to the F\+CC. Each value listed in the V\+EC \& Session Info windows above gives the N\+C\+V\+EC necessary statistics that in turn allows them to see how the corresponding V\+EC is doing as far as candidate numbers during each session. Now, we start with the very important data, which is entering in the applicant information from the 605 Form. Let’s go through each field\+:
+
+
+\begin{DoxyItemize}
+\item {\itshape Last Name}\+: You will need to enter the last name, or surname of the applicant. If the applicant is applying for a new license, please use the same formatting technique for the first name by O\+N\+LY capitalizing the first letter. Once you have typed in the last name, continue.
+\item {\itshape First Name}\+: Self explanatory. Type in the first name of the applicant. If it is a new applicant for a new license, please type in their first name by capitalizing the first letter and leaving the rest in lower case format. It looks better in the U\+LS and rather proper. Once you have filled in the field, continue.
+\item {\itshape Middle Initial}\+: This is for the applicant’s middle initial. If they do have a middle initial, please type it in A\+LL C\+A\+PS, without a period. Just the letter. If they have more than one middle name, please inform the candidate that we can only submit one middle initial on their application, as the F\+CC is not setup for multiple middle names at this time. Once you have typed in the middle initial, if applicable, continue.
+\item {\itshape Suffix}\+: If the person is a Sr. Jr. or a Roman Numeral, thus being a I, II, I\+II, etc, please type it in, without the period. Just the letters. Once you have typed in the data, or if nothing needs to be placed in there, continue.
+\item {\itshape Callsign}\+: This is self explanatory. If the applicant is already licensed, you will need to enter their amateur radio callsign, A\+LL C\+A\+PS will be enforced by the program. If the applicant does not have an amateur radio license, leave that field blank and continue.
+\item {\itshape Mailing Address}\+: You will type in the mailing address of the candidate. If the candidate has a post office box, proper formatting of listing a post office box will be as follows\+: \char`\"{}\+P.\+O. Box 1111\char`\"{} without the quotes of course. If they have a street address, type that in and continue.
+\item {\itshape City}\+: Type in the city as printed on the 605 Form and continue.
+\item {\itshape State}\+: Select the state or U.\+S. Territory from the list as shown on the 605 Form and continue.
+\item {\itshape Zip Code}\+: So, on the 605 Form, it shows that the zip code can be 5 or 9 characters. Dashes will automatically be removed by the application.
+\item {\itshape Social Security Number}\+: Again, another self explanatory item. If the applicant does N\+OT have a F\+RN and is testing for a new license, they M\+U\+ST provide a Social Security Number or Tax ID number pursuant to the Debt Collection Act of 1996. If they refuse to provide that information, you are not legally permitted to administer a license examination. If they are testing for a new license and they do not have a F\+RN, please type in the S\+SN.
+\item {\itshape Federal Registration Number}\+: If the applicant is already licensed, you M\+U\+ST type in their F\+RN. If the applicant already has an F\+RN but no other licenses with the F\+CC, please enter it in here, even if it has leading zeros. If an F\+RN needs to be entered here, type it in and continue.
+\begin{DoxyItemize}
+\item {\itshape N\+O\+TE}\+: If the user types in a Social Security Number and a Federal Registration Number, the Social Security Number will immediately be purged upon saving the data.
+\end{DoxyItemize}
+\item {\itshape Phone No.}\+: When you type in the telephone number, we only need the numbers, no parenthesis or dashes. For example, if the applicant gives you a phone number of (907) 465-\/3781, you will type it in as follows\+: 9074653781. Once you have typed in the telephone number, continue.
+\item {\itshape E-\/\+Mail Address}\+: Providing an email address is very helpful, because it allows for the F\+CC to send out a pdf copy of their license once it’s granted. As of February 2015, the Commission no longer sends out a paper copy unless you file the F\+CC form 605 asking for one. Providing an email address allows them to send one via email that you can download, archive and print from home. Much faster than waiting almost two weeks for a paper copy. Once you have typed in the email address, continue.
+\item {\itshape Basic Qualification Question}\+: If this is for a new amateur radio license application, license upgrade, systematic callsign change or any type of renewal that is being submitted with this session, the question M\+U\+ST be answered. If you are submitting an application for an administrative update (i.\+e. changing their mailing address) you must leave that field blank. Once you are done with this field, continue.
+\item {\itshape Application Purpose}\+: There are five options to chose from, depending on the reason for having an applicant at your session. Here is a breakdown of each option and how it applies\+:
+\begin{DoxyItemize}
+\item {\itshape AU}\+: Simply means the applicant is here to perform an administrative update, which includes changing their mailing address.
+\item {\itshape MD}\+: Modification of license...this is the selection you would make if an applicant was testing for a license upgrade, or you were performing an administrative update and the applicant wanted to also change their callsign systematically.
+\item {\itshape NE}\+: New license. Select this if the applicant is here taking a test for the very first time, for a new amateur radio license.
+\item {\itshape RM}\+: Renewal and Modification...this is selected if the candidate is here to renew their license, whether it is within 90 days of expiration or within the two year grace period. Also would include a license upgrade. If they are taking a test to upgrade their license as well as seeking a renewal, you would select this option.
+\item {\itshape RO}\+: Renewal Only...select this if you are processing a renewal for a current licensee. Make sure the license is within 90 days of expiring or if it has already expired, within the two year grace period.
+\item Once you have selected the purpose of this specific application, continue.
+\end{DoxyItemize}
+\item {\itshape Change Callsign Systematically?}\+: If the applicant has upgraded their license, performed an administrative update and asked to change their callsign to the next systematically available, you would select \char`\"{}\+Y\char`\"{} for yes. If this is a new application, leave it blank. If they have upgraded their license and do not want to change their callsign yout must select \char`\"{}\+N\char`\"{} for no. Continue when completed with this field.
+\item {\itshape Licensee Name Change}\+: If an applicant needs to make a name change, whatever type of name change, you must select \char`\"{}\+Y\char`\"{} for yes. If the applicant is doing a name change, make sure you have their name entered that is to be reflected on their license. Otherwise, leave blank and continue.
+\item {\itshape Operator Class}\+: If you have a new candidate and they take a test, you will select the class of license they have received a C\+S\+CE for. If you are submitting an administrative update or renewal, make sure you have correctly selected the class of license they hold otherwise it will cause an error in the application when it’s uploaded for batch processing with the F\+CC. Once you have selected the class of license, continue.
+\item The last field you will see is labeled $\ast$\char`\"{}\+Pending File No.\char`\"{}$\ast$. This corresponds to a question on the 605 Form asking if the applicant has another license application on file with the F\+CC that is awaiting action. Most, if not all applicants, will not have a file awaiting action from the F\+CC unless it is a vanity callsign application or another license application where the individual answered \char`\"{}\+Yes\char`\"{} to the felony question. That will happen from time to time and if you encounter an applicant with a pending application like that, you will need to enter the file number as it appears in the U\+LS. The candidate should have that file number for you and include it in that section of the 605 Form. If there is no data, or pending application on file with the F\+CC, continue.
+\item Once you have completed that application, please click on the $\ast$\char`\"{}\+Save Application\char`\"{}$\ast$ button.
+\item You may immediately start on your next application, or click $\ast$\char`\"{}\+Close Window\char`\"{}$\ast$.
+\end{DoxyItemize}
+
+\subsection*{Generating the batch file}
+
+When all applicants have been added, you can generate the session information with the \char`\"{}\+File -\/$>$ Save Current Session\char`\"{} menu option. This will present you with a standard \char`\"{}save as\char`\"{} dialog menu, with a suggested filename consisting of the V\+EC Code, date (from V\+EC input window, in mmdd format), the Regional Identifier, and Data File counter, and the file extension \char`\"{}.\+dat\char`\"{}. For example, \char`\"{}\+C0814\+A01.\+dat\char`\"{}. If the suggested filename is not appropriate for the session / location, change it before saving the file.
+
+Upon saving the file, the program will partially reset itself, in preparation for another session\+:
+
+
+\begin{DoxyItemize}
+\item The applicant list will be cleared
+\item The counts of \char`\"{}\+Applicants Tested\char`\"{} (Passed, Failed) and \char`\"{}\+Elements
+    Passed\char`\"{} (Failed) will be reset to zero.
+\item The data file counter will be incremented.
+\end{DoxyItemize}
+
+\subsection*{Converting a response file}
+
+After submitting the batch file to the F\+CC, they will generate a response file. You can use py\+E\+B\+F\+Gen to read this file and convert the records into comma-\/separated values. This can be achieved by using the \char`\"{}\+File -\/$>$ Convert Response\char`\"{} option. Response files converted in such a manner will be simultaneously printed into the \char`\"{}\+File Content\+:\char`\"{} frame of the main window A\+ND saved to your computer\textquotesingle{}s filesystem in \char`\"{}.\+csv\char`\"{} format for easier viewing in your preferred spreadsheet application -\/ such as Libre\+Office Calc or Microsoft Excel.
+
+Files saved in such a manner will be saved to the same directory / folder as you imported the response file from.
+
+\subsection*{F\+CC Response Codes}
+
+F\+CC E\+BF Response codes can be found \href{https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf}{\tt here}. 

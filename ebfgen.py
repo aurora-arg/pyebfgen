@@ -377,18 +377,32 @@ class mainWindow(Frame):
       frame_a.pack()
       frame_b.pack()
       frame_c.pack()
-
+  ## Clear Frame
+  #
+  #  Clears the preview frame.
   def clrFrame(self):
     VA_list.delete('1.0', END)
 
+  ## Update Frame
+  #
+  #  Originally for response file previews.  Updates the file preview
+  #  frame
   def rspUpdate(self,l):
     VA_list.insert(END,l)
   
+  ## Start Standard VA Window
+  #
+  #  Begins the "standard" Applicant window.
   def sStdVAWin(self):
     self.newWindow = Toplevel(self.master)
     self.newWindow.title("Applicant Information")
     self.app = appWindows(self.newWindow)
 
+  ## Save VE
+  #
+  #  Saves VEC (Exam) data for the EBF header, and prints to the file
+  #  preview.  Note - no matter how many entries are in the preview
+  #  pane, only one (1) VE record will be in the output.
   def sVE(self):
       #VE Record fields
       global VEC
@@ -432,7 +446,9 @@ class mainWindow(Frame):
   
       self.rspUpdate(VE_str)
 
-
+  ## Update VEC
+  #
+  #  Subwindow to update VE header row information for the session.
   def updVE(self):
       global vestidx
       # Set VE / EBF file header record.
@@ -511,7 +527,11 @@ class mainWindow(Frame):
       
 
 
-  def updVA(self):
+  ## Update VA
+  #
+  #  Updates the preview pane with the most recently added applicant
+  #  record.
+  def updVA():
       # Update the VA Table listing on the main screen.  This needs
       # moved back to "MainWindow" probably
       global c
@@ -534,13 +554,15 @@ class mainWindow(Frame):
       VA_list.insert(END, outTxt)
       c=c+1
 
-
+  ## Quit
   def exitProgram(self):
       exit()
 
 ## App_Windows Class
 #
-#  Class to handle the Applicant Information windows.
+#  Class to handle the Applicant Information window.  TODO - figure out
+#  how to make both the "standard" and "extended" forms extend this, so
+#  we don't need any code duplication.
 class appWindows():
   def __init__(self, master):
       self.master = master
@@ -634,7 +656,7 @@ class appWindows():
       b_save = tk.Button(VAwindow, text="Save Applicant", 
         command=self.sVA)
       b_close = tk.Button(VAwindow, text="Close Window", 
-        command=VAwindow.destroy)
+        command=self.master.destroy)
 
         
 #  def extVAwin():
@@ -802,9 +824,13 @@ class appWindows():
       
       def change_dropdown(*args):
           print( va_updcall.get() )
+
+  ## Save VA
+  #
+  #  Save applicant information to the applicants array for this
+  #  session.
   def sVA(self):
       frn = ""
-      # Save applicant data to VA array 
       va_fn = self.e_vafn.get()
       va_call = self.e_call.get().upper()
       va_ssn = self.e_ssn.get().replace("-","")
@@ -904,7 +930,7 @@ class appWindows():
       self.e_psq.delete(0, 'end')
       self.e_psqa.delete(0, 'end')
       self.e_felon.delete(0, 'end')
-      self.updVA()
+      mainWindow.updVA()
 
 
 
