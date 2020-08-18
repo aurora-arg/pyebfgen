@@ -8,6 +8,11 @@ This should work cross-platform; however my main development environment
 is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
+** Version 0.2 base **
+Version 0.2 represents a pretty big sway from version 0.1, in hopes that
+it'll make things considerably more maintainable.  This version should
+be considered unstable, and should not be used.
+
 ## Requirements
   - Python 3.5.3+
   - python3-tk

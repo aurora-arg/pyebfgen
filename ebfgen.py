@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.1.0
+#                      version: 0.2.1
 #                         date: Mon, 17 Aug 2020 15:13:45 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -28,22 +28,38 @@
 #  02110-1301 USA.
 #
 ########################################################################
+## @package pyebfgem
+#  This module is to assist the user in generating the batch files
+#  necessary for automated FCC filing using the Universal Licensing
+#  System (ULS) Electronic Batch File (EBF).
+
 import tkinter as tk
 from tkinter import *
-#from tkinter import ttk
 from tkinter.ttk import *
 from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-maver = "0" #major
-miver = "1" #minor
-ptver = "0" #patch
+## Major Version number
+maver = "0"
 
-VAs=[]  # Array of VA objects.  Filled in as applicants are saved
-c=0     # Array counter
+## Minor Version Number. Minor versions reset on Major version updates.
+miver = "2" 
 
-# List of states / territories / etc.  
+## Patch Number. Patch numbers reset on Major or Minor version updates.
+ptver = "1" 
+
+
+## Array to hold Applicant objects, as new applicants are saved.
+#  The array is flushed on saving of each session batchfile.
+VAs=[]  
+
+## Counter / pointer into the array's next position.
+c=0
+
+## List of States, Territories, etc.
+#  Used to fill in VEC header information and applicant address
+#  information.  
 states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
@@ -51,73 +67,78 @@ states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'UM','UT','VT','VA','VI','WA','WV','WI','WY','-----','AE','AP'\
         ,'AA','-----','DX']
 
-# List of application purpose codes
+## List of application purpose codes
+#  "AU" = Administrative Update
+#  "MD" = Modification (e.g. upgrading Tech. to General)
+#  "NE" = New Applicant
+#  "RM" = Renew and Modify (e.g. Tech. renewal AND upgrade to General)
+#  "RO" = Renew Only
 apppur=['AU','MD','NE','RM','RO']
 
-# List of applicant license classes
+## List of applicant license classes
+#  "N" = Novice
+#  "T" = Technician
+#  "G" = General
+#  "A" = Advanced (Deprecated by FCC)
+#  "E" = Extra (replaced 'Advanced')
 liccls=['N','T','G','A','E']
 
-# List for answers about the felony question
+## List for answers about the felony question
+#  Used to answer the Basic Qualification Question
 felony=['null','Y','N']
 
-# Y|N option list for relevant dropdowns
+## Y|N option list for relevant dropdowns
 opts=['Y','N']
 
-#VE Record (batch file header) fields
+## Volunteer Examiner Code
 VEC = ""
+
+## Session Date
 sdt = ""
+
+## Session City
 vecity = ""
+
+## Session State
 vestate = None
+
+## Number of Applicants Tested
 appt = ""
+
+## Number of Applicants Passed
 appp = ""
+
+## Number of Applicants Failed
 appf = ""
+
+## Number of Elements Passed
 elmp = ""
+
+## Number of Elements Failed
 elmf = ""
+
+## Global record of the completed VEC header string
 VE_str = ""
+
+## Regional Identifier for filenaming purposes.
 tloc = ""
+
+## Session counter for filenaming purposes.
 tcnt = 1
+
+## Keeps track of state selected for VEC header
 vestidx = 0
 
-#Applicant Attributes
-va_fn = ""
-va_call = ""
-va_ssn = ""
-va_ent = ""
-va_fname = ""
-va_mi = ""
-va_lname = ""
-va_nmsuf = ""
-va_attn = ""
-va_street = ""
-va_pobox = ""
-va_city = ""
-va_state = ""             
-va_zipcd = ""
-va_phone = ""
-va_fax = ""
-va_email = ""
-va_appcd = ""             
-va_opclass = ""              
-va_sigok = ""
-va_physcert = ""
-va_reqexp = ""
-va_waivereq = ""
-va_att = ""
-va_updcall = ""             
-va_trusteecall = ""
-va_apptyp = ""
-va_frn = ""
-va_dob = ""
-va_lnchg = ""
-va_psqcd = ""
-va_psq = ""
-va_psqa = ""
-va_felon = ""
-
+## Global object for the "preview" frame.
 VA_list = None
 
-# Class to create an object to cram into an array, because apparently
-# python doesn't do C-style structures.  Or I'm just an idiot.
+va_state=""
+
+## VA Class
+#  
+#  The "VA" class object maintains the details of an individual
+#  applicant for a given testing session.  At the present time, pyebfgen
+#  does not support editing of applicant data once saved.
 class VA:
   def __init__(self,fn,call,ssn,entname,fname,mi,lname,nmsuf,attn\
     ,street,pobox,city,state,zipcd,phone,fax,email,appcd,opclass,sigok\
@@ -159,10 +180,20 @@ class VA:
       self.psqa = psqa
       self.felon = felon
 
+## fileManager
+#
+#  This class provides some of the basic framework necessary for reading
+#  input response files from the FCC.
 class fileManager():
+  ## convertFile
+  #
+  #  This function reads in an FCC Response file, and converts it into
+  #  comma-separated format, which is saved to the filesystem in the
+  #  same location as the response file was opened from. It is strongly
+  #  recommended that you do not open responses from temporary
+  #  directories. Additionally, the converted text is displayed in the
+  #  main window's preview pane.
   def convertFile():
-    # Read in a FCC Response File, and convert it into CSV
-    
     inFN = askopenfilename (title="Select File",
       filetypes=(("EBF Response Files","*.rsp"),
       ("All Files","*.*")))
@@ -177,14 +208,92 @@ class fileManager():
     inDat=inF.readlines()
     for line in inDat:
       outln=line.replace("|",",")
-      Window.rspUpdate(None, outln)  
+      mainWindow.rspUpdate(None, outln)  
       outF.writelines(outln)
     outF.close()
   
     showinfo(title="Convert complete", message="Saved as: " + outFN)
+  
+  ## writeFile
+  #
+  #  This function handles writing batch file for submission to the
+  #  FCC's processing system.  In addition, it prepares the tool for a
+  #  subesquent testing session.
+  def writeFile():
+      global VE_str
+      global VEC
+      global sdt
+      global appt
+      global appp
+      global appf
+      global elmp
+      global elmf
+      global tloc
+      global tcnt
+      global c
 
+      # Format the date for use in the output filename
+      fdt = sdt.replace("/","")[:4]
+      # Set the default filename
+      deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
+      
+      # Open saveas dialog box
+      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
+        defaultextension=".dat")
+      if F is None:
+        return
 
-class Window(Frame):
+      # Write VE Header to file
+      F.write (VE_str+"\r\n")
+
+      # Loop over applicant data, and write to the file.
+      for i in range(len(VAs)):
+        F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
+          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
+          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
+          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
+          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
+          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
+          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
+          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
+          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
+          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
+#  Extra pipes here for attachment file / fax ind ^^^
+          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
+          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
+          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
+          + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
+
+      # Everything written to filesystem.  Close filehandle
+      F.close()
+
+      # Prepare global variables for next session
+      tcnt+=1
+      appt="0"
+      appp="0"
+      appf="0"
+      elmp="0"
+      elmf="0"
+
+      #clear VA array
+      VAs.clear()
+      #reset VA Counter
+      c = 0
+  
+      #clear output frame and update VE info
+      mainWindow.clrFrame()
+      mainWindow.l_appT['text']="Applicants Tested:"+ appt
+      mainWindow.l_appP['text']="Applicants Passed:"+ appp
+      mainWindow.l_appF['text']="Applicants Failed:"+ appf
+      mainWindow.l_elmP['text']="Elements Passed:"+ elmp
+      mainWindow.l_elmF['text']="Elements Failed:"+ elmf
+      mainWindow.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
+
+## mainWindow Class
+#
+#  This class represents the main navigation window for ebfgen.  Its
+#  only real purpose is to provide navigation for the user.
+class mainWindow(Frame):
   def __init__(self,master=None):
       #VE Record fields
       global VEC
@@ -213,11 +322,11 @@ class Window(Frame):
       #fileMenu.add_command(label="Amateur Club Application",
       #  command=self.extVAwin)
       fileMenu.add_command(label="Individual License Application",
-        command=self.stdVAwin)
+        command=self.sStdVAWin)
       fileMenu.add_command(label="Add VEC & Session Numbers",
         command=self.updVE)
       fileMenu.add_command(label="Save Current Session",
-        command=self.writeFile)
+        command=fileManager.writeFile)
       fileMenu.add_command(label="Convert Response",
         command=fileManager.convertFile)
       fileMenu.add_command(label="Exit",command=self.exitProgram)
@@ -274,6 +383,11 @@ class Window(Frame):
 
   def rspUpdate(self,l):
     VA_list.insert(END,l)
+  
+  def sStdVAWin(self):
+    self.newWindow = Toplevel(self.master)
+    self.newWindow.title("Applicant Information")
+    self.app = appWindows(self.newWindow)
 
   def sVE(self):
       #VE Record fields
@@ -396,177 +510,48 @@ class Window(Frame):
       ve_close.grid(row=9,column=2)
       
 
-          
-        
-  def extVAwin(self):
-      # EXTENDED Applicant entry window.
-      VAwindow = Toplevel(root)
-      VAwindow.title("Applicant Data")
 
-      va_sec = tk.Label(VAwindow, text="Applicant Information")
-      va_sec.grid(row=0, column=5)
-
-      l_vafn = tk.Label(VAwindow, text="Pending File No.:")
-      self.e_vafn = tk.Entry(VAwindow)
-      l_call = tk.Label(VAwindow, text="Callsign:")
-      self.e_call = tk.Entry(VAwindow)
-      l_ssn = tk.Label(VAwindow, text="SSN:")
-      self.e_ssn = tk.Entry(VAwindow)
-      l_ent = tk.Label(VAwindow, text="Entity Name:")
-      self.e_ent = tk.Entry(VAwindow)
-      l_fname = tk.Label(VAwindow, text="First Name:")
-      self.e_fname = tk.Entry(VAwindow)
-      l_mi = tk.Label(VAwindow, text="Middle Initial:")
-      self.e_mi = tk.Entry(VAwindow)
-      l_lname = tk.Label(VAwindow, text="Last Name:")
-      self.e_lname = tk.Entry(VAwindow)
-      l_nmsuf = tk.Label(VAwindow, text="Suffix:")
-      self.e_nmsuf = tk.Entry(VAwindow)
-      l_attn = tk.Label(VAwindow, text="Attention:")
-      self.e_attn = tk.Entry(VAwindow)
-      l_street = tk.Label(VAwindow, text="Mailing Address:")
-      self.e_street = tk.Entry(VAwindow)
-      l_pobox = tk.Label(VAwindow, text="P.O. Box:")
-      self.e_pobox = tk.Entry(VAwindow)
-      l_city = tk.Label(VAwindow, text="City:")
-      self.e_city = tk.Entry(VAwindow)
-      l_state = tk.Label(VAwindow, text="State:")
-      self.e_state = Combobox(VAwindow, values=states,
-         textvariable=va_state)
-      l_zipcd = tk.Label(VAwindow, text="Zip Code:")
-      self.e_zipcd = tk.Entry(VAwindow)
-      l_phone = tk.Label(VAwindow, text="Phone No.:")
-      self.e_phone = tk.Entry(VAwindow)
-      l_fax = tk.Label(VAwindow, text="Fax No.:")
-      self.e_fax = tk.Entry(VAwindow)
-      l_email = tk.Label(VAwindow, text="E-Mail Address:")
-      self.e_email = tk.Entry(VAwindow)
-      l_appcd = tk.Label(VAwindow, text="Application Purpose:")
-      self.e_appcd = Combobox(VAwindow, values=apppur,
-         textvariable=va_appcd)
-      l_opclass = tk.Label(VAwindow, text="Operator Class:")
-      self.e_opclass = Combobox(VAwindow, values=liccls,
-         textvariable=va_opclass)
-      l_sigok = tk.Label(VAwindow, text="Valid Signature:")
-      self.e_sigok = tk.Entry(VAwindow)
-      l_physcert = tk.Label(VAwindow, text="Physician Certificate:")
-      self.e_physcert = tk.Entry(VAwindow)
-      l_reqexp = tk.Label(VAwindow, text="Requested Expiration:")
-      self.e_reqexp = tk.Entry(VAwindow)
-      l_waiverreq = tk.Label(VAwindow, text="Waiver Request:")
-      self.e_waiverreq = tk.Entry(VAwindow)
-      l_att = tk.Label(VAwindow, text="Attachments:")
-      self.e_att = tk.Entry(VAwindow)
-      l_updcall = tk.Label(VAwindow, 
-        text="Change Callsign Systematically?:")
-      self.e_updcall = Combobox(VAwindow, values=opts, 
-        textvariable=va_updcall)
-      l_trusteecall = tk.Label(VAwindow, text="Trustee Callsign:")
-      self.e_trusteecall = tk.Entry(VAwindow)
-      l_apptyp = tk.Label(VAwindow, text="Applicant Type:")
-      self.e_apptyp = tk.Entry(VAwindow)
-      l_frn = tk.Label(VAwindow, text="Federal Registration No.:")
-      self.e_frn = tk.Entry(VAwindow)
-      l_dob = tk.Label(VAwindow, text="Date of Birth:")
-      self.e_dob = tk.Entry(VAwindow)
-      l_lnchg = tk.Label(VAwindow, text="Licensee Name Change:")
-      self.e_lnchg = tk.Entry(VAwindow)
-      l_psqcd = tk.Label(VAwindow, text="Personal Security Question Code:")
-      self.e_psqcd = tk.Entry(VAwindow)
-      l_psq = tk.Label(VAwindow, text="Custom PSQ:")
-      self.e_psq = tk.Entry(VAwindow)
-      l_psqa = tk.Label(VAwindow, text="PSQ Answer:")
-      self.e_psqa = tk.Entry(VAwindow)
-      l_felon = tk.Label(VAwindow, text="Basic Qualification Question:")
-      self.e_felon = Combobox(VAwindow, values=felony,
-         textvariable=va_felon)
-
-      b_save = tk.Button(VAwindow, text="Save Applicant", command=self.sVA)
-      b_close = tk.Button(VAwindow, text="Close Window", 
-        command=VAwindow.destroy)
-      l_vafn.grid(row=1, column=1)
-      self.e_vafn.grid(row=1, column=3)
-      l_call.grid(row=2, column=1)
-      self.e_call.grid(row=2, column=3)
-      l_ssn.grid(row=3, column=1)
-      self.e_ssn.grid(row=3,column=3)
-      l_ent.grid(row=4,column=1)
-      self.e_ent.grid(row=4,column=3)
-      l_fname.grid(row=5,column=1)
-      self.e_fname.grid(row=5,column=3)
-      l_mi.grid(row=6,column=1)
-      self.e_mi.grid(row=6,column=3)
-      l_lname.grid(row=7,column=1)
-      self.e_lname.grid(row=7,column=3)
-      l_nmsuf.grid(row=8,column=1)
-      self.e_nmsuf.grid(row=8,column=3)
-      l_attn.grid(row=9,column=1)
-      self.e_attn.grid(row=9,column=3)
-      l_street.grid(row=10,column=1)
-      self.e_street.grid(row=10,column=3)
-      l_pobox.grid(row=1,column=4)
-      self.e_pobox.grid(row=1,column=6)
-      l_city.grid(row=2,column=4)
-      self.e_city.grid(row=2,column=6)
-      l_state.grid(row=3,column=4)
-      self.e_state.grid(row=3,column=6)
-      l_zipcd.grid(row=4,column=4)
-      self.e_zipcd.grid(row=4,column=6)
-      l_phone.grid(row=5,column=4)
-      self.e_phone.grid(row=5,column=6)
-      l_fax.grid(row=6,column=4)
-      self.e_fax.grid(row=6,column=6)
-      l_email.grid(row=7,column=4)
-      self.e_email.grid(row=7,column=6)
-      l_appcd.grid(row=8,column=4)
-      self.e_appcd.grid(row=8,column=6)
-      l_opclass.grid(row=9,column=4)
-      self.e_opclass.grid(row=9,column=6)
-      l_sigok.grid(row=10,column=4)
-      self.e_sigok.grid(row=10,column=6)
-      l_physcert.grid(row=1,column=7)
-      self.e_physcert.grid(row=1,column=9)
-      l_reqexp.grid(row=2,column=7)
-      self.e_reqexp.grid(row=2,column=9)
-      l_waiverreq.grid(row=3,column=7)
-      self.e_waiverreq.grid(row=3,column=9)
-      l_att.grid(row=4,column=7)
-      self.e_att.grid(row=4,column=9)
-      l_updcall.grid(row=5,column=7)
-      self.e_updcall.grid(row=5,column=9)
-      l_trusteecall.grid(row=6,column=7)
-      self.e_trusteecall.grid(row=6,column=9)
-      l_apptyp.grid(row=7,column=7)
-      self.e_apptyp.grid(row=7,column=9)
-      l_frn.grid(row=8,column=7)
-      self.e_frn.grid(row=8,column=9)
-      l_dob.grid(row=9,column=7)
-      self.e_dob.grid(row=9,column=9)
-      l_lnchg.grid(row=10,column=7)
-      self.e_lnchg.grid(row=10,column=9)
-      l_psqcd.grid(row=11,column=3)
-      self.e_psqcd.grid(row=11,column=5)
-      l_psq.grid(row=12,column=3)
-      self.e_psq.grid(row=12,column=5)
-      l_psqa.grid(row=13,column=3)
-      self.e_psqa.grid(row=13,column=5)
-      l_felon.grid(row=14,column=3)
-      self.e_felon.grid(row=14,column=5)
-  
-      b_save.grid(row=15,column=5)
-      b_close.grid(row=16,column=5)
+  def updVA(self):
+      # Update the VA Table listing on the main screen.  This needs
+      # moved back to "MainWindow" probably
+      global c
+      d=str(c)
+      outTxt=d + ": VA|" + VAs[c].fn + "|" + VAs[c].call + "|" \
+        + VAs[c].ssn + "|" + VAs[c].entname + "|" + VAs[c].fname \
+        + "|" + VAs[c].mi + "|" + VAs[c].lname + "|" + VAs[c].nmsuf \
+        + "|" + VAs[c].attn + "|" + VAs[c].street + "|" \
+        + VAs[c].pobox + "|" + VAs[c].city + "|" + VAs[c].state \
+        + "|" + VAs[c].zipcd + "|" + VAs[c].phone + "|" + VAs[c].fax \
+        + "|" + VAs[c].email + "|" + VAs[c].appcd + "|" \
+        + VAs[c].opclass + "|" + VAs[c].sigok + "|" \
+        + VAs[c].physcert + "|" + VAs[c].reqexp + "|" \
+        + VAs[c].waivereq + "|" + VAs[c].att + "|||" \
+        + VAs[c].updcall + "|" + VAs[c].trusteecall + "|" \
+        + VAs[c].apptyp + "|" +  VAs[c].frn + "|" + VAs[c].dob + "|" \
+        + VAs[c].lnchg + "|" + VAs[c].psqcd + "|" + VAs[c].psq + "|" \
+        + VAs[c].psqa + "|" + VAs[c].felon + "\n"
       
-      def change_dropdown(*args):
-          print( va_updcall.get() )
+      VA_list.insert(END, outTxt)
+      c=c+1
 
-  def stdVAwin(self):
-      # Standard Applicant setup.
-      # Maybe the windows should be separate classes?
-      VAwindow = Toplevel(root)
-      VAwindow.title("Applicant Data")
 
-      va_sec = tk.Label(VAwindow, text="Applicant Information")
-      va_sec.grid(row=0, column=1)
+  def exitProgram(self):
+      exit()
+
+## App_Windows Class
+#
+#  Class to handle the Applicant Information windows.
+class appWindows():
+  def __init__(self, master):
+      self.master = master
+      VAwindow = tk.Frame(self.master)
+      #self.wm_title("Applicant Data")
+      va_state=""
+      va_appcd=""
+      va_opclass=""
+      va_updcall=""
+      va_felon=""
+      
 
       l_vafn = tk.Label(VAwindow, text="Pending File Number")
       self.e_vafn = tk.Entry(VAwindow)
@@ -594,7 +579,7 @@ class Window(Frame):
       self.e_city = tk.Entry(VAwindow)
       l_state = tk.Label(VAwindow, text="State / U.S. Territory")
       self.e_state = Combobox(VAwindow, values=states,
-         textvariable=va_state)
+        textvariable=va_state)
       l_zipcd = tk.Label(VAwindow, text="Zip Code")
       self.e_zipcd = tk.Entry(VAwindow)
       l_phone = tk.Label(VAwindow, text="Phone Number")
@@ -605,10 +590,10 @@ class Window(Frame):
       self.e_email = tk.Entry(VAwindow)
       l_appcd = tk.Label(VAwindow, text="Application Purpose")
       self.e_appcd = Combobox(VAwindow, values=apppur,
-         textvariable=va_appcd)
+        textvariable=va_appcd)
       l_opclass = tk.Label(VAwindow, text="Operator Class")
       self.e_opclass = Combobox(VAwindow, values=liccls,
-         textvariable=va_opclass)
+        textvariable=va_opclass)
       l_sigok = tk.Label(VAwindow, text="Valid Signature")
       self.e_sigok = tk.Entry(VAwindow)
       l_physcert = tk.Label(VAwindow, text="Physician Certificate")
@@ -627,21 +612,120 @@ class Window(Frame):
       self.e_trusteecall = tk.Entry(VAwindow)
       l_apptyp = tk.Label(VAwindow, text="Applicant Type")
       self.e_apptyp = tk.Entry(VAwindow)
-      l_frn = tk.Label(VAwindow, text="Federal Registration Number")
+      l_frn = tk.Label(VAwindow, 
+        text="Federal Registration Number")
       self.e_frn = tk.Entry(VAwindow)
       l_dob = tk.Label(VAwindow, text="Date of Birth")
       self.e_dob = tk.Entry(VAwindow)
       l_lnchg = tk.Label(VAwindow, text="Licensee Name Change")
       self.e_lnchg = tk.Entry(VAwindow)
-      l_psqcd = tk.Label(VAwindow, text="Personal Security Question Code")
+      l_psqcd = tk.Label(VAwindow, 
+        text="Personal Security Question Code")
       self.e_psqcd = tk.Entry(VAwindow)
       l_psq = tk.Label(VAwindow, text="Custom PSQ")
       self.e_psq = tk.Entry(VAwindow)
       l_psqa = tk.Label(VAwindow, text="PSQ Answer")
       self.e_psqa = tk.Entry(VAwindow)
-      l_felon = tk.Label(VAwindow, text="Basic Qualification Question")
+      l_felon = tk.Label(VAwindow, 
+        text="Basic Qualification Question")
       self.e_felon = Combobox(VAwindow, values=felony,
-         textvariable=va_felon)
+        textvariable=va_felon)
+
+      b_save = tk.Button(VAwindow, text="Save Applicant", 
+        command=self.sVA)
+      b_close = tk.Button(VAwindow, text="Close Window", 
+        command=VAwindow.destroy)
+
+        
+#  def extVAwin():
+#      # EXTENDED Applicant entry window.
+#      #VAwindow = Toplevel(root)
+#      #VAwindow.title("Applicant Data")
+#
+#      #va_sec = tk.Label(VAwindow, text="Applicant Information")
+#      #va_sec.grid(row=0, column=5)
+#
+#
+#      l_vafn.grid(row=1, column=1)
+#      self.e_vafn.grid(row=1, column=3)
+#      l_call.grid(row=2, column=1)
+#      self.e_call.grid(row=2, column=3)
+#      l_ssn.grid(row=3, column=1)
+#      self.e_ssn.grid(row=3,column=3)
+#      l_ent.grid(row=4,column=1)
+#      self.e_ent.grid(row=4,column=3)
+#      l_fname.grid(row=5,column=1)
+#      self.e_fname.grid(row=5,column=3)
+#      l_mi.grid(row=6,column=1)
+#      self.e_mi.grid(row=6,column=3)
+#      l_lname.grid(row=7,column=1)
+#      self.e_lname.grid(row=7,column=3)
+#      l_nmsuf.grid(row=8,column=1)
+#      self.e_nmsuf.grid(row=8,column=3)
+#      l_attn.grid(row=9,column=1)
+#      self.e_attn.grid(row=9,column=3)
+#      l_street.grid(row=10,column=1)
+#      self.e_street.grid(row=10,column=3)
+#      l_pobox.grid(row=1,column=4)
+#      self.e_pobox.grid(row=1,column=6)
+#      l_city.grid(row=2,column=4)
+#      self.e_city.grid(row=2,column=6)
+#      l_state.grid(row=3,column=4)
+#      self.e_state.grid(row=3,column=6)
+#      l_zipcd.grid(row=4,column=4)
+#      self.e_zipcd.grid(row=4,column=6)
+#      l_phone.grid(row=5,column=4)
+#      self.e_phone.grid(row=5,column=6)
+#      l_fax.grid(row=6,column=4)
+#      self.e_fax.grid(row=6,column=6)
+#      l_email.grid(row=7,column=4)
+#      self.e_email.grid(row=7,column=6)
+#      l_appcd.grid(row=8,column=4)
+#      self.e_appcd.grid(row=8,column=6)
+#      l_opclass.grid(row=9,column=4)
+#      self.e_opclass.grid(row=9,column=6)
+#      l_sigok.grid(row=10,column=4)
+#      self.e_sigok.grid(row=10,column=6)
+#      l_physcert.grid(row=1,column=7)
+#      self.e_physcert.grid(row=1,column=9)
+#      l_reqexp.grid(row=2,column=7)
+#      self.e_reqexp.grid(row=2,column=9)
+#      l_waiverreq.grid(row=3,column=7)
+#      self.e_waiverreq.grid(row=3,column=9)
+#      l_att.grid(row=4,column=7)
+#      self.e_att.grid(row=4,column=9)
+#      l_updcall.grid(row=5,column=7)
+#      self.e_updcall.grid(row=5,column=9)
+#      l_trusteecall.grid(row=6,column=7)
+#      self.e_trusteecall.grid(row=6,column=9)
+#      l_apptyp.grid(row=7,column=7)
+#      self.e_apptyp.grid(row=7,column=9)
+#      l_frn.grid(row=8,column=7)
+#      self.e_frn.grid(row=8,column=9)
+#      l_dob.grid(row=9,column=7)
+#      self.e_dob.grid(row=9,column=9)
+#      l_lnchg.grid(row=10,column=7)
+#      self.e_lnchg.grid(row=10,column=9)
+#      l_psqcd.grid(row=11,column=3)
+#      self.e_psqcd.grid(row=11,column=5)
+#      l_psq.grid(row=12,column=3)
+#      self.e_psq.grid(row=12,column=5)
+#      l_psqa.grid(row=13,column=3)
+#      self.e_psqa.grid(row=13,column=5)
+#      l_felon.grid(row=14,column=3)
+#      self.e_felon.grid(row=14,column=5)
+#  
+#      b_save.grid(row=15,column=5)
+#      b_close.grid(row=16,column=5)
+#      
+#      def change_dropdown(*args):
+#          print( va_updcall.get() )
+#
+#  def stdVAwin():
+      # Standard Applicant setup.
+      # Maybe the windows should be separate classes?
+      #VAwindow = Toplevel(root)
+      #VAwindow.title("Applicant Data")
 
       # Force some static values for attachments, signature, applicant
       # type, and physician certificate
@@ -650,10 +734,10 @@ class Window(Frame):
       self.e_sigok.insert(0,"Y")
       self.e_apptyp.insert(0,"I")
 
-      b_save = tk.Button(VAwindow, text="Save Application", 
-        command=self.sVA)
-      b_close = tk.Button(VAwindow, text="Close Window", 
-        command=VAwindow.destroy)
+      #b_save = tk.Button(VAwindow, text="Save Application", 
+      #  command=self.sVA)
+      #b_close = tk.Button(VAwindow, text="Close mainWindow", 
+      #  command=VAwindow.destroy)
       l_lname.grid(row=1,column=1)
       self.e_lname.grid(row=2,column=1)
       l_fname.grid(row=1,column=2)
@@ -705,6 +789,8 @@ class Window(Frame):
       b_save.grid(row=18,column=1)
       b_close.grid(row=18,column=2)
 
+      VAwindow.pack()
+
       #set the widget tab-order properly.
       taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
         self.e_call, self.e_street,self.e_city, self.e_state,\
@@ -716,29 +802,6 @@ class Window(Frame):
       
       def change_dropdown(*args):
           print( va_updcall.get() )
-
-  def updVA(self):
-      # Update the VA Table listing on the main screen
-      global c
-      d=str(c)
-      outTxt=d + ": VA|" + VAs[c].fn + "|" + VAs[c].call + "|" \
-        + VAs[c].ssn + "|" + VAs[c].entname + "|" + VAs[c].fname \
-        + "|" + VAs[c].mi + "|" + VAs[c].lname + "|" + VAs[c].nmsuf \
-        + "|" + VAs[c].attn + "|" + VAs[c].street + "|" \
-        + VAs[c].pobox + "|" + VAs[c].city + "|" + VAs[c].state \
-        + "|" + VAs[c].zipcd + "|" + VAs[c].phone + "|" + VAs[c].fax \
-        + "|" + VAs[c].email + "|" + VAs[c].appcd + "|" \
-        + VAs[c].opclass + "|" + VAs[c].sigok + "|" \
-        + VAs[c].physcert + "|" + VAs[c].reqexp + "|" \
-        + VAs[c].waivereq + "|" + VAs[c].att + "|||" \
-        + VAs[c].updcall + "|" + VAs[c].trusteecall + "|" \
-        + VAs[c].apptyp + "|" +  VAs[c].frn + "|" + VAs[c].dob + "|" \
-        + VAs[c].lnchg + "|" + VAs[c].psqcd + "|" + VAs[c].psq + "|" \
-        + VAs[c].psqa + "|" + VAs[c].felon + "\n"
-      
-      VA_list.insert(END, outTxt)
-      c=c+1
-
   def sVA(self):
       frn = ""
       # Save applicant data to VA array 
@@ -842,81 +905,11 @@ class Window(Frame):
       self.e_psqa.delete(0, 'end')
       self.e_felon.delete(0, 'end')
       self.updVA()
-      
-  
-  def writeFile(self):
-      # Save VEC Header and all applicant records to 
-      # user-defined file.
-      #VE Record string
-      global VE_str
-      global VEC
-      global sdt
-      global appt
-      global appp
-      global appf
-      global elmp
-      global elmf
-      global tloc
-      global tcnt
-      global c
 
-      fdt = sdt.replace("/","")[:4]
-      deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
-      tcnt+=1
-      appt="0"
-      appp="0"
-      appf="0"
-      elmp="0"
-      elmf="0"
-      
-      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
-        defaultextension=".dat")
-      if F is None:
-        return
-
-      F.write (VE_str+"\r\n")
-
-      for i in range(len(VAs)):
-        F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
-          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
-          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
-          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
-          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
-          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
-          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
-          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
-          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
-          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
-#  Extra pipes here for attachment file / fax ind ^^^
-          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
-          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
-          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
-          + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
-      F.close()
-
-      #clear VA array
-      VAs.clear()
-      #reset VA Counter
-      c = 0
-      #clear output frame and update VE info
-      self.clrFrame()
-      self.l_appT['text']="Applicants Tested:"+ appt
-      self.l_appP['text']="Applicants Passed:"+ appp
-      self.l_appF['text']="Applicants Failed:"+ appf
-      self.l_elmP['text']="Elements Passed:"+ elmp
-      self.l_elmF['text']="Elements Failed:"+ elmf
-      self.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
-
-      
-
-
-
-  def exitProgram(self):
-      exit()
 
 
 root = Tk()
-app = Window(root)
+app = mainWindow(root)
 root.wm_title("FCC Electronic Batch File Generator v." \
     + maver + "." + miver + "." + ptver)
 root.mainloop()
