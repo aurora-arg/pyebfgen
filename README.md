@@ -33,6 +33,12 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.2.4 - Window order
+  - Turns out window order / layering behavior is OS dependent.
+    Scrapping 0.2.2 and 0.2.3 changes in that regard.
+  - Added a "preview window" instead of the big pane, it just looks
+    nicer.
+
 v 0.2.3 - More VA Window patches
   - -.2 didn't fix it in windows.  Removing the preview pane to see if
     that helps.

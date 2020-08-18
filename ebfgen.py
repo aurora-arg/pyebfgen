@@ -209,7 +209,7 @@ class fileManager():
     inDat=inF.readlines()
     for line in inDat:
       outln=line.replace("|",",")
-      mainWindow.rspUpdate(None, outln)  
+      #mainWindow.rspUpdate(None, outln)  
       outF.writelines(outln)
     outF.close()
   
@@ -221,6 +221,7 @@ class fileManager():
   #  FCC's processing system.  In addition, it prepares the tool for a
   #  subesquent testing session.
   def writeFile():
+      global VAs
       global VE_str
       global VEC
       global sdt
@@ -328,6 +329,8 @@ class mainWindow(Frame):
         command=self.updVE)
       fileMenu.add_command(label="Save Current Session",
         command=fileManager.writeFile)
+      fileMenu.add_command(label="Preview Batchfile",
+        command=self.previewWin)
       fileMenu.add_command(label="Convert Response",
         command=fileManager.convertFile)
       fileMenu.add_command(label="Exit",command=self.exitProgram)
@@ -366,10 +369,8 @@ class mainWindow(Frame):
 
       self.l_VAcnt = Label(frame_c, text="Data File: "+str(tcnt).zfill(2))
       self.l_VAcnt.pack()
-      l_VAlist = Label(frame_c, text="File Content:")
-      l_VAlist.pack()
-      VA_list = tk.Text(frame_c, width=150, height=10, bg="white")
-      #VA_list.pack()
+      #l_VAlist = Label(frame_c, text="File Content:")
+      #l_VAlist.pack()
 
       #b_VAlist = tk.Button(frame_c, text="Clear Frame", 
       #  command=self.clrFrame)
@@ -381,15 +382,17 @@ class mainWindow(Frame):
   ## Clear Frame
   #
   #  Clears the preview frame.
-  def clrFrame(self):
+  def clrFrame():
+    global VA_list
     VA_list.delete('1.0', END)
 
   ## Update Frame
   #
   #  Originally for response file previews.  Updates the file preview
   #  frame
-  def rspUpdate(self,l):
-    VA_list.insert(END,l)
+  #def rspUpdate(self,l):
+  #  global VA_List
+  #  VA_list.insert(END,l)
   
   ## Start Standard VA Window
   #
@@ -398,6 +401,14 @@ class mainWindow(Frame):
     self.newWindow = Toplevel(self.master)
     self.newWindow.title("Applicant Information")
     self.app = appWindows(self.newWindow)
+
+  ## Preview Window
+  #
+  #  Allows user to preview the batch file output
+  def previewWin(self):
+    self.newWindow = Toplevel(self.master)
+    self.newWindow.title("Batch File Preview")
+    self.app = prevWin(self.newWindow)
 
   ## Save VE
   #
@@ -445,7 +456,7 @@ class mainWindow(Frame):
           "|" + vestate + "|" + appt + "|" + appp + "|" \
           + appf + "|" + elmp + "|" + elmf
   
-      self.rspUpdate(VE_str)
+      #self.rspUpdate(VE_str)
 
   ## Update VEC
   #
@@ -535,6 +546,7 @@ class mainWindow(Frame):
       # Update the VA Table listing on the main screen.  This needs
       # moved back to "MainWindow" probably
       global c
+      global VA_list
       d=str(c)
       outTxt=d + ": VA|" + VAs[c].fn + "|" + VAs[c].call + "|" \
         + VAs[c].ssn + "|" + VAs[c].entname + "|" + VAs[c].fname \
@@ -551,7 +563,7 @@ class mainWindow(Frame):
         + VAs[c].lnchg + "|" + VAs[c].psqcd + "|" + VAs[c].psq + "|" \
         + VAs[c].psqa + "|" + VAs[c].felon + "\n"
       
-      VA_list.insert(END, outTxt)
+      #VA_list.insert(END, outTxt)
       c=c+1
 
   ## Quit
@@ -951,7 +963,41 @@ class appWindows():
       self.e_felon.delete(0, 'end')
       
       # Finally, update the preview window.
-      mainWindow.updVA()
+      # mainWindow.updVA()
+
+## prevWin class
+#
+# preview Window Class.
+class prevWin():
+  def __init__(self, master):
+      global VA_list
+      global VAs
+      self.master = master
+      self.frame = tk.Frame(self.master)
+      VA_list = tk.Text(self.frame, width=150, height=10, bg="white")
+      VA_list.insert(END, VE_str+"\n")
+
+      # Loop over applicant data, and write to the preview window
+      for i in range(len(VAs)):
+        VA_list.insert(END, "VA|" + VAs[i].fn + "|" + VAs[i].call \
+          + "|" + VAs[i].ssn + "|" + VAs[i].entname + "|" \
+          + VAs[i].fname + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" \
+          + VAs[i].nmsuf + "|" + VAs[i].attn + "|" + VAs[i].street \
+          + "|" + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state\
+          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
+          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
+          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
+          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
+          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
+#  Extra pipes here for attachment file / fax ind ^^^
+          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
+          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
+          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
+          + VAs[i].psqa + "|" + VAs[i].felon + "\n")
+
+
+      VA_list.pack()
+      self.frame.pack()
 
 root = Tk()
 app = mainWindow(root)
