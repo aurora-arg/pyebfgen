@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.1.0
+#                      version: 0.2.0
 #                         date: Mon, 17 Aug 2020 15:13:45 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -28,22 +28,38 @@
 #  02110-1301 USA.
 #
 ########################################################################
+## @package pyebfgem
+#  This module is to assist the user in generating the batch files
+#  necessary for automated FCC filing using the Universal Licensing
+#  System (ULS) Electronic Batch File (EBF).
+
 import tkinter as tk
 from tkinter import *
-#from tkinter import ttk
 from tkinter.ttk import *
 from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
 
-maver = "0" #major
-miver = "1" #minor
-ptver = "0" #patch
+## Major Version number
+maver = "0"
 
-VAs=[]  # Array of VA objects.  Filled in as applicants are saved
-c=0     # Array counter
+## Minor Version Number. Minor versions reset on Major version updates.
+miver = "1" 
 
-# List of states / territories / etc.  
+## Patch Number. Patch numbers reset on Major or Minor version updates.
+ptver = "0" 
+
+
+## Array to hold Applicant objects, as new applicants are saved.
+#  The array is flushed on saving of each session batchfile.
+VAs=[]  
+
+## Counter / pointer into the array's next position.
+c=0
+
+## List of States, Territories, etc.
+#  Used to fill in VEC header information and applicant address
+#  information.  
 states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'GU','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
@@ -51,73 +67,76 @@ states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'UM','UT','VT','VA','VI','WA','WV','WI','WY','-----','AE','AP'\
         ,'AA','-----','DX']
 
-# List of application purpose codes
+## List of application purpose codes
+#  "AU" = Administrative Update
+#  "MD" = Modification (e.g. upgrading Tech. to General)
+#  "NE" = New Applicant
+#  "RM" = Renew and Modify (e.g. Tech. renewal AND upgrade to General)
+#  "RO" = Renew Only
 apppur=['AU','MD','NE','RM','RO']
 
-# List of applicant license classes
+## List of applicant license classes
+#  "N" = Novice
+#  "T" = Technician
+#  "G" = General
+#  "A" = Advanced (Deprecated by FCC)
+#  "E" = Extra (replaced 'Advanced')
 liccls=['N','T','G','A','E']
 
-# List for answers about the felony question
+## List for answers about the felony question
+#  Used to answer the Basic Qualification Question
 felony=['null','Y','N']
 
-# Y|N option list for relevant dropdowns
+## Y|N option list for relevant dropdowns
 opts=['Y','N']
 
-#VE Record (batch file header) fields
+## Volunteer Examiner Code
 VEC = ""
+
+## Session Date
 sdt = ""
+
+## Session City
 vecity = ""
+
+## Session State
 vestate = None
+
+## Number of Applicants Tested
 appt = ""
+
+## Number of Applicants Passed
 appp = ""
+
+## Number of Applicants Failed
 appf = ""
+
+## Number of Elements Passed
 elmp = ""
+
+## Number of Elements Failed
 elmf = ""
+
+## Global record of the completed VEC header string
 VE_str = ""
+
+## Regional Identifier for filenaming purposes.
 tloc = ""
+
+## Session counter for filenaming purposes.
 tcnt = 1
+
+## Keeps track of state selected for VEC header
 vestidx = 0
 
-#Applicant Attributes
-va_fn = ""
-va_call = ""
-va_ssn = ""
-va_ent = ""
-va_fname = ""
-va_mi = ""
-va_lname = ""
-va_nmsuf = ""
-va_attn = ""
-va_street = ""
-va_pobox = ""
-va_city = ""
-va_state = ""             
-va_zipcd = ""
-va_phone = ""
-va_fax = ""
-va_email = ""
-va_appcd = ""             
-va_opclass = ""              
-va_sigok = ""
-va_physcert = ""
-va_reqexp = ""
-va_waivereq = ""
-va_att = ""
-va_updcall = ""             
-va_trusteecall = ""
-va_apptyp = ""
-va_frn = ""
-va_dob = ""
-va_lnchg = ""
-va_psqcd = ""
-va_psq = ""
-va_psqa = ""
-va_felon = ""
-
+## Global object for the "preview" frame.
 VA_list = None
 
-# Class to create an object to cram into an array, because apparently
-# python doesn't do C-style structures.  Or I'm just an idiot.
+## VA Class
+#  
+#  The "VA" class object maintains the details of an individual
+#  applicant for a given testing session.  At the present time, pyebfgen
+#  does not support editing of applicant data once saved.
 class VA:
   def __init__(self,fn,call,ssn,entname,fname,mi,lname,nmsuf,attn\
     ,street,pobox,city,state,zipcd,phone,fax,email,appcd,opclass,sigok\
@@ -159,10 +178,20 @@ class VA:
       self.psqa = psqa
       self.felon = felon
 
+## fileManager
+#
+#  This class provides some of the basic framework necessary for reading
+#  input response files from the FCC.
 class fileManager():
+  ## convertFile
+  #
+  #  This function reads in an FCC Response file, and converts it into
+  #  comma-separated format, which is saved to the filesystem in the
+  #  same location as the response file was opened from. It is strongly
+  #  recommended that you do not open responses from temporary
+  #  directories. Additionally, the converted text is displayed in the
+  #  main window's preview pane.
   def convertFile():
-    # Read in a FCC Response File, and convert it into CSV
-    
     inFN = askopenfilename (title="Select File",
       filetypes=(("EBF Response Files","*.rsp"),
       ("All Files","*.*")))
@@ -177,14 +206,88 @@ class fileManager():
     inDat=inF.readlines()
     for line in inDat:
       outln=line.replace("|",",")
-      Window.rspUpdate(None, outln)  
+      mainWindow.rspUpdate(None, outln)  
       outF.writelines(outln)
     outF.close()
   
     showinfo(title="Convert complete", message="Saved as: " + outFN)
+  
+  ## writeFile
+  #
+  #  This function handles writing batch file for submission to the
+  #  FCC's processing system.  In addition, it prepares the tool for a
+  #  subesquent testing session.
+  def writeFile():
+      global VE_str
+      global VEC
+      global sdt
+      global appt
+      global appp
+      global appf
+      global elmp
+      global elmf
+      global tloc
+      global tcnt
+      global c
 
+      # Format the date for use in the output filename
+      fdt = sdt.replace("/","")[:4]
+      # Set the default filename
+      deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
+      
+      # Open saveas dialog box
+      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
+        defaultextension=".dat")
+      if F is None:
+        return
 
-class Window(Frame):
+      # Write VE Header to file
+      F.write (VE_str+"\r\n")
+
+      # Loop over applicant data, and write to the file.
+      for i in range(len(VAs)):
+        F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
+          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
+          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
+          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
+          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
+          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
+          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
+          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
+          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
+          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
+#  Extra pipes here for attachment file / fax ind ^^^
+          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
+          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
+          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
+          + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
+
+      # Everything written to filesystem.  Close filehandle
+      F.close()
+
+      # Prepare global variables for next session
+      tcnt+=1
+      appt="0"
+      appp="0"
+      appf="0"
+      elmp="0"
+      elmf="0"
+
+      #clear VA array
+      VAs.clear()
+      #reset VA Counter
+      c = 0
+  
+      #clear output frame and update VE info
+      mainWindow.clrFrame()
+      mainWindow.l_appT['text']="Applicants Tested:"+ appt
+      mainWindow.l_appP['text']="Applicants Passed:"+ appp
+      mainWindow.l_appF['text']="Applicants Failed:"+ appf
+      mainWindow.l_elmP['text']="Elements Passed:"+ elmp
+      mainWindow.l_elmF['text']="Elements Failed:"+ elmf
+      mainWindow.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
+
+class mainWindow(Frame):
   def __init__(self,master=None):
       #VE Record fields
       global VEC
@@ -217,7 +320,7 @@ class Window(Frame):
       fileMenu.add_command(label="Add VEC & Session Numbers",
         command=self.updVE)
       fileMenu.add_command(label="Save Current Session",
-        command=self.writeFile)
+        command=fileManager.writeFile)
       fileMenu.add_command(label="Convert Response",
         command=fileManager.convertFile)
       fileMenu.add_command(label="Exit",command=self.exitProgram)
@@ -482,7 +585,7 @@ class Window(Frame):
          textvariable=va_felon)
 
       b_save = tk.Button(VAwindow, text="Save Applicant", command=self.sVA)
-      b_close = tk.Button(VAwindow, text="Close Window", 
+      b_close = tk.Button(VAwindow, text="Close mainWindow", 
         command=VAwindow.destroy)
       l_vafn.grid(row=1, column=1)
       self.e_vafn.grid(row=1, column=3)
@@ -652,7 +755,7 @@ class Window(Frame):
 
       b_save = tk.Button(VAwindow, text="Save Application", 
         command=self.sVA)
-      b_close = tk.Button(VAwindow, text="Close Window", 
+      b_close = tk.Button(VAwindow, text="Close mainWindow", 
         command=VAwindow.destroy)
       l_lname.grid(row=1,column=1)
       self.e_lname.grid(row=2,column=1)
@@ -844,68 +947,6 @@ class Window(Frame):
       self.updVA()
       
   
-  def writeFile(self):
-      # Save VEC Header and all applicant records to 
-      # user-defined file.
-      #VE Record string
-      global VE_str
-      global VEC
-      global sdt
-      global appt
-      global appp
-      global appf
-      global elmp
-      global elmf
-      global tloc
-      global tcnt
-      global c
-
-      fdt = sdt.replace("/","")[:4]
-      deffn = VEC+fdt+tloc+str(tcnt).zfill(2)
-      tcnt+=1
-      appt="0"
-      appp="0"
-      appf="0"
-      elmp="0"
-      elmf="0"
-      
-      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
-        defaultextension=".dat")
-      if F is None:
-        return
-
-      F.write (VE_str+"\r\n")
-
-      for i in range(len(VAs)):
-        F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
-          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
-          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
-          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
-          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
-          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
-          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
-          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
-          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
-          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
-#  Extra pipes here for attachment file / fax ind ^^^
-          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
-          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
-          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
-          + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
-      F.close()
-
-      #clear VA array
-      VAs.clear()
-      #reset VA Counter
-      c = 0
-      #clear output frame and update VE info
-      self.clrFrame()
-      self.l_appT['text']="Applicants Tested:"+ appt
-      self.l_appP['text']="Applicants Passed:"+ appp
-      self.l_appF['text']="Applicants Failed:"+ appf
-      self.l_elmP['text']="Elements Passed:"+ elmp
-      self.l_elmF['text']="Elements Failed:"+ elmf
-      self.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
 
       
 
@@ -916,7 +957,7 @@ class Window(Frame):
 
 
 root = Tk()
-app = Window(root)
+app = mainWindow(root)
 root.wm_title("FCC Electronic Batch File Generator v." \
     + maver + "." + miver + "." + ptver)
 root.mainloop()
