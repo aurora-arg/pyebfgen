@@ -905,6 +905,7 @@ class appWindows():
       if va_state == "-----" or va_state == "":
         showerror(title="State Error", 
           message="Please select a valid state.")
+        root.withdraw()
         return
 
       VAs.append(VA( va_fn, va_call, va_ssn, va_ent\
