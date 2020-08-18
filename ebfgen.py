@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.2.2
+#                      version: 0.2.4
 #                         date: Mon, 17 Aug 2020 15:13:45 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -48,7 +48,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "2"
+ptver = "4"
 
 
 ## Array to hold Applicant objects, as new applicants are saved.
