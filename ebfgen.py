@@ -290,7 +290,7 @@ class fileManager():
       mainWindow.l_elmF['text']="Elements Failed:"+ elmf
       mainWindow.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
 
-## mainWindow Class
+## mainWindow
 #
 #  This class represents the main navigation window for ebfgen.  Its
 #  only real purpose is to provide navigation for the user.
@@ -526,7 +526,6 @@ class mainWindow(Frame):
       ve_save.grid(row=9,column=1)
       ve_close.grid(row=9,column=2)
       
-
 
   ## Update VA
   #
@@ -949,11 +948,9 @@ class appWindows():
       self.e_psq.delete(0, 'end')
       self.e_psqa.delete(0, 'end')
       self.e_felon.delete(0, 'end')
-
+      
       # Finally, update the preview window.
       mainWindow.updVA()
-
-
 
 root = Tk()
 app = mainWindow(root)
