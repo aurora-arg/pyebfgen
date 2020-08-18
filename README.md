@@ -33,6 +33,15 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.2.2 - Fix Windows
+  - VA window now appears to work as expected
+
+v 0.2.1 - Begin Reorg
+  - Start reorganizing the codebase to be less bad.
+
+v 0.2.0 - Add Doxygen
+  - add doxygen for internal documentation.
+
 v 0.1.0 - Stable Beta
   - Should be stable now.  Future patches, etc. based on user experience
     requests

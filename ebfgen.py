@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert
 #                    copyright: 2020
-#                      version: 0.2.1
+#                      version: 0.2.2
 #                         date: Mon, 17 Aug 2020 15:13:45 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -28,7 +28,8 @@
 #  02110-1301 USA.
 #
 ########################################################################
-## @package pyebfgem
+## pyEBFgen
+#  @file
 #  This module is to assist the user in generating the batch files
 #  necessary for automated FCC filing using the Universal Licensing
 #  System (ULS) Electronic Batch File (EBF).
@@ -47,7 +48,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "1" 
+ptver = "2"
 
 
 ## Array to hold Applicant objects, as new applicants are saved.
@@ -134,7 +135,7 @@ VA_list = None
 
 va_state=""
 
-## VA Class
+## VA
 #  
 #  The "VA" class object maintains the details of an individual
 #  applicant for a given testing session.  At the present time, pyebfgen
@@ -567,7 +568,7 @@ class appWindows():
   def __init__(self, master):
       self.master = master
       VAwindow = tk.Frame(self.master)
-      #self.wm_title("Applicant Data")
+      # set some local variables for holding onto dropdown selections
       va_state=""
       va_appcd=""
       va_opclass=""
@@ -660,7 +661,8 @@ class appWindows():
 
         
 #  def extVAwin():
-#      # EXTENDED Applicant entry window.
+#      # EXTENDED Applicant entry window.  Still trying to figure this
+#      # one out.
 #      #VAwindow = Toplevel(root)
 #      #VAwindow.title("Applicant Data")
 #
@@ -830,26 +832,39 @@ class appWindows():
   #  Save applicant information to the applicants array for this
   #  session.
   def sVA(self):
-      frn = ""
+      # Most of these probably don't need to be set like this, but it
+      # does make the array append a little cleaner
       va_fn = self.e_vafn.get()
       va_call = self.e_call.get().upper()
+      # Remove dashes from the ssn, if included
       va_ssn = self.e_ssn.get().replace("-","")
       va_ent = self.e_ent.get()
-      va_fname = self.e_fname.get()[0:20]
-      va_mi = self.e_mi.get().upper()[0:1]
-      va_lname = self.e_lname.get()[0:20]
-      va_nmsuf = self.e_nmsuf.get()[0:3]
+      # First name is 20 char max
+      va_fname = self.e_fname.get()[:20]
+      # MI is one char, and must be caps
+      va_mi = self.e_mi.get().upper()[:1]
+      # Last name is 20 char max
+      va_lname = self.e_lname.get()[:20]
+      # Suffix is 3 char max
+      va_nmsuf = self.e_nmsuf.get()[:3]
       va_attn = self.e_attn.get()
-      va_street = self.e_street.get()[0:60]
-      va_pobox = self.e_pobox.get()[0:20]
-      va_city = self.e_city.get()[0:20]
+      # Street address is 60 char max
+      va_street = self.e_street.get()[:60]
+      # P.O. Box is 20 char max
+      va_pobox = self.e_pobox.get()[:20]
+      # City is 20 char
+      va_city = self.e_city.get()[:20]
       va_state = self.e_state.get()
+      # Remove dashes from zip code (if present)
       va_zipcd = self.e_zipcd.get().replace("-","")
+      # Remove formatting from phone number (if present)
       va_phone = self.e_phone.get().replace("(","").\
         replace(")","").replace("-","")
+      # Remove formatting from fax number (if present)
       va_fax = self.e_fax.get().replace("(","").\
         replace(")","").replace("-","")
-      va_email = self.e_email.get()[0:50]
+      # Email is 50 char max
+      va_email = self.e_email.get()[:50]
       va_appcd = self.e_appcd.get()
       va_opclass = self.e_opclass.get()
       va_sigok = self.e_sigok.get()
@@ -868,9 +883,13 @@ class appWindows():
       va_psqa = self.e_psqa.get()
       va_felon = self.e_felon.get()
 
+      # Formatted (zero-padded) FRN
+      frn = ""
+
       # FRN supercedes ssn 
       if va_frn:
         va_ssn = ""
+        #If the FRN is <10 digits, zero pad it
         frn = va_frn.zfill(10)
       else:
         if len(va_ssn)!=9:
@@ -899,7 +918,7 @@ class appWindows():
         , va_apptyp, frn, va_dob, va_lnchg\
         , va_psqcd, va_psq, va_psqa, va_felon))
       
-      
+      # Reset the form for the next applicant.
       self.e_vafn.delete(0,'end')
       self.e_call.delete(0, 'end')
       self.e_ssn.delete(0, 'end')
@@ -930,6 +949,8 @@ class appWindows():
       self.e_psq.delete(0, 'end')
       self.e_psqa.delete(0, 'end')
       self.e_felon.delete(0, 'end')
+
+      # Finally, update the preview window.
       mainWindow.updVA()
 
 
