@@ -33,6 +33,10 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.2.3 - More VA Window patches
+  - -.2 didn't fix it in windows.  Removing the preview pane to see if
+    that helps.
+
 v 0.2.2 - Fix Windows
   - VA window now appears to work as expected
 

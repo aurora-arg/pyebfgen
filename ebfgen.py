@@ -369,11 +369,11 @@ class mainWindow(Frame):
       l_VAlist = Label(frame_c, text="File Content:")
       l_VAlist.pack()
       VA_list = tk.Text(frame_c, width=150, height=10, bg="white")
-      VA_list.pack()
+      #VA_list.pack()
 
-      b_VAlist = tk.Button(frame_c, text="Clear Frame", 
-        command=self.clrFrame)
-      b_VAlist.pack()
+      #b_VAlist = tk.Button(frame_c, text="Clear Frame", 
+      #  command=self.clrFrame)
+      #b_VAlist.pack()
 
       frame_a.pack()
       frame_b.pack()
