@@ -27,10 +27,11 @@ please let me know.
   - Unzip to your prefered location (e.g. Desktop)
   - Double-click "ebfgen.py"
 
-### IRC
+### IRC Support
 
 If you have questions about the application, you can find us on the OFTC
-IRC Network in the #efbgen channel.
+IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
+can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
 v 0.1.0 - Stable Beta

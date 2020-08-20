@@ -284,6 +284,7 @@ folder as you imported the response file from.
 FCC EBF Response codes can be found
 [here](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf).
 
-## IRC Info
-If you have any other questions (or just want to chat), you can find us
-on the OFTC IRC network in the #ebfgen channel.
+## IRC Support
+If you have questions about the application, you can find us on the OFTC
+IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
+can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
