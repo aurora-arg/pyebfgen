@@ -2,10 +2,10 @@
 ########################################################################
 #
 #                       script: ebfgen
-#                           by: Dan Purgert
+#                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
 #                      version: 0.2.4
-#                         date: Mon, 17 Aug 2020 15:13:45 -0400
+#                         date: Wed, 19 Aug 2020 22:04:15 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
 #
