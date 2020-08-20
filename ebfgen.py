@@ -33,6 +33,8 @@
 #  This module is to assist the user in generating the batch files
 #  necessary for automated FCC filing using the Universal Licensing
 #  System (ULS) Electronic Batch File (EBF).
+#
+#  Well played WL1B, W5AD, and KN4EWI
 
 import tkinter as tk
 from tkinter import *
