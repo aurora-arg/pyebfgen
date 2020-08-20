@@ -283,3 +283,7 @@ folder as you imported the response file from.
 ## FCC Response Codes
 FCC EBF Response codes can be found
 [here](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf).
+
+## IRC Info
+If you have any other questions (or just want to chat), you can find us
+on the OFTC IRC network in the #ebfgen channel.

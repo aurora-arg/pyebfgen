@@ -27,6 +27,11 @@ please let me know.
   - Unzip to your prefered location (e.g. Desktop)
   - Double-click "ebfgen.py"
 
+### IRC
+
+If you have questions about the application, you can find us on the OFTC
+IRC Network in the #efbgen channel.
+
 ## changelog
 v 0.1.0 - Stable Beta
   - Should be stable now.  Future patches, etc. based on user experience
