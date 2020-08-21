@@ -942,32 +942,34 @@ class clubApplicant(appWindow):
     self.e_state.grid(row=6,column=2)
     self.l_zipcd.grid(row=5,column=3)
     self.e_zipcd.grid(row=6,column=3)
+    
+    self.l_ssn.grid(row=8, column=1)
+    self.e_ssn.grid(row=9,column=1)
+    self.l_frn.grid(row=8,column=2)
+    self.e_frn.grid(row=9,column=2)
 
-    self.l_phone.grid(row=8,column=1)
-    self.e_phone.grid(row=9,column=1)
-    self.l_email.grid(row=8,column=2)
-    self.e_email.grid(row=9,column=2)
+    self.l_phone.grid(row=10,column=1)
+    self.e_phone.grid(row=11,column=1)
+    self.l_email.grid(row=10,column=2)
+    self.e_email.grid(row=11,column=2)
 
-    self.l_felon.grid(row=10,column=1)
-    self.e_felon.grid(row=11,column=1)
-    self.l_appcd.grid(row=10,column=2)
-    self.e_appcd.grid(row=11,column=2)
+    self.l_felon.grid(row=12,column=1)
+    self.e_felon.grid(row=13,column=1)
+    self.l_appcd.grid(row=12,column=2)
+    self.e_appcd.grid(row=13,column=2)
+    self.l_vafn.grid(row=12, column=3)
+    self.e_vafn.grid(row=13, column=3)
 
-
-    self.l_vafn.grid(row=10, column=3)
-    self.e_vafn.grid(row=11, column=3)
-
-    self.b_save.grid(row=12,column=1)
-    self.b_close.grid(row=12,column=2)
+    self.b_save.grid(row=14,column=1)
+    self.b_close.grid(row=14,column=2)
 
     self.VAWindow.pack()
 
     #set the widget tab-order properly.
-    taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
-      self.e_call, self.e_street,self.e_city, self.e_state,\
-      self.e_zipcd, self.e_ssn, self.e_frn,self.e_phone,\
-      self.e_email, self.e_felon, self.e_appcd, self.e_updcall,\
-      self.e_lnchg, self.e_opclass, self.e_vafn)
+    taborder=(self.e_ent, self.e_trusteecall,\
+      self.e_attn, self.e_street, self.e_city, self.e_state,\
+      self.e_zipcd, self.e_ssn, self.e_frn, self.e_phone,\
+      self.e_email, self.e_felon, self.e_appcd, self.e_vafn)
     for wid in taborder:
       wid.lift()
     
