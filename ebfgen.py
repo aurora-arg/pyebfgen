@@ -228,16 +228,18 @@ class Window(Frame):
       frame_c=tk.Frame(self.master)
 
       vec_sec = tk.Label(frame_a, text="Session & VEC Information")
-      self.l_VEC = tk.Label(frame_a, text="VEC Code:" + VEC)
-      self.l_sess = tk.Label(frame_a, text="Session Date:"+ sdt)
-      self.l_city = tk.Label(frame_a, text="Exam City:"+ vecity)
-      self.l_state = tk.Label(frame_a, text="Exam State:" + vestate.get())
-      self.l_appT = tk.Label(frame_a, text="Applicants Tested:"+ appt)
-      self.l_appP = tk.Label(frame_a, text="Applicants Passed:"+ appp)
-      self.l_appF = tk.Label(frame_a, text="Applicants Failed:"+ appf)
-      self.l_elmP = tk.Label(frame_a, text="Elements Passed:"+ elmp)
-      self.l_elmF = tk.Label(frame_a, text="Elements Failed:"+ elmf)
-      self.l_tloc = tk.Label(frame_a, text="Regional Identifier"+tloc)
+      self.l_VEC = tk.Label(frame_a, text="VEC Code: " + VEC)
+      self.l_sess = tk.Label(frame_a, text="Session Date: "+ sdt)
+      self.l_city = tk.Label(frame_a, text="Exam City: "+ vecity)
+      self.l_state = tk.Label(frame_a, text="Exam State: "\
+        + vestate.get())
+      self.l_appT = tk.Label(frame_a, text="Applicants Tested: "+ appt)
+      self.l_appP = tk.Label(frame_a, text="Applicants Passed: "+ appp)
+      self.l_appF = tk.Label(frame_a, text="Applicants Failed: "+ appf)
+      self.l_elmP = tk.Label(frame_a, text="Elements Passed: "+ elmp)
+      self.l_elmF = tk.Label(frame_a, text="Elements Failed: "+ elmf)
+      self.l_tloc = tk.Label(frame_a, text="Regional Identifier: "\
+        + tloc)
 
       vec_sec.pack()
       self.l_VEC.pack()

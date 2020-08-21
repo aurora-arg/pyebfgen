@@ -34,6 +34,10 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 0.1.1 - Fix VEC labels
+  - Label for "Regional Identifier" was missing the colon, and all
+    labels now have a space between the 'title' and the value.
+ 
 v 0.1.0 - Stable Beta
   - Should be stable now.  Future patches, etc. based on user experience
     requests
