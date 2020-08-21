@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.5
+#                      version: 0.2.7
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "6"
+ptver = "7"
 
 ## Create the tkinter (window) definition
 root = Tk()
