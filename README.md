@@ -33,6 +33,9 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v0.2.5 - config file
+  - configuration file ("ebf.cfg") added to allow "one time" setting of
+    VEC code / city / state / regional ID information.
 v 0.2.4 - Window order
   - Turns out window order / layering behavior is OS dependent.
     Scrapping 0.2.2 and 0.2.3 changes in that regard.

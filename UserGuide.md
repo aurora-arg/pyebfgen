@@ -74,6 +74,18 @@ When all the data fields have been filled in, press the "Apply" button,
 then close the window.  You will be returned to the main window, and
 will now see that the upper portion of the screen has been populated.
 
+### VEC Configuration File
+In addition to the manual process outlined above, if your VEC happens to
+perform frequent testing sessions at the same facility (e.g. library,
+community center, etc.), you can set "default" information in the
+configuration file "ebf.cfg".  This file is laid out in the format "item
+= value".  Edit the values (right hand side of the "=") to conform to
+the details relevant to your testing location.  All values set thus can
+be edited during the running of the tests as outlined above.  
+
+**NOTE** - changes made within the program WILL NOT be reflected in the
+configuration file.  
+
 ## Adding Applicants
 
 To add applicant ("VA" record) information to the batch file, use the
