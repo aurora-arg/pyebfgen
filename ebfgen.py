@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.7
+#                      version: 0.2.8
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "7"
+ptver = "8"
 
 ## Create the tkinter (window) definition
 root = Tk()
@@ -335,7 +335,7 @@ class mainWindow(Frame):
       command=self.sStdVAWin)
     if clubfm:
       fileMenu.add_command(label="Club License Application",
-        command=self.sStdVAWin)
+        command=self.sClubVAWin)
     fileMenu.add_command(label="Add VEC & Session Numbers",
       command=self.updVE)
     fileMenu.add_command(label="Save Current Session",
@@ -414,6 +414,14 @@ class mainWindow(Frame):
     self.newWindow = Toplevel(self.master)
     self.newWindow.title("Applicant Information")
     self.app = stdApplicant(self.newWindow)
+
+  ## Start Club VA Window
+  #
+  #  Begins the Club Applicant window.
+  def sClubVAWin(self):
+    self.newWindow = Toplevel(self.master)
+    self.newWindow.title("Applicant Information")
+    self.app = clubApplicant(self.newWindow)
 
   ## Preview Window
   #
@@ -901,6 +909,76 @@ class appWindow():
     
     # Finally, update the preview window.
     # mainWindow.updVA()
+
+## clubApplicant class
+#
+# Subclass / Child of appWindow class - prints out the labels and
+# element frames for club application entries into the batch file.
+class clubApplicant(appWindow):
+  def __init__ (self, master):
+    appWindow.__init__(self, master)
+
+    # Force some static values for attachments, signature, applicant
+    # type, and physician certificate
+    self.e_physcert.insert(0,"N")
+    self.e_att.insert(0,"N")
+    self.e_sigok.insert(0,"Y")
+    self.e_apptyp.insert(0,"B")
+
+    self.l_ent.grid(row=1, column=1)
+    self.e_ent.grid(row=2, column=1)
+    self.l_trusteecall.grid(row=1,column=2)
+    self.e_trusteecall.grid(row=2,column=2)
+  
+    self.l_attn.grid(row=3, column=1)
+    self.e_attn.grid(row=4, column=1)
+   
+    self.l_street.grid(row=3,column=2)
+    self.e_street.grid(row=4,column=2)
+
+    self.l_city.grid(row=5,column=1)
+    self.e_city.grid(row=6,column=1)
+    self.l_state.grid(row=5,column=2)
+    self.e_state.grid(row=6,column=2)
+    self.l_zipcd.grid(row=5,column=3)
+    self.e_zipcd.grid(row=6,column=3)
+
+    self.l_phone.grid(row=8,column=1)
+    self.e_phone.grid(row=9,column=1)
+    self.l_email.grid(row=8,column=2)
+    self.e_email.grid(row=9,column=2)
+
+    self.l_felon.grid(row=10,column=1)
+    self.e_felon.grid(row=11,column=1)
+    self.l_appcd.grid(row=10,column=2)
+    self.e_appcd.grid(row=11,column=2)
+
+
+    self.l_vafn.grid(row=10, column=3)
+    self.e_vafn.grid(row=11, column=3)
+
+    self.b_save.grid(row=12,column=1)
+    self.b_close.grid(row=12,column=2)
+
+    self.VAWindow.pack()
+
+    #set the widget tab-order properly.
+    taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
+      self.e_call, self.e_street,self.e_city, self.e_state,\
+      self.e_zipcd, self.e_ssn, self.e_frn,self.e_phone,\
+      self.e_email, self.e_felon, self.e_appcd, self.e_updcall,\
+      self.e_lnchg, self.e_opclass, self.e_vafn)
+    for wid in taborder:
+      wid.lift()
+    
+    def change_dropdown(*args):
+        print( va_updcall.get() )
+
+## stdApplicant class
+#
+# Subclass / Child of appWindow class - prints out the labels and
+# element frames for standard (individual) applicant entries into the
+# batch file.
 class stdApplicant(appWindow):
   def __init__ (self, master):
     appWindow.__init__(self, master)
@@ -955,15 +1033,6 @@ class stdApplicant(appWindow):
     self.l_updcall.grid(row=14,column=3)
     self.e_updcall.grid(row=15,column=3)
 
-    self.l_lnchg.grid(row=16,column=1)
-    self.e_lnchg.grid(row=17,column=1)
-
-    self.l_opclass.grid(row=16,column=2)
-    self.e_opclass.grid(row=17,column=2)
-
-    self.l_vafn.grid(row=16, column=3)
-    self.e_vafn.grid(row=17, column=3)
-
     self.b_save.grid(row=18,column=1)
     self.b_close.grid(row=18,column=2)
 
@@ -980,7 +1049,6 @@ class stdApplicant(appWindow):
     
     def change_dropdown(*args):
         print( va_updcall.get() )
-
 
 ## prevWin class
 #
@@ -1040,7 +1108,7 @@ if cfg.is_file():
     'VA': 51, 'VI': 52, 'WA': 53, 'WV': 54, 'WI': 55, 'WY': 56, 
     'AE': 58, 'AP': 59, 'AA': 60, 'DX': 62}
   tloc = cp.get('VEC_CFG','regcd')
-  vestidx = strl[vestate]
+  vestidx = strl[vestate.get()]
   #semi-secret option to enable club applications
   clubfm = cp.get('VEC_CFG', 'club', fallback=False)
     
