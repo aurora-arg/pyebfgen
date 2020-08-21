@@ -1028,10 +1028,22 @@ if cfg.is_file():
   VEC = cp.get('VEC_CFG','VEC')
   vecity = cp.get('VEC_CFG','city')
   vestate.set(cp.get('VEC_CFG','state'))
+  #state reverse lookup dict.  Skip 57 and 61 because they're separators
+  strl={ 'AL': 0, 'AK': 1, 'AS': 2, 'AZ': 3, 'AR': 4, 'CA': 5, 'CO': 6,
+    'CT': 7, 'DE': 8, 'DC': 9, 'FL': 10, 'GA': 11, 'GU': 12, 'HI': 13,
+    'ID': 14, 'IL': 15, 'IN': 16, 'IA': 17, 'KS': 18, 'KY': 19, 
+    'LA': 20, 'ME': 21, 'MD': 22, 'MA': 23, 'MI': 24, 'MN': 25, 
+    'MO': 26, 'MS': 27, 'MT': 28, 'NE': 29, 'NV': 30, 'NH': 31, 
+    'NJ': 32, 'NM': 33, 'NY': 34, 'NC': 35, 'ND': 36, 'MP': 37, 
+    'OH': 38, 'OK': 39, 'OR':40, 'PA': 41, 'PR': 42, 'RI':43, 'SC': 44, 
+    'SD': 45, 'TN': 46, 'TX': 47, 'UM': 48, 'UT': 49, 'VT': 50, 
+    'VA': 51, 'VI': 52, 'WA': 53, 'WV': 54, 'WI': 55, 'WY': 56, 
+    'AE': 58, 'AP': 59, 'AA': 60, 'DX': 62}
   tloc = cp.get('VEC_CFG','regcd')
-  vestidx = cp.get('VEC_CFG','stidx')
+  vestidx = strl[vestate]
   #semi-secret option to enable club applications
   clubfm = cp.get('VEC_CFG', 'club', fallback=False)
+    
 
 app = mainWindow(root)
 root.wm_title("FCC Electronic Batch File Generator v." \
