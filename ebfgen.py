@@ -5,7 +5,7 @@
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
 #                      version: 0.2.5
-#                         date: Thu, 20 Aug 2020 19:52:39 -0400
+#                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
 #
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "5"
+ptver = "6"
 
 ## Create the tkinter (window) definition
 root = Tk()
@@ -140,6 +140,9 @@ vestidx = 0
 VA_list = None
 
 va_state=""
+
+## Enable Club applications in File Menu
+clubfm = False 
 
 ## VA
 #  
@@ -289,12 +292,11 @@ class fileManager():
       c = 0
   
       #clear output frame and update VE info
-      mainWindow.clrFrame()
-      mainWindow.l_appT['text']="Applicants Tested:"+ appt
-      mainWindow.l_appP['text']="Applicants Passed:"+ appp
-      mainWindow.l_appF['text']="Applicants Failed:"+ appf
-      mainWindow.l_elmP['text']="Elements Passed:"+ elmp
-      mainWindow.l_elmF['text']="Elements Failed:"+ elmf
+      mainWindow.l_appT['text']="Applicants Tested: "+ appt
+      mainWindow.l_appP['text']="Applicants Passed: "+ appp
+      mainWindow.l_appF['text']="Applicants Failed: "+ appf
+      mainWindow.l_elmP['text']="Elements Passed: "+ elmp
+      mainWindow.l_elmF['text']="Elements Failed: "+ elmf
       mainWindow.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
   
 ## mainWindow
@@ -331,6 +333,9 @@ class mainWindow(Frame):
     #  command=self.extVAwin)
     fileMenu.add_command(label="Individual License Application",
       command=self.sStdVAWin)
+    if clubfm:
+      fileMenu.add_command(label="Club License Application",
+        command=self.sStdVAWin)
     fileMenu.add_command(label="Add VEC & Session Numbers",
       command=self.updVE)
     fileMenu.add_command(label="Save Current Session",
@@ -582,10 +587,10 @@ class mainWindow(Frame):
 #  Class to handle the Applicant Information window.  TODO - figure out
 #  how to make both the "standard" and "extended" forms extend this, so
 #  we don't need any code duplication.
-class stdApplicant():
+class appWindow():
   def __init__(self, master):
     self.master = master
-    VAwindow = tk.Frame(self.master)
+    self.VAWindow = tk.Frame(self.master)
     # set some local variables for holding onto dropdown selections
     va_state=""
     va_appcd=""
@@ -594,97 +599,97 @@ class stdApplicant():
     va_felon=""
     
 
-    l_vafn = tk.Label(VAwindow, text="Pending File Number")
-    self.e_vafn = tk.Entry(VAwindow)
-    l_call = tk.Label(VAwindow, text="Callsign, if licensed")
-    self.e_call = tk.Entry(VAwindow)
-    l_ssn = tk.Label(VAwindow, text="Social Security Number")
-    self.e_ssn = tk.Entry(VAwindow)
-    l_ent = tk.Label(VAwindow, text="Entity Name")
-    self.e_ent = tk.Entry(VAwindow)
-    l_fname = tk.Label(VAwindow, text="First Name")
-    self.e_fname = tk.Entry(VAwindow)
-    l_mi = tk.Label(VAwindow, text="Middle Initial")
-    self.e_mi = tk.Entry(VAwindow)
-    l_lname = tk.Label(VAwindow, text="Last Name")
-    self.e_lname = tk.Entry(VAwindow)
-    l_nmsuf = tk.Label(VAwindow, text="Suffix")
-    self.e_nmsuf = tk.Entry(VAwindow)
-    l_attn = tk.Label(VAwindow, text="Attention")
-    self.e_attn = tk.Entry(VAwindow)
-    l_street = tk.Label(VAwindow, text="Mailing Address")
-    self.e_street = tk.Entry(VAwindow)
-    l_pobox = tk.Label(VAwindow, text="P.O. Box")
-    self.e_pobox = tk.Entry(VAwindow)
-    l_city = tk.Label(VAwindow, text="City")
-    self.e_city = tk.Entry(VAwindow)
-    l_state = tk.Label(VAwindow, text="State / U.S. Territory")
-    self.e_state = Combobox(VAwindow, values=states,
+    self.l_vafn = tk.Label(self.VAWindow, text="Pending File Number")
+    self.e_vafn = tk.Entry(self.VAWindow)
+    self.l_call = tk.Label(self.VAWindow, text="Callsign, if licensed")
+    self.e_call = tk.Entry(self.VAWindow)
+    self.l_ssn = tk.Label(self.VAWindow, text="Social Security Number")
+    self.e_ssn = tk.Entry(self.VAWindow)
+    self.l_ent = tk.Label(self.VAWindow, text="Entity Name")
+    self.e_ent = tk.Entry(self.VAWindow)
+    self.l_fname = tk.Label(self.VAWindow, text="First Name")
+    self.e_fname = tk.Entry(self.VAWindow)
+    self.l_mi = tk.Label(self.VAWindow, text="Middle Initial")
+    self.e_mi = tk.Entry(self.VAWindow)
+    self.l_lname = tk.Label(self.VAWindow, text="Last Name")
+    self.e_lname = tk.Entry(self.VAWindow)
+    self.l_nmsuf = tk.Label(self.VAWindow, text="Suffix")
+    self.e_nmsuf = tk.Entry(self.VAWindow)
+    self.l_attn = tk.Label(self.VAWindow, text="Attention")
+    self.e_attn = tk.Entry(self.VAWindow)
+    self.l_street = tk.Label(self.VAWindow, text="Mailing Address")
+    self.e_street = tk.Entry(self.VAWindow)
+    self.l_pobox = tk.Label(self.VAWindow, text="P.O. Box")
+    self.e_pobox = tk.Entry(self.VAWindow)
+    self.l_city = tk.Label(self.VAWindow, text="City")
+    self.e_city = tk.Entry(self.VAWindow)
+    self.l_state = tk.Label(self.VAWindow, text="State / U.S. Territory")
+    self.e_state = Combobox(self.VAWindow, values=states,
       textvariable=va_state)
-    l_zipcd = tk.Label(VAwindow, text="Zip Code")
-    self.e_zipcd = tk.Entry(VAwindow)
-    l_phone = tk.Label(VAwindow, text="Phone Number")
-    self.e_phone = tk.Entry(VAwindow)
-    l_fax = tk.Label(VAwindow, text="Fax Number")
-    self.e_fax = tk.Entry(VAwindow)
-    l_email = tk.Label(VAwindow, text="E-Mail Address")
-    self.e_email = tk.Entry(VAwindow)
-    l_appcd = tk.Label(VAwindow, text="Application Purpose")
-    self.e_appcd = Combobox(VAwindow, values=apppur,
+    self.l_zipcd = tk.Label(self.VAWindow, text="Zip Code")
+    self.e_zipcd = tk.Entry(self.VAWindow)
+    self.l_phone = tk.Label(self.VAWindow, text="Phone Number")
+    self.e_phone = tk.Entry(self.VAWindow)
+    self.l_fax = tk.Label(self.VAWindow, text="Fax Number")
+    self.e_fax = tk.Entry(self.VAWindow)
+    self.l_email = tk.Label(self.VAWindow, text="E-Mail Address")
+    self.e_email = tk.Entry(self.VAWindow)
+    self.l_appcd = tk.Label(self.VAWindow, text="Application Purpose")
+    self.e_appcd = Combobox(self.VAWindow, values=apppur,
       textvariable=va_appcd)
-    l_opclass = tk.Label(VAwindow, text="Operator Class")
-    self.e_opclass = Combobox(VAwindow, values=liccls,
+    self.l_opclass = tk.Label(self.VAWindow, text="Operator Class")
+    self.e_opclass = Combobox(self.VAWindow, values=liccls,
       textvariable=va_opclass)
-    l_sigok = tk.Label(VAwindow, text="Valid Signature")
-    self.e_sigok = tk.Entry(VAwindow)
-    l_physcert = tk.Label(VAwindow, text="Physician Certificate")
-    self.e_physcert = tk.Entry(VAwindow)
-    l_reqexp = tk.Label(VAwindow, text="Requested Expiration")
-    self.e_reqexp = tk.Entry(VAwindow)
-    l_waiverreq = tk.Label(VAwindow, text="Waiver Request")
-    self.e_waiverreq = tk.Entry(VAwindow)
-    l_att = tk.Label(VAwindow, text="Attachments")
-    self.e_att = tk.Entry(VAwindow)
-    l_updcall = tk.Label(VAwindow, 
+    self.l_sigok = tk.Label(self.VAWindow, text="Valid Signature")
+    self.e_sigok = tk.Entry(self.VAWindow)
+    self.l_physcert = tk.Label(self.VAWindow, text="Physician Certificate")
+    self.e_physcert = tk.Entry(self.VAWindow)
+    self.l_reqexp = tk.Label(self.VAWindow, text="Requested Expiration")
+    self.e_reqexp = tk.Entry(self.VAWindow)
+    self.l_waiverreq = tk.Label(self.VAWindow, text="Waiver Request")
+    self.e_waiverreq = tk.Entry(self.VAWindow)
+    self.l_att = tk.Label(self.VAWindow, text="Attachments")
+    self.e_att = tk.Entry(self.VAWindow)
+    self.l_updcall = tk.Label(self.VAWindow, 
       text="Change Callsign Systematically?")
-    self.e_updcall = Combobox(VAwindow, values=opts, 
+    self.e_updcall = Combobox(self.VAWindow, values=opts, 
       textvariable=va_updcall)
-    l_trusteecall = tk.Label(VAwindow, text="Trustee Callsign")
-    self.e_trusteecall = tk.Entry(VAwindow)
-    l_apptyp = tk.Label(VAwindow, text="Applicant Type")
-    self.e_apptyp = tk.Entry(VAwindow)
-    l_frn = tk.Label(VAwindow, 
+    self.l_trusteecall = tk.Label(self.VAWindow, text="Trustee Callsign")
+    self.e_trusteecall = tk.Entry(self.VAWindow)
+    self.l_apptyp = tk.Label(self.VAWindow, text="Applicant Type")
+    self.e_apptyp = tk.Entry(self.VAWindow)
+    self.l_frn = tk.Label(self.VAWindow, 
       text="Federal Registration Number")
-    self.e_frn = tk.Entry(VAwindow)
-    l_dob = tk.Label(VAwindow, text="Date of Birth")
-    self.e_dob = tk.Entry(VAwindow)
-    l_lnchg = tk.Label(VAwindow, text="Licensee Name Change")
-    self.e_lnchg = tk.Entry(VAwindow)
-    l_psqcd = tk.Label(VAwindow, 
+    self.e_frn = tk.Entry(self.VAWindow)
+    self.l_dob = tk.Label(self.VAWindow, text="Date of Birth")
+    self.e_dob = tk.Entry(self.VAWindow)
+    self.l_lnchg = tk.Label(self.VAWindow, text="Licensee Name Change")
+    self.e_lnchg = tk.Entry(self.VAWindow)
+    self.l_psqcd = tk.Label(self.VAWindow, 
       text="Personal Security Question Code")
-    self.e_psqcd = tk.Entry(VAwindow)
-    l_psq = tk.Label(VAwindow, text="Custom PSQ")
-    self.e_psq = tk.Entry(VAwindow)
-    l_psqa = tk.Label(VAwindow, text="PSQ Answer")
-    self.e_psqa = tk.Entry(VAwindow)
-    l_felon = tk.Label(VAwindow, 
+    self.e_psqcd = tk.Entry(self.VAWindow)
+    self.l_psq = tk.Label(self.VAWindow, text="Custom PSQ")
+    self.e_psq = tk.Entry(self.VAWindow)
+    self.l_psqa = tk.Label(self.VAWindow, text="PSQ Answer")
+    self.e_psqa = tk.Entry(self.VAWindow)
+    self.l_felon = tk.Label(self.VAWindow, 
       text="Basic Qualification Question")
-    self.e_felon = Combobox(VAwindow, values=felony,
+    self.e_felon = Combobox(self.VAWindow, values=felony,
       textvariable=va_felon)
 
-    b_save = tk.Button(VAwindow, text="Save Applicant", 
+    self.b_save = tk.Button(self.VAWindow, text="Save Applicant", 
       command=self.sVA)
-    b_close = tk.Button(VAwindow, text="Close Window", 
+    self.b_close = tk.Button(self.VAWindow, text="Close Window", 
       command=self.master.destroy)
 
         
 #  def extVAwin():
 #      # EXTENDED Applicant entry window.  Still trying to figure this
 #      # one out.
-#      #VAwindow = Toplevel(root)
-#      #VAwindow.title("Applicant Data")
+#      #self.VAWindow = Toplevel(root)
+#      #self.VAWindow.title("Applicant Data")
 #
-#      #va_sec = tk.Label(VAwindow, text="Applicant Information")
+#      #va_sec = tk.Label(self.VAWindow, text="Applicant Information")
 #      #va_sec.grid(row=0, column=5)
 #
 #
@@ -766,85 +771,8 @@ class stdApplicant():
 #  def stdVAwin():
      # Standard Applicant setup.
      # Maybe the windows should be separate classes?
-     #VAwindow = Toplevel(root)
-     #VAwindow.title("Applicant Data")
-
-    # Force some static values for attachments, signature, applicant
-    # type, and physician certificate
-    self.e_physcert.insert(0,"N")
-    self.e_att.insert(0,"N")
-    self.e_sigok.insert(0,"Y")
-    self.e_apptyp.insert(0,"I")
-
-    #b_save = tk.Button(VAwindow, text="Save Application", 
-    #  command=self.sVA)
-    #b_close = tk.Button(VAwindow, text="Close mainWindow", 
-    #  command=VAwindow.destroy)
-    l_lname.grid(row=1,column=1)
-    self.e_lname.grid(row=2,column=1)
-    l_fname.grid(row=1,column=2)
-    self.e_fname.grid(row=2,column=2)
-    l_mi.grid(row=1,column=3)
-    self.e_mi.grid(row=2,column=3)
-     
-    l_nmsuf.grid(row=4,column=1)
-    self.e_nmsuf.grid(row=5,column=1)
-    l_call.grid(row=4, column=3)
-    self.e_call.grid(row=5, column=3)
-   
-    l_street.grid(row=6,column=1)
-    self.e_street.grid(row=7,column=1)
-
-    l_city.grid(row=8,column=1)
-    self.e_city.grid(row=9,column=1)
-    l_state.grid(row=8,column=2)
-    self.e_state.grid(row=9,column=2)
-    l_zipcd.grid(row=8,column=3)
-    self.e_zipcd.grid(row=9,column=3)
-
-    l_ssn.grid(row=10, column=1)
-    self.e_ssn.grid(row=11,column=1)
-    l_frn.grid(row=10,column=2)
-    self.e_frn.grid(row=11,column=2)
-
-    l_phone.grid(row=12,column=1)
-    self.e_phone.grid(row=13,column=1)
-    l_email.grid(row=12,column=2)
-    self.e_email.grid(row=13,column=2)
-
-    l_felon.grid(row=14,column=1)
-    self.e_felon.grid(row=15,column=1)
-    l_appcd.grid(row=14,column=2)
-    self.e_appcd.grid(row=15,column=2)
-    l_updcall.grid(row=14,column=3)
-    self.e_updcall.grid(row=15,column=3)
-
-    l_lnchg.grid(row=16,column=1)
-    self.e_lnchg.grid(row=17,column=1)
-
-    l_opclass.grid(row=16,column=2)
-    self.e_opclass.grid(row=17,column=2)
-
-    l_vafn.grid(row=16, column=3)
-    self.e_vafn.grid(row=17, column=3)
-
-    b_save.grid(row=18,column=1)
-    b_close.grid(row=18,column=2)
-
-    VAwindow.pack()
-
-    #set the widget tab-order properly.
-    taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
-      self.e_call, self.e_street,self.e_city, self.e_state,\
-      self.e_zipcd, self.e_ssn, self.e_frn,self.e_phone,\
-      self.e_email, self.e_felon, self.e_appcd, self.e_updcall,\
-      self.e_lnchg, self.e_opclass, self.e_vafn)
-    for wid in taborder:
-      wid.lift()
-    
-    def change_dropdown(*args):
-        print( va_updcall.get() )
-
+     #self.VAWindow = Toplevel(root)
+     #self.VAWindow.title("Applicant Data")
   ## Save VA
   #
   #  Save applicant information to the applicants array for this
@@ -971,6 +899,86 @@ class stdApplicant():
     
     # Finally, update the preview window.
     # mainWindow.updVA()
+class stdApplicant(appWindow):
+  def __init__ (self, master):
+    appWindow.__init__(self, master)
+
+    # Force some static values for attachments, signature, applicant
+    # type, and physician certificate
+    self.e_physcert.insert(0,"N")
+    self.e_att.insert(0,"N")
+    self.e_sigok.insert(0,"Y")
+    self.e_apptyp.insert(0,"I")
+
+    #b_save = tk.Button(self.VAWindow, text="Save Application", 
+    #  command=self.sVA)
+    #b_close = tk.Button(self.VAWindow, text="Close mainWindow", 
+    #  command=self.VAWindow.destroy)
+    self.l_lname.grid(row=1,column=1)
+    self.e_lname.grid(row=2,column=1)
+    self.l_fname.grid(row=1,column=2)
+    self.e_fname.grid(row=2,column=2)
+    self.l_mi.grid(row=1,column=3)
+    self.e_mi.grid(row=2,column=3)
+     
+    self.l_nmsuf.grid(row=4,column=1)
+    self.e_nmsuf.grid(row=5,column=1)
+    self.l_call.grid(row=4, column=3)
+    self.e_call.grid(row=5, column=3)
+   
+    self.l_street.grid(row=6,column=1)
+    self.e_street.grid(row=7,column=1)
+
+    self.l_city.grid(row=8,column=1)
+    self.e_city.grid(row=9,column=1)
+    self.l_state.grid(row=8,column=2)
+    self.e_state.grid(row=9,column=2)
+    self.l_zipcd.grid(row=8,column=3)
+    self.e_zipcd.grid(row=9,column=3)
+
+    self.l_ssn.grid(row=10, column=1)
+    self.e_ssn.grid(row=11,column=1)
+    self.l_frn.grid(row=10,column=2)
+    self.e_frn.grid(row=11,column=2)
+
+    self.l_phone.grid(row=12,column=1)
+    self.e_phone.grid(row=13,column=1)
+    self.l_email.grid(row=12,column=2)
+    self.e_email.grid(row=13,column=2)
+
+    self.l_felon.grid(row=14,column=1)
+    self.e_felon.grid(row=15,column=1)
+    self.l_appcd.grid(row=14,column=2)
+    self.e_appcd.grid(row=15,column=2)
+    self.l_updcall.grid(row=14,column=3)
+    self.e_updcall.grid(row=15,column=3)
+
+    self.l_lnchg.grid(row=16,column=1)
+    self.e_lnchg.grid(row=17,column=1)
+
+    self.l_opclass.grid(row=16,column=2)
+    self.e_opclass.grid(row=17,column=2)
+
+    self.l_vafn.grid(row=16, column=3)
+    self.e_vafn.grid(row=17, column=3)
+
+    self.b_save.grid(row=18,column=1)
+    self.b_close.grid(row=18,column=2)
+
+    self.VAWindow.pack()
+
+    #set the widget tab-order properly.
+    taborder=(self.e_lname, self.e_fname, self.e_mi, self.e_nmsuf,\
+      self.e_call, self.e_street,self.e_city, self.e_state,\
+      self.e_zipcd, self.e_ssn, self.e_frn,self.e_phone,\
+      self.e_email, self.e_felon, self.e_appcd, self.e_updcall,\
+      self.e_lnchg, self.e_opclass, self.e_vafn)
+    for wid in taborder:
+      wid.lift()
+    
+    def change_dropdown(*args):
+        print( va_updcall.get() )
+
 
 ## prevWin class
 #
@@ -1006,11 +1014,13 @@ class prevWin():
     VA_list.pack()
     self.frame.pack()
 
-cfg=pathlib.Path('./ebf.cfg')
+
+#there has to ba a better way than writing 'vec.cfg' twice
+cfg=pathlib.Path('./vec.cfg')
 
 if cfg.is_file():
   cp = cp.RawConfigParser()
-  configFilePath = r'./ebf.cfg'
+  configFilePath = r'./vec.cfg'
   cp.read(configFilePath)
   #config file read, set defaults
   VEC = cp.get('VEC_CFG','VEC')
@@ -1018,6 +1028,8 @@ if cfg.is_file():
   vestate.set(cp.get('VEC_CFG','state'))
   tloc = cp.get('VEC_CFG','regcd')
   vestidx = cp.get('VEC_CFG','stidx')
+  #semi-secret option to enable club applications
+  clubfm = cp.get('VEC_CFG', 'club', fallback=False)
 
 app = mainWindow(root)
 root.wm_title("FCC Electronic Batch File Generator v." \
