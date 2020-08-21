@@ -141,8 +141,8 @@ VA_list = None
 
 va_state=""
 
-## Enable Club applications
-club = False 
+## Enable Club applications in File Menu
+clubfm = False 
 
 ## VA
 #  
@@ -333,7 +333,7 @@ class mainWindow(Frame):
     #  command=self.extVAwin)
     fileMenu.add_command(label="Individual License Application",
       command=self.sStdVAWin)
-    if club:
+    if clubfm:
       fileMenu.add_command(label="Club License Application",
         command=self.sStdVAWin)
     fileMenu.add_command(label="Add VEC & Session Numbers",
