@@ -33,7 +33,12 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
-v0.2.5 - config file
+v 0.2.6 - config file updated
+  - renamed config file to 'vec.cfg' to make running from terminal less
+    of a hassle
+  - fixed the VA window class to be less of a pain code-wise.
+
+v 0.2.5 - config file
   - configuration file ("ebf.cfg") added to allow "one time" setting of
     VEC code / city / state / regional ID information.
 v 0.2.4 - Window order
