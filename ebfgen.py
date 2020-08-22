@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.9
+#                      version: 0.2.11
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "9"
+ptver = "11"
 
 ## set up tkinter
 #root = tk.Tk()
@@ -323,6 +323,7 @@ class mainWindow(tk.Tk):
     global tcnt
     global vestidx
     global vis
+    global clubfm
 
     global VA_list
     VEC = StringVar()
@@ -484,6 +485,7 @@ class updVEC(tk.Frame):
     tk.Frame.__init__(self, parent)
     global vestidx
     global vis
+    global clubfm
     # Set VE / EBF file header record.
 
     def UpdateStateIdx (event):
