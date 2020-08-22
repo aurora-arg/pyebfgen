@@ -1,4 +1,8 @@
 # pyEBFGen Guide
+** Version 0.2 base **
+Version 0.2 represents a pretty big sway from version 0.1, in hopes that
+it'll make things considerably more maintainable.  This version should
+be considered unstable, and should not be used.
 
 ## Overview
 
@@ -14,11 +18,13 @@ requirements the FCC may have for file upload.
 When launching the application, you will initially be presented with a
 main window containing several blank data fields that correspond to a
 given testing session (VEC Code, # tested, elements passed, and so on).
-Before adding applicant information, the VEC information should be
-supplied.  You can enter this information from the "File -> Add VEC &
-Session Numbers" menu option. It is assumed that when creating the data
-file, you have already totaled the number of individuals passing (or
-failing) the test(s) they took.
+
+Until this is filled in, the "Save" button will remain RED as a visual
+indicator that the VE header has not yet been generated.  
+
+To generate the header, fill in the blank VE fields and click the "Apply
+VEC" button.  Once the header has been successfully generated, the
+"Save" button will turn GREEN.
 
 ## VEC & Session Information Window
 
@@ -70,15 +76,41 @@ When all the data fields have been filled in, press the "Apply" button,
 then close the window.  You will be returned to the main window, and
 will now see that the upper portion of the screen has been populated.
 
+### VEC Configuration File
+In addition to the manual process outlined above, if your VEC happens to
+perform frequent testing sessions at the same facility (e.g. library,
+community center, etc.), you can set "default" information in the
+configuration file "vec.cfg".  This uses standard ".ini file"
+formatting of "key = value".  Leave the section header "[VEC_CFG]" on
+the first line.
+
+| Configuration File          |
+| ----------------------------|
+|  Key  | Description| Default| 
+| ----- | -----------| -------|
+| VEC   | Examiner Code| C    |
+| city  | Examination City| Anchorage|
+| state | Examination State| AK|
+| regcd | "Region" Code| X    |
+| visaid| Visual Aid| False |
+
+Most of these are self-explanatory.  **visaid** is a visual aid setting,
+in case you're red-green colorblind, replacing RED with YELLOW and GREEN
+with BLUE.
+
+
+**NOTE** - changes made within the program WILL NOT be reflected in the
+configuration file.  
+
 ## Adding Applicants
 
 To add applicant ("VA" record) information to the batch file, use the
-"File -> Individual License Application" menu option from the main
-window.  This will open a new window with the same general fields as the
-FCC form 605.  When you complete an application, the "Save Application"
-button will clear the form to allow you to enter additional applicants.
-When you have added (and saved) the final applicant for a session, you
-can click the "Close Window" button.
+"Add Applicant" option from the main window.  This will open a new
+window with the same general fields as the FCC form 605.  When you
+complete an application, the "Save Application" button will clear the
+form to allow you to enter additional applicants. When you have added
+(and saved) the final applicant for a session, you can click the "Close
+Window" button.
 
 This form will validate the following data fields, or perform the
 following actions, in accordance with the FCC's EBF Userguide.
@@ -249,11 +281,11 @@ from the 605 Form.  Let’s go through each field:
 ## Generating the batch file
 
 When all applicants have been added, you can generate the session
-information with the "File -> Save Current Session" menu option.  This
-will present you with a standard "save as" dialog menu, with a suggested
-filename consisting of the VEC Code, date (from VEC input window, in
-mmdd format), the Regional Identifier, and Data File counter, and the
-file extension ".dat".  For example, "C0814A01.dat".   If the suggested
+information with the "Save Current Session" option.  This will present
+you with a standard "save as" dialog menu, with a suggested filename
+consisting of the VEC Code, date (from VEC input window, in mmdd
+format), the Regional Identifier, and Data File counter, and the file
+extension ".dat".  For example, "C0814A01.dat".   If the suggested
 filename is not appropriate for the session / location, change it before
 saving the file.
 
@@ -271,18 +303,17 @@ preparation for another session:
 After submitting the batch file to the FCC, they will generate a
 response file.  You can use pyEBFGen to read this file and convert the
 records into comma-separated values.  This can be achieved by using the
-"File -> Convert Response" option.  Response files converted in such a
-manner will be simultaneously printed into the "File Content:" frame of
-the main window AND saved to your computer's filesystem in ".csv"
-format for easier viewing in your preferred spreadsheet application -
-such as LibreOffice Calc or Microsoft Excel.
+"Convert Response" option.  Response files converted in this fashion
+will be saved to your computer's filesystem in ".csv" format for easier
+viewing in your preferred spreadsheet application - such as LibreOffice
+Calc or Microsoft Excel.
 
 Files saved in such a manner will be saved to the same directory /
-folder as you imported the response file from.
+folder as you imported the response file from.  It is recommended that
+you save the response to a known location before attempting to convert.
 
 ## FCC Response Codes
-FCC EBF Response codes can be found
-[here](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf).
+[FCC](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf)
 
 ## IRC Support
 If you have questions about the application, you can find us on the OFTC

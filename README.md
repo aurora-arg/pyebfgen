@@ -8,6 +8,11 @@ This should work cross-platform; however my main development environment
 is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
+** Version 0.2 base **
+Version 0.2 represents a pretty big sway from version 0.1, in hopes that
+it'll make things considerably more maintainable.  This version should
+be considered unstable, and should not be used.
+
 ## Requirements
   - Python 3.5.3+
   - python3-tk
@@ -34,10 +39,54 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 0.2.11 - Variable
+  - there's a huge difference between "global var" and "var".
+
+v 0.2.10 - Restore Operator class
+  - Op class inadvertently removed in 0.2.9.  Restored.
+
+v 0.2.9 - Multiple Window Woes
+  - Gave up on multiple subwindows, and now it's all separate frames on
+    the same single-pane window.  
+
+v 0.2.8 - I'm a teapot
+  - Forgot to reset defaults to something sane.  As WL1B from the
+    Anchorage VEC asked for this, used Anchorage, AK.
+
+v 0.2.7 - Config updates
+  - fixed behavior with the config file.
+
+v 0.2.6 - config file updated
+  - renamed config file to 'vec.cfg' to make running from terminal less
+    of a hassle
+  - fixed the VA window class to be less of a pain code-wise.
+
+v 0.2.5 - config file
+  - configuration file ("ebf.cfg") added to allow "one time" setting of
+    VEC code / city / state / regional ID information.
+v 0.2.4 - Window order
+  - Turns out window order / layering behavior is OS dependent.
+    Scrapping 0.2.2 and 0.2.3 changes in that regard.
+  - Added a "preview window" instead of the big pane, it just looks
+    nicer.
+
+v 0.2.3 - More VA Window patches
+  - -.2 didn't fix it in windows.  Removing the preview pane to see if
+    that helps.
+
+v 0.2.2 - Fix Windows
+  - VA window now appears to work as expected
+
+v 0.2.1 - Begin Reorg
+  - Start reorganizing the codebase to be less bad.
+
+v 0.2.0 - Add Doxygen
+  - add doxygen for internal documentation.
+
 v 0.1.1 - Fix VEC labels
   - Label for "Regional Identifier" was missing the colon, and all
     labels now have a space between the 'title' and the value.
- 
+
 v 0.1.0 - Stable Beta
   - Should be stable now.  Future patches, etc. based on user experience
     requests
