@@ -84,8 +84,6 @@ configuration file "vec.cfg".  This uses standard ".ini file"
 formatting of "key = value".  Leave the section header "[VEC_CFG]" on
 the first line.
 
-| Configuration File          |
-| ----------------------------|
 |  Key  | Description| Default| 
 | ----- | -----------| -------|
 | VEC   | Examiner Code| C    |
