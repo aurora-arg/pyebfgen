@@ -18,11 +18,13 @@ requirements the FCC may have for file upload.
 When launching the application, you will initially be presented with a
 main window containing several blank data fields that correspond to a
 given testing session (VEC Code, # tested, elements passed, and so on).
-Before adding applicant information, the VEC information should be
-supplied.  You can enter this information from the "File -> Add VEC &
-Session Numbers" menu option. It is assumed that when creating the data
-file, you have already totaled the number of individuals passing (or
-failing) the test(s) they took.
+
+Until this is filled in, the "Save" button will remain RED as a visual
+indicator that the VE header has not yet been generated.  
+
+To generate the header, fill in the blank VE fields and click the "Apply
+VEC" button.  Once the header has been successfully generated, the
+"Save" button will turn GREEN.
 
 ## VEC & Session Information Window
 
@@ -78,10 +80,24 @@ will now see that the upper portion of the screen has been populated.
 In addition to the manual process outlined above, if your VEC happens to
 perform frequent testing sessions at the same facility (e.g. library,
 community center, etc.), you can set "default" information in the
-configuration file "ebf.cfg".  This file is laid out in the format "item
-= value".  Edit the values (right hand side of the "=") to conform to
-the details relevant to your testing location.  All values set thus can
-be edited during the running of the tests as outlined above.  
+configuration file "vec.cfg".  This uses standard ".ini file"
+formatting of "key = value".  Leave the section header "[VEC_CFG]" on
+the first line.
+
+| Configuration File          |
+| ----------------------------|
+|  Key  | Description| Default| 
+| ----- | -----------| -------|
+| VEC   | Examiner Code| C    |
+| city  | Examination City| Anchorage|
+| state | Examination State| AK|
+| regcd | "Region" Code| X    |
+| visaid| Visual Aid| False |
+
+Most of these are self-explanatory.  **visaid** is a visual aid setting,
+in case you're red-green colorblind, replacing RED with YELLOW and GREEN
+with BLUE.
+
 
 **NOTE** - changes made within the program WILL NOT be reflected in the
 configuration file.  

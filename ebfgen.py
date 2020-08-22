@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.8
+#                      version: 0.2.9
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "8"
+ptver = "9"
 
 ## set up tkinter
 #root = tk.Tk()
@@ -572,13 +572,13 @@ class updVEC(tk.Frame):
     b_quit.grid(row=15, column=2)
 
     if vis:
-      self.b_save.config({"background":"Blue", "foreground":"White"})
+      self.b_save.config({"background":"Yellow", "foreground":"Black"})
 
   ## Prepare output
   def prepWrite(self):
     global vis
     if vis:
-      self.b_save.config({"background":"Blue", "foreground":"White"})
+      self.b_save.config({"background":"Yellow", "foreground":"Black"})
     else:
       self.b_save.config({"background":"Red"})
     fileManager.writeFile()
@@ -627,7 +627,7 @@ class updVEC(tk.Frame):
         "|" + appf.get() + "|" + elmp.get() + "|" + elmf.get()
 
     if vis:
-      self.b_save.config({"background":"Yellow", "foreground":"Black"})
+      self.b_save.config({"background":"Blue", "foreground":"White"})
     else:
       self.b_save.config({"background":"Green"})
 

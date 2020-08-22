@@ -33,6 +33,17 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.2.9 - Multiple Window Woes
+  - Gave up on multiple subwindows, and now it's all separate frames on
+    the same single-pane window.  
+
+v 0.2.8 - I'm a teapot
+  - Forgot to reset defaults to something sane.  As WL1B from the
+    Anchorage VEC asked for this, used Anchorage, AK.
+
+v 0.2.7 - Config updates
+  - fixed behavior with the config file.
+
 v 0.2.6 - config file updated
   - renamed config file to 'vec.cfg' to make running from terminal less
     of a hassle
