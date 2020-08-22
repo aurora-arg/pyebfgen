@@ -563,7 +563,7 @@ class updVEC(tk.Frame):
     self.b_save = Button(self, text="Save Session", 
       command=self.prepWrite, background="Red") 
     self.b_save.grid(row=14, column=2)
-    b_conv = Button(self, text="Convert Resp File", 
+    b_conv = Button(self, text="Convert .rsp File", 
       command=fileManager.convertFile)
     b_conv.grid(row=14, column=3)
     b_quit = Button(self, text="Quit", 
