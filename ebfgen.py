@@ -1029,10 +1029,6 @@ class stdApplicant(appWindow):
     self.e_sigok.insert(0,"Y")
     self.e_apptyp.insert(0,"I")
 
-    #b_save = tk.Button(self, text="Save Application", 
-    #  command=self.sVA)
-    #b_close = tk.Button(self, text="Close mainWindow", 
-    #  command=self.destroy)
     self.l_lname.grid(row=1,column=1)
     self.e_lname.grid(row=2,column=1)
     self.l_fname.grid(row=1,column=2)
@@ -1071,6 +1067,15 @@ class stdApplicant(appWindow):
     self.e_appcd.grid(row=15,column=2)
     self.l_updcall.grid(row=14,column=3)
     self.e_updcall.grid(row=15,column=3)
+
+    self.l_lnchg.grid(row=16,column=1)
+    self.e_lnchg.grid(row=17,column=1)
+
+    self.l_opclass.grid(row=16,column=2)
+    self.e_opclass.grid(row=17,column=2)
+
+    self.l_vafn.grid(row=16, column=3)
+    self.e_vafn.grid(row=17, column=3)
 
     self.b_save.grid(row=18,column=1)
     self.b_close.grid(row=18,column=2)

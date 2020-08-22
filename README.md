@@ -33,6 +33,9 @@ be considered unstable, and should not be used.
   - Double-click "ebfgen.py"
 
 ## changelog
+v 0.2.10 - Restore Operator class
+  - Op class inadvertently removed in 0.2.9.  Restored.
+
 v 0.2.9 - Multiple Window Woes
   - Gave up on multiple subwindows, and now it's all separate frames on
     the same single-pane window.  
