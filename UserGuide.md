@@ -105,12 +105,12 @@ configuration file.
 ## Adding Applicants
 
 To add applicant ("VA" record) information to the batch file, use the
-"File -> Individual License Application" menu option from the main
-window.  This will open a new window with the same general fields as the
-FCC form 605.  When you complete an application, the "Save Application"
-button will clear the form to allow you to enter additional applicants.
-When you have added (and saved) the final applicant for a session, you
-can click the "Close Window" button.
+"Add Applicant" option from the main window.  This will open a new
+window with the same general fields as the FCC form 605.  When you
+complete an application, the "Save Application" button will clear the
+form to allow you to enter additional applicants. When you have added
+(and saved) the final applicant for a session, you can click the "Close
+Window" button.
 
 This form will validate the following data fields, or perform the
 following actions, in accordance with the FCC's EBF Userguide.
@@ -281,11 +281,11 @@ from the 605 Form.  Let’s go through each field:
 ## Generating the batch file
 
 When all applicants have been added, you can generate the session
-information with the "File -> Save Current Session" menu option.  This
-will present you with a standard "save as" dialog menu, with a suggested
-filename consisting of the VEC Code, date (from VEC input window, in
-mmdd format), the Regional Identifier, and Data File counter, and the
-file extension ".dat".  For example, "C0814A01.dat".   If the suggested
+information with the "Save Current Session" option.  This will present
+you with a standard "save as" dialog menu, with a suggested filename
+consisting of the VEC Code, date (from VEC input window, in mmdd
+format), the Regional Identifier, and Data File counter, and the file
+extension ".dat".  For example, "C0814A01.dat".   If the suggested
 filename is not appropriate for the session / location, change it before
 saving the file.
 
@@ -303,15 +303,15 @@ preparation for another session:
 After submitting the batch file to the FCC, they will generate a
 response file.  You can use pyEBFGen to read this file and convert the
 records into comma-separated values.  This can be achieved by using the
-"File -> Convert Response" option.  Response files converted in such a
-manner will be simultaneously printed into the "File Content:" frame of
-the main window AND saved to your computer's filesystem in ".csv"
-format for easier viewing in your preferred spreadsheet application -
-such as LibreOffice Calc or Microsoft Excel.
+"Convert Response" option.  Response files converted in this fashion
+will be saved to your computer's filesystem in ".csv" format for easier
+viewing in your preferred spreadsheet application - such as LibreOffice
+Calc or Microsoft Excel.
 
 Files saved in such a manner will be saved to the same directory /
-folder as you imported the response file from.
+folder as you imported the response file from.  It is recommended that
+you save the response to a known location before attempting to convert.
 
 ## FCC Response Codes
-FCC EBF Response codes can be found
-[here](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf).
+[FCC](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf)
+
