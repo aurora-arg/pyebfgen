@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.11
+#                      version: 0.2.12
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,10 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "11"
-
-## set up tkinter
-#root = tk.Tk()
+ptver = "12"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -563,7 +560,7 @@ class updVEC(tk.Frame):
       b_clubapp = Button(self, text="Club Applicant", 
         command=lambda:controller.show_frame(clubApplicant))
       b_clubapp.grid(row=13, column=1)
-    self.b_save = Button(self, text="Save Batchfile", 
+    self.b_save = Button(self, text="Save Session", 
       command=self.prepWrite, background="Red") 
     self.b_save.grid(row=14, column=2)
     b_conv = Button(self, text="Convert Resp File", 
