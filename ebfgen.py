@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.12
+#                      version: 0.2.13
 #                         date: Fri, 21 Aug 2020 08:32:52 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "0"
 miver = "2" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "12"
+ptver = "13"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -204,7 +204,7 @@ class fileManager():
   #  directories. Additionally, the converted text is displayed in the
   #  main window's preview pane.
   def convertFile():
-    inFN = askopenfilename (title="Select File",
+    inFN=askopenfilename (title="Select File",
       filetypes=(("EBF Response Files","*.rsp"),
       ("All Files","*.*")))
 
@@ -216,9 +216,11 @@ class fileManager():
     outFN = inFN[:-4] + ".csv"
     outF = open(outFN, "w")
     inDat=inF.readlines()
+    newWin=tk.Tk()
+    prevWin(newWin)
     for line in inDat:
       outln=line.replace("|",",")
-      #mainWindow.rspUpdate(None, outln)  
+      prevWin.rspUpdate(outln)  
       outF.writelines(outln)
     outF.close()
 
@@ -280,24 +282,16 @@ class fileManager():
   
       # Prepare global variables for next session
       tcnt+=1
-      appt="0"
-      appp="0"
-      appf="0"
-      elmp="0"
-      elmf="0"
+      appt.set("0")
+      appp.set("0")
+      appf.set("0")
+      elmp.set("0")
+      elmf.set("0")
   
       #clear VA array
       VAs.clear()
       #reset VA Counter
       c = 0
-  
-      #clear output frame and update VE info
-      #mainWindow.l_appT['text']="Applicants Tested: "+ appt
-      #mainWindow.l_appP['text']="Applicants Passed: "+ appp
-      #mainWindow.l_appF['text']="Applicants Failed: "+ appf
-      #mainWindow.l_elmP['text']="Elements Passed: "+ elmp
-      #mainWindow.l_elmF['text']="Elements Failed: "+ elmf
-      #mainWindow.l_VAcnt['text']="Data File: "+str(tcnt).zfill(2)
   
 ## mainWindow
 
@@ -384,91 +378,11 @@ class mainWindow(tk.Tk):
     frame=self.frames[cont]
     frame.tkraise()
 
-    #fileMenu = Menu(menu)
-    #fileMenu.add_command(label="Amateur Club Application",
-    #  command=self.extVAwin)
-    #fileMenu.add_command(label="Individual License Application",
-    #  command=self.sStdVAWin)
-    #if clubfm:
-    #  fileMenu.add_command(label="Club License Application",
-    #    command=self.sClubVAWin)
-    #fileMenu.add_command(label="Add VEC & Session Numbers",
-    #  command=self.updVE)
-    #fileMenu.add_command(label="Save Current Session",
-    #  command=fileManager.writeFile)
-    #fileMenu.add_command(label="Preview Batchfile",
-    #  command=self.previewWin)
-    #fileMenu.add_command(label="Convert Response",
-    #  command=fileManager.convertFile)
-    #fileMenu.add_command(label="Exit",command=self.exitProgram)
-    #menu.add_cascade(label="File", menu=fileMenu)
-
-  #
-  #  Clears the preview frame.
+  #  Clears the preview frame.  May be deprecated since the preview is a
+  #  new tkinter instance now.
   def clrFrame():
     global VA_list
     VA_list.delete('1.0', END)
-
-  ## Update Frame
-  #
-  #  Originally for response file previews.  Updates the file preview
-  #  frame
-  #def rspUpdate(self,l):
-  #  global VA_List
-  #  VA_list.insert(END,l)
-  
-  ## Start Standard VA Window
-  #
-  #  Begins the "standard" Applicant window.
-  #def sStdVAWin(self):
-  #  self.newWindow = Toplevel(self.master)
-  #  self.newWindow.title("Applicant Information")
-  #  self.app = stdApplicant(self.newWindow)
-
-  ## Start Club VA Window
-  #
-  #  Begins the Club Applicant window.
-  #def sClubVAWin(self):
-  #  self.newWindow = Toplevel(self.master)
-  #  self.newWindow.title("Applicant Information")
-  #  self.app = clubApplicant(self.newWindow)
-
-  ## Preview Window
-  #
-  #  Allows user to preview the batch file output
-  def previewWin(self):
-    self.newWindow = Toplevel(self.master)
-    self.newWindow.title("Batch File Preview")
-    self.app = prevWin(self.newWindow)
-
-  
-  ## Update VA
-  #
-  #  Updates the preview pane with the most recently added applicant
-  #  record.
-  def updVA():
-    # Update the VA Table listing on the main screen.  This needs
-    # moved back to "MainWindow" probably
-    global c
-    global VA_list
-    d=str(c)
-    outTxt=d + ": VA|" + VAs[c].fn + "|" + VAs[c].call + "|" \
-      + VAs[c].ssn + "|" + VAs[c].entname + "|" + VAs[c].fname \
-      + "|" + VAs[c].mi + "|" + VAs[c].lname + "|" + VAs[c].nmsuf \
-      + "|" + VAs[c].attn + "|" + VAs[c].street + "|" \
-      + VAs[c].pobox + "|" + VAs[c].city + "|" + VAs[c].state \
-      + "|" + VAs[c].zipcd + "|" + VAs[c].phone + "|" + VAs[c].fax \
-      + "|" + VAs[c].email + "|" + VAs[c].appcd + "|" \
-      + VAs[c].opclass + "|" + VAs[c].sigok + "|" \
-      + VAs[c].physcert + "|" + VAs[c].reqexp + "|" \
-      + VAs[c].waivereq + "|" + VAs[c].att + "|||" \
-      + VAs[c].updcall + "|" + VAs[c].trusteecall + "|" \
-      + VAs[c].apptyp + "|" +  VAs[c].frn + "|" + VAs[c].dob + "|" \
-      + VAs[c].lnchg + "|" + VAs[c].psqcd + "|" + VAs[c].psq + "|" \
-      + VAs[c].psqa + "|" + VAs[c].felon + "\n"
-      
-    #VA_list.insert(END, outTxt)
-    c=c+1
 
   ## Quit
   def exitProgram(self):
@@ -731,96 +645,6 @@ class appWindow(tk.Frame):
       command=lambda:controller.show_frame(updVEC))
 
         
-#  def extVAwin():
-#      # EXTENDED Applicant entry window.  Still trying to figure this
-#      # one out.
-#      #self = Toplevel(root)
-#      #self.title("Applicant Data")
-#
-#      #va_sec = tk.Label(self, text="Applicant Information")
-#      #va_sec.grid(row=0, column=5)
-#
-#
-#      l_vafn.grid(row=1, column=1)
-#      self.e_vafn.grid(row=1, column=3)
-#      l_call.grid(row=2, column=1)
-#      self.e_call.grid(row=2, column=3)
-#      l_ssn.grid(row=3, column=1)
-#      self.e_ssn.grid(row=3,column=3)
-#      l_ent.grid(row=4,column=1)
-#      self.e_ent.grid(row=4,column=3)
-#      l_fname.grid(row=5,column=1)
-#      self.e_fname.grid(row=5,column=3)
-#      l_mi.grid(row=6,column=1)
-#      self.e_mi.grid(row=6,column=3)
-#      l_lname.grid(row=7,column=1)
-#      self.e_lname.grid(row=7,column=3)
-#      l_nmsuf.grid(row=8,column=1)
-#      self.e_nmsuf.grid(row=8,column=3)
-#      l_attn.grid(row=9,column=1)
-#      self.e_attn.grid(row=9,column=3)
-#      l_street.grid(row=10,column=1)
-#      self.e_street.grid(row=10,column=3)
-#      l_pobox.grid(row=1,column=4)
-#      self.e_pobox.grid(row=1,column=6)
-#      l_city.grid(row=2,column=4)
-#      self.e_city.grid(row=2,column=6)
-#      l_state.grid(row=3,column=4)
-#      self.e_state.grid(row=3,column=6)
-#      l_zipcd.grid(row=4,column=4)
-#      self.e_zipcd.grid(row=4,column=6)
-#      l_phone.grid(row=5,column=4)
-#      self.e_phone.grid(row=5,column=6)
-#      l_fax.grid(row=6,column=4)
-#      self.e_fax.grid(row=6,column=6)
-#      l_email.grid(row=7,column=4)
-#      self.e_email.grid(row=7,column=6)
-#      l_appcd.grid(row=8,column=4)
-#      self.e_appcd.grid(row=8,column=6)
-#      l_opclass.grid(row=9,column=4)
-#      self.e_opclass.grid(row=9,column=6)
-#      l_sigok.grid(row=10,column=4)
-#      self.e_sigok.grid(row=10,column=6)
-#      l_physcert.grid(row=1,column=7)
-#      self.e_physcert.grid(row=1,column=9)
-#      l_reqexp.grid(row=2,column=7)
-#      self.e_reqexp.grid(row=2,column=9)
-#      l_waiverreq.grid(row=3,column=7)
-#      self.e_waiverreq.grid(row=3,column=9)
-#      l_att.grid(row=4,column=7)
-#      self.e_att.grid(row=4,column=9)
-#      l_updcall.grid(row=5,column=7)
-#      self.e_updcall.grid(row=5,column=9)
-#      l_trusteecall.grid(row=6,column=7)
-#      self.e_trusteecall.grid(row=6,column=9)
-#      l_apptyp.grid(row=7,column=7)
-#      self.e_apptyp.grid(row=7,column=9)
-#      l_frn.grid(row=8,column=7)
-#      self.e_frn.grid(row=8,column=9)
-#      l_dob.grid(row=9,column=7)
-#      self.e_dob.grid(row=9,column=9)
-#      l_lnchg.grid(row=10,column=7)
-#      self.e_lnchg.grid(row=10,column=9)
-#      l_psqcd.grid(row=11,column=3)
-#      self.e_psqcd.grid(row=11,column=5)
-#      l_psq.grid(row=12,column=3)
-#      self.e_psq.grid(row=12,column=5)
-#      l_psqa.grid(row=13,column=3)
-#      self.e_psqa.grid(row=13,column=5)
-#      l_felon.grid(row=14,column=3)
-#      self.e_felon.grid(row=14,column=5)
-#  
-#      b_save.grid(row=15,column=5)
-#      b_close.grid(row=16,column=5)
-#      
-#      def change_dropdown(*args):
-#          print( va_updcall.get() )
-#
-#  def stdVAwin():
-     # Standard Applicant setup.
-     # Maybe the windows should be separate classes?
-     #self = Toplevel(root)
-     #self.title("Applicant Data")
   ## Save VA
   #
   #  Save applicant information to the applicants array for this
@@ -944,13 +768,13 @@ class appWindow(tk.Frame):
     self.e_psqa.delete(0, 'end')
     self.e_felon.delete(0, 'end')
    
-    # Finally, update the preview window.
-    # mainWindow.updVA()
 
 ## clubApplicant class
 #
 # Subclass / Child of appWindow class - prints out the labels and
 # element frames for club application entries into the batch file.
+# This can only be enabled by adding a "club" config file entry to
+# enable the pane. Nearly all VECs SHOULD NOT be using this.
 class clubApplicant(appWindow):
   def __init__ (self, parent, controller):
     appWindow.__init__(self, parent, controller)
@@ -1096,40 +920,30 @@ class stdApplicant(appWindow):
 ## prevWin class
 #
 # preview Window Class.
-class prevWin():
-  def __init__(self, master):
+class prevWin(Frame):
+  def __init__(self,master=None):
     global VA_list
-    global VAs
-    self.master = master
-    self.frame = tk.Frame(self.master)
-    VA_list = tk.Text(self.frame, width=150, height=10, bg="white")
-    VA_list.insert(END, VE_str+"\n")
-
-    # Loop over applicant data, and write to the preview window
-    VA_list.insert(END, "VA|" + VAs[i].fn + "|" + VAs[i].call \
-      + "|" + VAs[i].ssn + "|" + VAs[i].entname + "|" \
-      + VAs[i].fname + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" \
-      + VAs[i].nmsuf + "|" + VAs[i].attn + "|" + VAs[i].street \
-      + "|" + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state\
-      + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
-      + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
-      + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
-      + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
-      + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
-#Extra pipes here for attachment file / fax ind ^^^
-      + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
-      + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
-      + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
-      + VAs[i].psqa + "|" + VAs[i].felon + "\n")
-
+    Frame.__init__(self,master)
+    self.master=master
+    self.master.wm_title("Response Preview")
+    frame_a=tk.Frame(self.master)
+  
+    VA_list = tk.Text(frame_a, width=150, height=10, bg="white")
 
     VA_list.pack()
-    self.frame.pack()
+    self.b_ret = tk.Button(frame_a, text="Close Window", 
+      command=self.master.destroy)
+    self.b_ret.pack()
 
+    frame_a.pack()
+
+  def rspUpdate(l):
+    global VA_List
+    VA_list.insert(END,l)
+    
 
 
 app = mainWindow()
 app.wm_title("FCC Electronic Batch File Generator v." \
     + maver + "." + miver + "." + ptver)
-#root.geometry("550x300")
 app.mainloop()

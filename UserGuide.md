@@ -304,11 +304,14 @@ records into comma-separated values.  This can be achieved by using the
 "Convert Response" option.  Response files converted in this fashion
 will be saved to your computer's filesystem in ".csv" format for easier
 viewing in your preferred spreadsheet application - such as LibreOffice
-Calc or Microsoft Excel.
+Calc or Microsoft Excel.  
 
 Files saved in such a manner will be saved to the same directory /
 folder as you imported the response file from.  It is recommended that
 you save the response to a known location before attempting to convert.
+
+In addition to saving the file, the application will pop up a small
+preview window for quick review of the output.  
 
 ## FCC Response Codes
 [FCC](https://www.fcc.gov/sites/default/files/ebf_error_codes_09072017.pdf)
