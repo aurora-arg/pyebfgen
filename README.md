@@ -8,11 +8,6 @@ This should work cross-platform; however my main development environment
 is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
-** Version 0.2 base **
-Version 0.2 represents a pretty big sway from version 0.1, in hopes that
-it'll make things considerably more maintainable.  This version should
-be considered unstable, and should not be used.
-
 ## Requirements
   - Python 3.5.3+
   - python3-tk
@@ -39,6 +34,9 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 1.0.0 - Stable
+  - Final polish, out of beta.
+
 v 0.2.14 - Expanded Preview
   - Added EBF File Preview
 

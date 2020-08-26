@@ -1,8 +1,4 @@
-# pyEBFGen Guide
-** Version 0.2 base **
-Version 0.2 represents a pretty big sway from version 0.1, in hopes that
-it'll make things considerably more maintainable.  This version should
-be considered unstable, and should not be used.
+# pyEBFGen Guide v1.0.0
 
 ## Overview
 
