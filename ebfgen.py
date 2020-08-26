@@ -4,8 +4,8 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 0.2.13
-#                         date: Fri, 21 Aug 2020 08:32:52 -0400
+#                      version: 1.0.0
+#                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
 #
@@ -46,13 +46,13 @@ from tkinter.filedialog import *
 from array import *
 
 ## Major Version number
-maver = "0"
+maver = "1"
 
 ## Minor Version Number. Minor versions reset on Major version updates.
-miver = "2" 
+miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "13"
+ptver = "0"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
