@@ -123,6 +123,7 @@ elmf = None
 
 ## Global record of the completed VEC header string
 VE_str = ""
+VEset = False
 
 ## Regional Identifier for filenaming purposes.
 tloc = None
@@ -397,11 +398,38 @@ class updVEC(tk.Frame):
     global vestidx
     global vis
     global clubfm
-    # Set VE / EBF file header record.
+    global VE_str
+    global VEset
+    global VA_list
 
     def UpdateStateIdx (event):
       global vestidx
       vestidx = self.e_vestate.current()
+
+    def preview ():  
+      if not VEset:
+        showerror(title="VEC Error", message="VEC Data not saved.")
+        return
+      else:
+        newWin=tk.Tk()
+        prevWin(newWin)
+        prevWin.rspUpdate(VE_str +"\n")
+        for i in range(len(VAs)):
+         outln="VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
+          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
+          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
+          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
+          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
+          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
+          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
+          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
+          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
+          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
+          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
+          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
+          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
+          + VAs[i].psqa + "|" + VAs[i].felon + "\n"
+         prevWin.rspUpdate(outln)
 
     vec_sec = tk.Label(self, text="")
     vec_sec.grid(row=0, column=2)
@@ -467,6 +495,9 @@ class updVEC(tk.Frame):
     self.e_tcnt.grid(row=8, column=2)
     ve_save.grid(row=9,column=1)
 
+    b_prev= Button(self, text="Preview Batch File",
+      command=preview)
+    b_prev.grid(row=9,column=2)
     b_stdapp = Button(self, text="Add Applicant", 
       command=lambda:controller.show_frame(stdApplicant))
     b_stdapp.grid(row=13,column=2)
@@ -490,6 +521,8 @@ class updVEC(tk.Frame):
   ## Prepare output
   def prepWrite(self):
     global vis
+    global VEset
+    VEset = False
     if vis:
       self.b_save.config({"background":"Yellow", "foreground":"Black"})
     else:
@@ -520,7 +553,7 @@ class updVEC(tk.Frame):
     global elmf
     global tloc
     global vis
-
+    global VEset
     global VE_str
 
     VEC.set(self.e_VEC.get().upper())
@@ -539,10 +572,13 @@ class updVEC(tk.Frame):
         "|" + vestate.get() + "|" + appt.get() + "|" + appp.get() + \
         "|" + appf.get() + "|" + elmp.get() + "|" + elmf.get()
 
+    VEset = True
+
     if vis:
       self.b_save.config({"background":"Blue", "foreground":"White"})
     else:
       self.b_save.config({"background":"Green"})
+
 
 ## App_Windows Class
 #
@@ -925,7 +961,7 @@ class prevWin(Frame):
     global VA_list
     Frame.__init__(self,master)
     self.master=master
-    self.master.wm_title("Response Preview")
+    self.master.wm_title("Preview")
     frame_a=tk.Frame(self.master)
   
     VA_list = tk.Text(frame_a, width=150, height=10, bg="white")

@@ -276,6 +276,13 @@ from the 605 Form.  Let’s go through each field:
   - You may immediately start on your next application, or click 
     *"Close Window"*.
 
+## Previewing the batch file
+
+At any time after applying the VEC information (i.e. when the "save"
+button is Green or Blue), you can preview the current state of the batch
+file by clicking on the "Batch File Preview" button.
+
+
 ## Generating the batch file
 
 When all applicants have been added, you can generate the session
