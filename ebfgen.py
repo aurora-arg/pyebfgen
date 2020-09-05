@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 1.0.1
+#                      version: 1.0.2
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "1"
+ptver = "2"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -69,7 +69,7 @@ states=['AL','AK','AS','AZ','AR','CA','CO','CT','DE','DC','FL','GA'\
         ,'MI','MN','MO','MS','MT','NE','NV','NH','NJ','NM','NY','NC'\
         ,'ND','MP','OH','OK','OR','PA','PR','RI','SC','SD','TN','TX'\
         ,'UM','UT','VT','VA','VI','WA','WV','WI','WY','-----','AE','AP'\
-        ,'AA','-----','DX']
+        ,'AA','-----','DX','(blank)']
 
 ## List of application purpose codes
 #  "AU" = Administrative Update
@@ -566,6 +566,10 @@ class updVEC(tk.Frame):
     elmp.set(self.e_elmP.get())
     elmf.set(self.e_elmF.get())
     tloc.set(self.e_tloc.get())
+
+    #allow setting the VEC state to a blank... 
+    if vestate.get() == "(blank)":
+      vestate.set("")
 
 
     VE_str="VE|" + VEC.get() + "|" + sdt.get() + "|" + vecity.get() + \
