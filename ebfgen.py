@@ -600,7 +600,6 @@ class appWindow(tk.Frame):
     va_updcall=""
     va_felon=""
     
-
     self.l_vafn = tk.Label(self, text="Pending File Number")
     self.e_vafn = tk.Entry(self)
     self.l_call = tk.Label(self, text="Callsign, if licensed")
@@ -683,7 +682,7 @@ class appWindow(tk.Frame):
       command=self.sVA)
     self.b_close = tk.Button(self, text="Close Window", 
       command=lambda:controller.show_frame(updVEC))
-
+    
         
   ## Save VA
   #
@@ -813,6 +812,164 @@ class appWindow(tk.Frame):
     self.e_psqa.delete(0, 'end')
     self.e_felon.delete(0, 'end')
    
+  ## Update VA
+  #
+  #  Update an applicant already in the applicants array for this
+  #  session.
+  def uVA(self,apl):
+    # Most of these probably don't need to be set like this, but it
+    # does make the array append a little cleaner
+    va_fn = self.e_vafn.get()
+    va_call = self.e_call.get().upper()
+    # Remove dashes from the ssn, if included
+    va_ssn = self.e_ssn.get().replace("-","")
+    va_ent = self.e_ent.get()
+    # First name is 20 char max
+    va_fname = self.e_fname.get()[:20]
+    # MI is one char, and must be caps
+    va_mi = self.e_mi.get().upper()[:1]
+    # Last name is 20 char max
+    va_lname = self.e_lname.get()[:20]
+    # Suffix is 3 char max
+    va_nmsuf = self.e_nmsuf.get()[:3]
+    va_attn = self.e_attn.get()
+    # Street address is 60 char max
+    va_street = self.e_street.get()[:60]
+    # P.O. Box is 20 char max
+    va_pobox = self.e_pobox.get()[:20]
+    # City is 20 char
+    va_city = self.e_city.get()[:20]
+    va_state = self.e_state.get()
+    # Remove dashes from zip code (if present)
+    va_zipcd = self.e_zipcd.get().replace("-","")
+    # Remove formatting from phone number (if present)
+    va_phone = self.e_phone.get().replace("(","").\
+      replace(")","").replace("-","")
+    # Remove formatting from fax number (if present)
+    va_fax = self.e_fax.get().replace("(","").\
+      replace(")","").replace("-","")
+    # Email is 50 char max
+    va_email = self.e_email.get()[:50]
+    va_appcd = self.e_appcd.get()
+    va_opclass = self.e_opclass.get()
+    va_sigok = self.e_sigok.get()
+    va_physcert = self.e_physcert.get()
+    va_reqexp = self.e_reqexp.get()
+    va_waivereq = self.e_waiverreq.get()
+    va_att = self.e_att.get()
+    va_updcall = self.e_updcall.get()
+    va_trusteecall = self.e_trusteecall.get()
+    va_apptyp = self.e_apptyp.get()
+    va_frn = self.e_frn.get()
+    va_dob = self.e_dob.get()
+    va_lnchg = self.e_lnchg.get()
+    va_psqcd = self.e_psqcd.get()
+    va_psq = self.e_psq.get()
+    va_psqa = self.e_psqa.get()
+    va_felon = self.e_felon.get()
+
+    # Formatted (zero-padded) FRN
+    frn = ""
+
+    # FRN supercedes ssn 
+    if va_frn:
+      va_ssn = ""
+      #If the FRN is <10 digits, zero pad it
+      frn = va_frn.zfill(10)
+    else:
+      if len(va_ssn)!=9:
+        showerror(title="UVA SSN Error", message="SSN is not 9 digits.")
+        return
+
+    if va_felon == "null" or va_felon == "":
+      va_felon = ""
+      if va_appcd != "AU":
+        showerror(title="Basic Qualification Question Error",
+          message="'Basic Qualification Question' must be answered.")
+        return
+
+    if va_state == "-----" or va_state == "":
+      showerror(title="State Error", 
+        message="Please select a valid state.")
+      return
+
+    if va_opclass == "null" or va_opclass == "":
+      showerror(title="Class Error",
+        message="Please select a valid operator class.")
+      return
+
+    VAs[apl].fn=va_fn
+    VAs[apl].call=va_call
+    VAs[apl].ssn=va_ssn
+    VAs[apl].entname=va_ent
+    VAs[apl].fname=va_fname
+    VAs[apl].mi=va_mi
+    VAs[apl].lname=va_lname
+    VAs[apl].nmsuf=va_nmsuf
+    VAs[apl].attn=va_attn 
+    VAs[apl].street=va_street 
+    VAs[apl].pobox=va_pobox 
+    VAs[apl].city=va_city 
+    VAs[apl].state=va_state 
+    VAs[apl].zipcd=va_zipcd 
+    VAs[apl].phone=va_phone 
+    VAs[apl].fax=va_fax 
+    VAs[apl].email=va_email 
+    VAs[apl].appcd=va_appcd 
+    VAs[apl].opclass=va_opclass 
+    VAs[apl].sigok=va_sigok
+    VAs[apl].physcert=va_physcert
+    VAs[apl].reqexp=va_reqexp
+    VAs[apl].waivereq=va_waivereq
+    VAs[apl].att=va_att 
+    VAs[apl].updcall=va_updcall 
+    VAs[apl].trusteecall=va_trusteecall
+    VAs[apl].apptyp=va_apptyp
+    VAs[apl].frn=frn
+    VAs[apl].dob=va_dob
+    VAs[apl].lnchg=va_lnchg
+    VAs[apl].psqcd=va_psqcd
+    VAs[apl].psq=va_psq
+    VAs[apl].psqa=va_psqa
+    VAs[apl].felon=va_felon
+    
+    # Reset the form for the next applicant.
+    self.e_vafn.delete(0,'end')
+    self.e_call.delete(0, 'end')
+    self.e_ssn.delete(0, 'end')
+    self.e_ent.delete(0, 'end')
+    self.e_fname.delete(0, 'end')
+    self.e_mi.delete(0, 'end')
+    self.e_lname.delete(0, 'end')
+    self.e_nmsuf.delete(0, 'end')
+    self.e_attn.delete(0, 'end')
+    self.e_street.delete(0, 'end')
+    self.e_pobox.delete(0, 'end')
+    self.e_city.delete(0, 'end')
+    self.e_state.delete(0, 'end')
+    self.e_zipcd.delete(0, 'end')
+    self.e_phone.delete(0, 'end')
+    self.e_fax.delete(0, 'end')
+    self.e_email.delete(0, 'end')
+    self.e_appcd.delete(0, 'end')
+    self.e_opclass.delete(0, 'end')
+    self.e_reqexp.delete(0, 'end')
+    self.e_waiverreq.delete(0, 'end')
+    self.e_updcall.delete(0, 'end')
+    self.e_trusteecall.delete(0, 'end')
+    self.e_frn.delete(0, 'end')
+    self.e_dob.delete(0, 'end')
+    self.e_lnchg.delete(0, 'end')
+    self.e_psqcd.delete(0, 'end')
+    self.e_psq.delete(0, 'end')
+    self.e_psqa.delete(0, 'end')
+    self.e_felon.delete(0, 'end')
+
+  def reload(self,apl):
+    #donothing
+    global VAs
+    self.e_vafn.insert(0,VAs[apl].fname)
+
 
 ## clubApplicant class
 #
@@ -962,8 +1119,6 @@ class stdApplicant(appWindow):
     def change_dropdown(*args):
         print( va_updcall.get() )
 
-## prevWin class
-#
 # preview Window Class.
 class prevWin(Frame):
   def __init__(self,master=None):
