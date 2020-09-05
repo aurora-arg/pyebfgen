@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 1.0.0
+#                      version: 1.0.1
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "0"
+ptver = "1"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -760,6 +760,11 @@ class appWindow(tk.Frame):
     if va_state == "-----" or va_state == "":
       showerror(title="State Error", 
         message="Please select a valid state.")
+      return
+
+    if va_opclass == "null" or va_opclass == "":
+      showerror(title="Class Error",
+        message="Please select a valid operator class.")
       return
 
     VAs.append(VA( va_fn, va_call, va_ssn, va_ent\
