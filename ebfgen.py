@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 1.0.3
+#                      version: 1.0.4
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "3"
+ptver = "4"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -359,7 +359,7 @@ class mainWindow(tk.Tk):
         'PR': 42, 'RI': 43, 'SC': 44, 'SD': 45, 'TN': 46, 'TX': 47, 
         'UM': 48, 'UT': 49, 'VT': 50, 'VA': 51, 'VI': 52, 'WA': 53, 
         'WV': 54, 'WI': 55, 'WY': 56, 'AE': 58, 'AP': 59, 'AA': 60, 
-        'DX': 62}
+        'DX': 62, '(blank)': 63}
       tloc.set(self.cp.get('VEC_CFG','regcd'))
       vestidx = strl[vestate.get()]
       #semi-secret option to enable club applications
@@ -410,8 +410,71 @@ class updVEC(tk.Frame):
 
     def UpdateStateIdx (event):
       global vestidx
+      global tloc
+      tloc = StringVar()
       vestidx = self.e_vestate.current()
-
+      i=vestidx
+      self.e_tloc.delete(0,END)
+      if i==7 or i==23 or i==21 or i==31 or i==43 or i==50:
+        tloc.set("A")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==32 or i==34:
+        tloc.set("B")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==8 or i==9 or i==22 or i==41:
+        tloc.set("C")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==0 or i==10 or i==11 or i==19 or i==35 or i==44 \
+        or i==46 or i==51:
+        tloc.set("D")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==4 or i==20 or i==27 or i==33 or i==39 or i==47:
+        tloc.set("E")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==5:
+        tloc.set("F")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==3 or i==14 or i==28 or i==30 or i==40 or i==49 \
+        or i==53 or i==56:
+        tloc.set("G")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==24 or i==38 or i==54:
+        tloc.set("H")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==15 or i==16 or i==55:
+        tloc.set("I")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==6 or i==17 or i==18 or i==25 or i==26 or i==36 \
+        or i==29 or i==45:
+        tloc.set("J")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==1:
+        tloc.set("K")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==42 or i==52:
+        tloc.set("L")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==2 or i==12 or i==13 or i==37:
+        tloc.set("M")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==60:
+        tloc.set("N")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==58:
+        tloc.set("O")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==59:
+        tloc.set("P")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==62:
+        tloc.set("Q")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==63:
+        tloc.set("R")
+        self.e_tloc.insert(0,tloc.get())
+      else:
+        tloc.set("X")
+        self.e_tloc.insert(0,tloc.get())
 
     def preview ():  
       if not VEset:

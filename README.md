@@ -34,6 +34,9 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 1.0.4 - Update Region ID
+  - Region ID automatically updates when VE State is changed.
+
 v 1.0.3 - Update Applicant Data
   - Can now update applicant entries in the program, rather than needing
     to edit the batch file after saving.
