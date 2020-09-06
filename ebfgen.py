@@ -469,8 +469,11 @@ class updVEC(tk.Frame):
       elif i==62:
         tloc.set("Q")
         self.e_tloc.insert(0,tloc.get())
-      elif i==63:
+      elif i==48:
         tloc.set("R")
+        self.e_tloc.insert(0,tloc.get())
+      elif i==63:
+        tloc.set("S")
         self.e_tloc.insert(0,tloc.get())
       else:
         tloc.set("X")
