@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert KE8PFU
 #                    copyright: 2020
-#                      version: 1.0.2
+#                      version: 1.0.3
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "2"
+ptver = "3"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -512,7 +512,7 @@ class updVEC(tk.Frame):
     b_stdapp.grid(row=13,column=2)
     l_uappid.grid(row=12,column=4)
     self.e_uappid.grid(row=13,column=4)
-    b_stdapp = Button(self, text="Set", 
+    b_stdapp = Button(self, text="Update Applicant", 
       command=self.prepUpd)
     b_stdapp.grid(row=13,column=5)
     if clubfm:
@@ -545,13 +545,19 @@ class updVEC(tk.Frame):
 
   def prepUpd(self):
     global vapl
+    global VAs
     if self.e_uappid.get() == "":
-      showerror(title="Apl Error", message="AppID Not Provided.")
+      showerror(title="Update Error", message="Applicant ID Not Provided.")
       return
     else:
       vapl=int(self.e_uappid.get())
-      newWin=tk.Tk()
-      updApplicant(newWin)
+      if vapl > (len(VAs)-1):
+        showerror(title="Update Error", 
+          message="Invalid Applicant ID.")
+        return
+      else:
+        newWin=tk.Tk()
+        updApplicant(newWin)
     
 
   ## Quit
