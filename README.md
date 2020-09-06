@@ -8,11 +8,6 @@ This should work cross-platform; however my main development environment
 is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
-### Temp hiatus 
-
-Taking the Extra exam on 2020-09-03.  Dev work on hiatus until
-2020-09-04.
-
 ## Requirements
   - Python 3.5.3+
   - python3-tk
