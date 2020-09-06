@@ -39,6 +39,10 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 1.0.3 - Update Applicant Data
+  - Can now update applicant entries in the program, rather than needing
+    to edit the batch file after saving.
+
 v 1.0.2 - Blank State option
   - Allow the VEC state to be set to a blank (note, blank Applicant
     state will fail).

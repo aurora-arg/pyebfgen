@@ -125,7 +125,11 @@ following actions, in accordance with the FCC's EBF Userguide.
     application information will not be saved.
   - If a state / territorry separator is selected (i.e. "-----"), you
     will receive a warning and the application information will not be 
-    saved to the batch file.
+    saved to the batch file. Likewise, if no state / territory option is
+    selected.
+  - If the application does not have an operator class selected, you
+    will receive a warning, and the application information will not be
+    saved.
 
 In the event of one of the above warnings, the form will retain all
 previously entered data (with the exception of dropdown options).
@@ -277,6 +281,20 @@ from the 605 Form.  Let’s go through each field:
 At any time after applying the VEC information (i.e. when the "save"
 button is Green or Blue), you can preview the current state of the batch
 file by clicking on the "Batch File Preview" button.
+
+## Updating an erroneous entry
+
+If you notice an error in the preview window, take note of the
+"Applicant ID" for that line item.  It starts at zero (0), and counts
+upwards from there.  Take that value, and fill in the "Applicant ID"
+field of the main EBFGen window and press the "Update Applicant" button.
+
+A new window will be opened, identical to the standard "New Applicant"
+view, but will be pre-populated with the values from the applicant line
+item you selected.  Make the necessary corrections and click the "Save
+Updates" button.  
+
+The form has the same validations as the primary "Add Applicant" form.
 
 
 ## Generating the batch file
