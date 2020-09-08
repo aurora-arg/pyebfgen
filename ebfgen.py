@@ -2,7 +2,7 @@
 ########################################################################
 #
 #                       script: ebfgen
-#                           by: Dan Purgert KE8PFU
+#                           by: Dan Purgert AD8GC 
 #                    copyright: 2020
 #                      version: 1.0.5
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
