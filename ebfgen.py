@@ -364,8 +364,12 @@ class mainWindow(tk.Tk):
       vestidx = strl[vestate.get()]
       #semi-secret option to enable club applications
       clubfm = self.cp.getboolean('VEC_CFG', 'club', fallback=False)
-    
-
+   
+      if clubfm: 
+        vecity.set("")
+        vestate.set("(blank)")
+        vestidx = strl[vestate.get()]
+        tloc.set("Z")
 
     cntr = tk.Frame(self)
     cntr.pack(side="top", fill="both", expand=True)
@@ -411,6 +415,7 @@ class updVEC(tk.Frame):
     def UpdateStateIdx (event):
       global vestidx
       global tloc
+      global clubfm
       tloc = StringVar()
       vestidx = self.e_vestate.current()
       i=vestidx
@@ -477,6 +482,11 @@ class updVEC(tk.Frame):
         self.e_tloc.insert(0,tloc.get())
       else:
         tloc.set("X")
+        self.e_tloc.insert(0,tloc.get())
+
+      if clubfm:
+        self.e_tloc.delete(0,END)
+        tloc.set("Z")
         self.e_tloc.insert(0,tloc.get())
 
     def preview ():  
@@ -550,20 +560,22 @@ class updVEC(tk.Frame):
     self.e_VEC.grid(row=1, column=2)
     l_sess.grid(row=2, column=1)
     self.e_sess.grid(row=2, column=2)
-    l_city.grid(row=3, column=1)
-    self.e_vecity.grid(row=3, column=2)
-    l_state.grid(row=4, column=1)
-    self.e_vestate.grid(row=4, column=2)
-    l_appT.grid(row=1, column=4)
-    self.e_appT.grid(row=1, column=5)
-    l_appP.grid(row=2, column=4)
-    self.e_appP.grid(row=2, column=5)
-    l_appF.grid(row=3, column=4)
-    self.e_appF.grid(row=3, column=5)
-    l_elmP.grid(row=4, column=4)
-    self.e_elmP.grid(row=4, column=5)
-    l_elmF.grid(row=5, column=4)
-    self.e_elmF.grid(row=5, column=5)
+    if not clubfm:
+      l_city.grid(row=3, column=1)
+      self.e_vecity.grid(row=3, column=2)
+      l_state.grid(row=4, column=1)
+      self.e_vestate.grid(row=4, column=2)
+      l_appT.grid(row=1, column=4)
+      self.e_appT.grid(row=1, column=5)
+      l_appP.grid(row=2, column=4)
+      self.e_appP.grid(row=2, column=5)
+      l_appF.grid(row=3, column=4)
+      self.e_appF.grid(row=3, column=5)
+      l_elmP.grid(row=4, column=4)
+      self.e_elmP.grid(row=4, column=5)
+      l_elmF.grid(row=5, column=4)
+      self.e_elmF.grid(row=5, column=5)
+
     l_tloc.grid(row=9, column=4)
     self.e_tloc.grid(row=9, column=5)
     l_tcnt.grid(row=8, column=1)
@@ -603,6 +615,7 @@ class updVEC(tk.Frame):
     global vis
     global VEset
     VEset = False
+
     if vis:
       self.b_save.config({"background":"Yellow", "foreground":"Black"})
     else:
@@ -863,7 +876,8 @@ class appWindow(tk.Frame):
         message="Please select a valid state.")
       return
 
-    if va_opclass == "null" or va_opclass == "":
+    if va_opclass == "null" or va_opclass == "" \
+      and va_ent == "null" or va_ent == "":
       showerror(title="Class Error",
         message="Please select a valid operator class.")
       return
