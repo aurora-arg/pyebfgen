@@ -146,6 +146,7 @@ vapl=0
 clubfm = False 
 cluben = True
 b_clubentxt = None
+lcall = None
 
 ## Enable Visibility features
 vis = False 
@@ -381,6 +382,7 @@ class mainWindow(tk.Tk):
     global clubfm
     global cluben
     global b_clubentxt
+    global lcall
 
     global VA_list
     global VAs
@@ -397,8 +399,14 @@ class mainWindow(tk.Tk):
     elmf = StringVar()
     tloc = StringVar()
     b_clubentxt=StringVar()
+    lcall=StringVar()
 
     fileManager.readCfg()
+
+    if cluben:
+      lcall.set("Club Callsign")
+    else:
+      lcall.set("Callsign, if licensed")
 
 
     cntr = tk.Frame(self)
@@ -583,7 +591,7 @@ class updVEC(tk.Frame):
     self.e_tloc.insert(0,tloc.get())
     l_tcnt = tk.Label(self, text="File Counter:")
     self.e_tcnt = tk.Entry(self)
-    l_uappid = tk.Label(self, text="Applicant ID:")
+    self.l_uappid = tk.Label(self, text="Applicant ID:")
     self.e_uappid = tk.Entry(self)
     self.e_tcnt.insert(0,tcnt)
     ve_save = tk.Button(self, text="Apply",
@@ -618,21 +626,29 @@ class updVEC(tk.Frame):
     b_prev= Button(self, text="Preview Batch File",
       command=preview)
     b_prev.grid(row=9,column=2)
-    b_stdapp = Button(self, text="Add Applicant", 
+    
+    self.b_stdapp = Button(self, text="Add Applicant", 
       command=lambda:controller.show_frame(stdApplicant))
-    b_stdapp.grid(row=13,column=2)
-    l_uappid.grid(row=12,column=4)
-    self.e_uappid.grid(row=13,column=4)
-    b_stdapp = Button(self, text="Update Applicant", 
+    self.b_clubapp = Button(self, text="Club Applicant", 
+      command=lambda:controller.show_frame(clubApplicant))
+    self.b_cluben = Button(self, textvariable=b_clubentxt,
+      command = self.switchClub)
+    self.b_updapp = Button(self, text="Update Applicant", 
       command=self.prepUpd)
-    b_stdapp.grid(row=13,column=5)
+
     if clubfm:
-      b_clubapp = Button(self, text="Club Applicant", 
-        command=lambda:controller.show_frame(clubApplicant))
-      b_clubapp.grid(row=13, column=1)
-      self.b_cluben = Button(self, textvariable=b_clubentxt,
-        command = self.switchClub)
+      #show club application stuff
+      self.b_clubapp.grid(row=13, column=1)
       self.b_cluben.grid (row=14, column=5)
+    else:
+      #show individual application stuff
+      self.b_stdapp.grid(row=13,column=2)
+      self.b_updapp.grid(row=13,column=5)
+      self.l_uappid.grid(row=12,column=4)
+      self.e_uappid.grid(row=13,column=4)
+
+
+
     self.b_save = Button(self, text="Save Session", 
       command=self.prepWrite, background="Red") 
     self.b_save.grid(row=14, column=2)
@@ -656,6 +672,7 @@ class updVEC(tk.Frame):
     global vestidx
     global cluben
     global b_clubentxt
+    global lcall
     self.e_tloc.delete(0,END)
     self.e_vecity.delete(0,END)
     self.e_vestate.delete(0,END)
@@ -666,6 +683,7 @@ class updVEC(tk.Frame):
       b_clubentxt.set("Club Enable")
       self.e_vecity.insert(0,vecity.get())
       self.e_tloc.insert(0,tloc.get())
+      lcall.set("Callsign, if licensed")
 
       self.l_city.grid(row=3, column=1)
       self.e_vecity.grid(row=3, column=2)
@@ -681,6 +699,11 @@ class updVEC(tk.Frame):
       self.e_elmP.grid(row=4, column=5)
       self.l_elmF.grid(row=5, column=4)
       self.e_elmF.grid(row=5, column=5)
+      self.b_clubapp.grid_forget()
+      self.b_stdapp.grid(row=13,column=2)
+      self.b_updapp.grid(row=13,column=5)
+      self.l_uappid.grid(row=12,column=4)
+      self.e_uappid.grid(row=13,column=4)
     else:
       cluben = True
       fileManager.readCfg()
@@ -688,7 +711,9 @@ class updVEC(tk.Frame):
       self.e_vecity.insert(0,vecity.get())
       tloc.set("Z")
       self.e_tloc.insert(0,tloc.get())
+      lcall.set("Club Callsign")
 
+      self.b_clubapp.grid(row=13, column=1)
       self.l_city.grid_forget()
       self.e_vecity.grid_forget()
       self.l_state.grid_forget()
@@ -703,6 +728,10 @@ class updVEC(tk.Frame):
       self.e_elmP.grid_forget()
       self.l_elmF.grid_forget()
       self.e_elmF.grid_forget()
+      self.b_stdapp.grid_forget()
+      self.b_updapp.grid_forget()
+      self.l_uappid.grid_forget()
+      self.e_uappid.grid_forget()
 
   ## Prepare output
   def prepWrite(self):
@@ -797,6 +826,7 @@ class appWindow(tk.Frame):
     tk.Frame.__init__(self, parent)
     global vapl
     global VAs
+    global lcall
     
     # set some local variables for holding onto dropdown selections
     va_state=""
@@ -807,7 +837,7 @@ class appWindow(tk.Frame):
     
     self.l_vafn = tk.Label(self, text="Pending File Number")
     self.e_vafn = tk.Entry(self)
-    self.l_call = tk.Label(self, text="Callsign, if licensed")
+    self.l_call = tk.Label(self, textvariable=lcall)
     self.e_call = tk.Entry(self)
     self.l_ssn = tk.Label(self, text="Social Security Number")
     self.e_ssn = tk.Entry(self)
@@ -1037,8 +1067,10 @@ class clubApplicant(appWindow):
 
     self.l_ent.grid(row=1, column=1)
     self.e_ent.grid(row=2, column=1)
-    self.l_trusteecall.grid(row=1,column=2)
-    self.e_trusteecall.grid(row=2,column=2)
+    self.l_call.grid(row=1,column=2)
+    self.e_call.grid(row=2,column=2)
+    self.l_trusteecall.grid(row=1,column=3)
+    self.e_trusteecall.grid(row=2,column=3)
  
     self.l_attn.grid(row=3, column=1)
     self.e_attn.grid(row=4, column=1)
