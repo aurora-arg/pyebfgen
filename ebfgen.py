@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert AD8GC 
 #                    copyright: 2020
-#                      version: 1.0.5
+#                      version: 1.0.6
 #                         date: Wed, 26 Aug 2020 17:30:21 -0400
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "5"
+ptver = "6"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -1000,8 +1000,8 @@ class appWindow(tk.Frame):
         message="Please select a valid state.")
       return
 
-    if va_opclass == "null" or va_opclass == "" \
-      and va_ent == "null" or va_ent == "":
+    if (va_opclass == "null" or va_opclass == "") \
+      and (va_ent == "null" or va_ent == ""):
       showerror(title="Class Error",
         message="Please select a valid operator class.")
       return
@@ -1108,7 +1108,7 @@ class clubApplicant(appWindow):
     
 
     #set the widget tab-order properly.
-    taborder=(self.e_ent, self.e_trusteecall,\
+    taborder=(self.e_ent, self.e_call, self.e_trusteecall,\
       self.e_attn, self.e_street, self.e_city, self.e_state,\
       self.e_zipcd, self.e_ssn, self.e_frn, self.e_phone,\
       self.e_email, self.e_felon, self.e_appcd, self.e_vafn)
