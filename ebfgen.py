@@ -144,6 +144,8 @@ vapl=0
 
 ## Enable Club applications in File Menu
 clubfm = False 
+cluben = True
+b_clubentxt = None
 
 ## Enable Visibility features
 vis = False 
@@ -297,6 +299,64 @@ class fileManager():
       #reset VA Counter
       c = 0
   
+  def readCfg():
+    global VEC
+    global sdt
+    global vecity
+    global vestate
+    global appt
+    global appp
+    global appf
+    global elmp
+    global elmf
+    global tloc
+    global tcnt
+    global vestidx
+    global vis
+    global clubfm
+    global cluben
+    global b_clubentxt
+
+
+    #there has to ba a better way than writing 'vec.cfg' twice
+    cfg=pathlib.Path('./vec.cfg')
+
+    if cfg.is_file():
+      mycp = cp.RawConfigParser()
+      configFilePath = r'./vec.cfg'
+      mycp.read(configFilePath)
+      #Read defaults in from config file
+      vis=(mycp.getboolean('VEC_CFG','visaid',fallback=False))
+      VEC.set(mycp.get('VEC_CFG','VEC'))
+      vecity.set(mycp.get('VEC_CFG','city'))
+      vestate.set(mycp.get('VEC_CFG','state'))
+      # state reverse lookup dict.  Skip 57 and 61 because they're
+      # separators
+      strl={ 'AL': 0, 'AK': 1, 'AS': 2, 'AZ': 3, 'AR': 4, 'CA': 5, 
+        'CO': 6, 'CT': 7, 'DE': 8, 'DC': 9, 'FL': 10, 'GA': 11, 
+        'GU': 12, 'HI': 13, 'ID': 14, 'IL': 15, 'IN': 16, 'IA': 17, 
+        'KS': 18, 'KY': 19, 'LA': 20, 'ME': 21, 'MD': 22, 'MA': 23, 
+        'MI': 24, 'MN': 25, 'MO': 26, 'MS': 27, 'MT': 28, 'NE': 29, 
+        'NV': 30, 'NH': 31, 'NJ': 32, 'NM': 33, 'NY': 34, 'NC': 35, 
+        'ND': 36, 'MP': 37, 'OH': 38, 'OK': 39, 'OR': 40, 'PA': 41, 
+        'PR': 42, 'RI': 43, 'SC': 44, 'SD': 45, 'TN': 46, 'TX': 47, 
+        'UM': 48, 'UT': 49, 'VT': 50, 'VA': 51, 'VI': 52, 'WA': 53, 
+        'WV': 54, 'WI': 55, 'WY': 56, 'AE': 58, 'AP': 59, 'AA': 60, 
+        'DX': 62, '(blank)': 63}
+      tloc.set(mycp.get('VEC_CFG','regcd'))
+      vestidx = strl[vestate.get()]
+      #semi-secret option to enable club applications
+      clubfm = mycp.getboolean('VEC_CFG', 'club', fallback=False)
+
+ 
+      if clubfm and cluben: 
+        vecity.set("")
+        vestate.set("(blank)")
+        vestidx = strl[vestate.get()]
+        tloc.set("Z")
+        b_clubentxt.set("Club Disable")
+
+
 ## mainWindow
 
 #  This class represents the main navigation window for ebfgen.  Its
@@ -319,6 +379,8 @@ class mainWindow(tk.Tk):
     global vestidx
     global vis
     global clubfm
+    global cluben
+    global b_clubentxt
 
     global VA_list
     global VAs
@@ -334,42 +396,10 @@ class mainWindow(tk.Tk):
     elmp = StringVar()
     elmf = StringVar()
     tloc = StringVar()
+    b_clubentxt=StringVar()
 
-    #there has to ba a better way than writing 'vec.cfg' twice
-    cfg=pathlib.Path('./vec.cfg')
+    fileManager.readCfg()
 
-    if cfg.is_file():
-      self.cp = cp.RawConfigParser()
-      configFilePath = r'./vec.cfg'
-      self.cp.read(configFilePath)
-      #Read defaults in from config file
-      vis=(self.cp.getboolean('VEC_CFG','visaid',fallback=False))
-      VEC.set(self.cp.get('VEC_CFG','VEC'))
-      vecity.set(self.cp.get('VEC_CFG','city'))
-      vestate.set(self.cp.get('VEC_CFG','state'))
-      # state reverse lookup dict.  Skip 57 and 61 because they're
-      # separators
-      strl={ 'AL': 0, 'AK': 1, 'AS': 2, 'AZ': 3, 'AR': 4, 'CA': 5, 
-        'CO': 6, 'CT': 7, 'DE': 8, 'DC': 9, 'FL': 10, 'GA': 11, 
-        'GU': 12, 'HI': 13, 'ID': 14, 'IL': 15, 'IN': 16, 'IA': 17, 
-        'KS': 18, 'KY': 19, 'LA': 20, 'ME': 21, 'MD': 22, 'MA': 23, 
-        'MI': 24, 'MN': 25, 'MO': 26, 'MS': 27, 'MT': 28, 'NE': 29, 
-        'NV': 30, 'NH': 31, 'NJ': 32, 'NM': 33, 'NY': 34, 'NC': 35, 
-        'ND': 36, 'MP': 37, 'OH': 38, 'OK': 39, 'OR': 40, 'PA': 41, 
-        'PR': 42, 'RI': 43, 'SC': 44, 'SD': 45, 'TN': 46, 'TX': 47, 
-        'UM': 48, 'UT': 49, 'VT': 50, 'VA': 51, 'VI': 52, 'WA': 53, 
-        'WV': 54, 'WI': 55, 'WY': 56, 'AE': 58, 'AP': 59, 'AA': 60, 
-        'DX': 62, '(blank)': 63}
-      tloc.set(self.cp.get('VEC_CFG','regcd'))
-      vestidx = strl[vestate.get()]
-      #semi-secret option to enable club applications
-      clubfm = self.cp.getboolean('VEC_CFG', 'club', fallback=False)
-   
-      if clubfm: 
-        vecity.set("")
-        vestate.set("(blank)")
-        vestidx = strl[vestate.get()]
-        tloc.set("Z")
 
     cntr = tk.Frame(self)
     cntr.pack(side="top", fill="both", expand=True)
@@ -408,6 +438,8 @@ class updVEC(tk.Frame):
     global vestidx
     global vis
     global clubfm
+    global cluben
+    global b_clubentxt
     global VE_str
     global VEset
     global VA_list
@@ -416,6 +448,7 @@ class updVEC(tk.Frame):
       global vestidx
       global tloc
       global clubfm
+      global cluben
       tloc = StringVar()
       vestidx = self.e_vestate.current()
       i=vestidx
@@ -484,7 +517,7 @@ class updVEC(tk.Frame):
         tloc.set("X")
         self.e_tloc.insert(0,tloc.get())
 
-      if clubfm:
+      if clubfm and cluben:
         self.e_tloc.delete(0,END)
         tloc.set("Z")
         self.e_tloc.insert(0,tloc.get())
@@ -522,27 +555,27 @@ class updVEC(tk.Frame):
     l_sess = tk.Label(self, text="Session Date:")
     self.e_sess = tk.Entry(self)
     self.e_sess.insert(0,sdt.get())
-    l_city = tk.Label(self, text="Exam City:")
+    self.l_city = tk.Label(self, text="Exam City:")
     self.e_vecity = tk.Entry(self)
     self.e_vecity.insert(0,vecity.get())
-    l_state = tk.Label(self, text="Exam State:")
+    self.l_state = tk.Label(self, text="Exam State:")
     self.e_vestate = Combobox(self, values=states,
        textvariable=vestate)
     self.e_vestate.current(vestidx)
     self.e_vestate.bind("<<ComboboxSelected>>", UpdateStateIdx)
-    l_appT = tk.Label(self, text="Applicants Tested:")
+    self.l_appT = tk.Label(self, text="Applicants Tested:")
     self.e_appT = tk.Entry(self)
     self.e_appT.insert(0,appt.get())
-    l_appP = tk.Label(self, text="Applicants Passed:")
+    self.l_appP = tk.Label(self, text="Applicants Passed:")
     self.e_appP = tk.Entry(self)
     self.e_appP.insert(0,appp.get())
-    l_appF = tk.Label(self, text="Applicants Failed:")
+    self.l_appF = tk.Label(self, text="Applicants Failed:")
     self.e_appF = tk.Entry(self)
     self.e_appF.insert(0,appf.get())
-    l_elmP = tk.Label(self, text="Elements Passed:")
+    self.l_elmP = tk.Label(self, text="Elements Passed:")
     self.e_elmP = tk.Entry(self)
     self.e_elmP.insert(0,elmp.get())
-    l_elmF = tk.Label(self, text="Elements Failed:")
+    self.l_elmF = tk.Label(self, text="Elements Failed:")
     self.e_elmF = tk.Entry(self)
     self.e_elmF.insert(0,elmf.get())
     l_tloc = tk.Label(self, text="Regional Identifier:")
@@ -560,20 +593,20 @@ class updVEC(tk.Frame):
     self.e_VEC.grid(row=1, column=2)
     l_sess.grid(row=2, column=1)
     self.e_sess.grid(row=2, column=2)
-    if not clubfm:
-      l_city.grid(row=3, column=1)
+    if not clubfm and cluben:
+      self.l_city.grid(row=3, column=1)
       self.e_vecity.grid(row=3, column=2)
-      l_state.grid(row=4, column=1)
+      self.l_state.grid(row=4, column=1)
       self.e_vestate.grid(row=4, column=2)
-      l_appT.grid(row=1, column=4)
+      self.l_appT.grid(row=1, column=4)
       self.e_appT.grid(row=1, column=5)
-      l_appP.grid(row=2, column=4)
+      self.l_appP.grid(row=2, column=4)
       self.e_appP.grid(row=2, column=5)
-      l_appF.grid(row=3, column=4)
+      self.l_appF.grid(row=3, column=4)
       self.e_appF.grid(row=3, column=5)
-      l_elmP.grid(row=4, column=4)
+      self.l_elmP.grid(row=4, column=4)
       self.e_elmP.grid(row=4, column=5)
-      l_elmF.grid(row=5, column=4)
+      self.l_elmF.grid(row=5, column=4)
       self.e_elmF.grid(row=5, column=5)
 
     l_tloc.grid(row=9, column=4)
@@ -597,6 +630,9 @@ class updVEC(tk.Frame):
       b_clubapp = Button(self, text="Club Applicant", 
         command=lambda:controller.show_frame(clubApplicant))
       b_clubapp.grid(row=13, column=1)
+      self.b_cluben = Button(self, textvariable=b_clubentxt,
+        command = self.switchClub)
+      self.b_cluben.grid (row=14, column=5)
     self.b_save = Button(self, text="Save Session", 
       command=self.prepWrite, background="Red") 
     self.b_save.grid(row=14, column=2)
@@ -609,6 +645,64 @@ class updVEC(tk.Frame):
 
     if vis:
       self.b_save.config({"background":"Yellow", "foreground":"Black"})
+  
+  def switchClub(self):
+    global VEC
+    global sdt
+    global vecity
+    global vestate
+    global tloc
+    global tcnt
+    global vestidx
+    global cluben
+    global b_clubentxt
+    self.e_tloc.delete(0,END)
+    self.e_vecity.delete(0,END)
+    self.e_vestate.delete(0,END)
+
+    if cluben:
+      cluben = False
+      fileManager.readCfg()
+      b_clubentxt.set("Club Enable")
+      self.e_vecity.insert(0,vecity.get())
+      self.e_tloc.insert(0,tloc.get())
+
+      self.l_city.grid(row=3, column=1)
+      self.e_vecity.grid(row=3, column=2)
+      self.l_state.grid(row=4, column=1)
+      self.e_vestate.grid(row=4, column=2)
+      self.l_appT.grid(row=1, column=4)
+      self.e_appT.grid(row=1, column=5)
+      self.l_appP.grid(row=2, column=4)
+      self.e_appP.grid(row=2, column=5)
+      self.l_appF.grid(row=3, column=4)
+      self.e_appF.grid(row=3, column=5)
+      self.l_elmP.grid(row=4, column=4)
+      self.e_elmP.grid(row=4, column=5)
+      self.l_elmF.grid(row=5, column=4)
+      self.e_elmF.grid(row=5, column=5)
+    else:
+      cluben = True
+      fileManager.readCfg()
+      b_clubentxt.set("Club Disable")
+      self.e_vecity.insert(0,vecity.get())
+      tloc.set("Z")
+      self.e_tloc.insert(0,tloc.get())
+
+      self.l_city.grid_forget()
+      self.e_vecity.grid_forget()
+      self.l_state.grid_forget()
+      self.e_vestate.grid_forget()
+      self.l_appT.grid_forget()
+      self.e_appT.grid_forget()
+      self.l_appP.grid_forget()
+      self.e_appP.grid_forget()
+      self.l_appF.grid_forget()
+      self.e_appF.grid_forget()
+      self.l_elmP.grid_forget()
+      self.e_elmP.grid_forget()
+      self.l_elmF.grid_forget()
+      self.e_elmF.grid_forget()
 
   ## Prepare output
   def prepWrite(self):
