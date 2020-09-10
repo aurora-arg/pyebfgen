@@ -34,6 +34,9 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 1.0.7 - Pending Filenumber
+  - FCC updated requirement, force this to blank now.
+
 v 1.0.6 - Minor pretty-factor updates
   - tabstops and other minor UX updates.
 
