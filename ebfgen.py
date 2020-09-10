@@ -4,8 +4,8 @@
 #                       script: ebfgen
 #                           by: Dan Purgert AD8GC 
 #                    copyright: 2020
-#                      version: 1.0.6
-#                         date: Wed, 26 Aug 2020 17:30:21 -0400
+#                      version: 1.0.7
+#                         date: Thu, 10 Sep 2020 16:25:27 -0400 
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
 #
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "6"
+ptver = "7"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -403,7 +403,7 @@ class mainWindow(tk.Tk):
 
     fileManager.readCfg()
 
-    if cluben:
+    if cluben and clubfm:
       lcall.set("Club Callsign")
     else:
       lcall.set("Callsign, if licensed")
@@ -1099,8 +1099,9 @@ class clubApplicant(appWindow):
     self.e_felon.grid(row=13,column=1)
     self.l_appcd.grid(row=12,column=2)
     self.e_appcd.grid(row=13,column=2)
-    self.l_vafn.grid(row=12, column=3)
-    self.e_vafn.grid(row=13, column=3)
+    # 1.0.7 - disable pending file number
+    #self.l_vafn.grid(row=12, column=3)
+    #self.e_vafn.grid(row=13, column=3)
 
     self.b_save.grid(row=14,column=1)
     self.b_close.grid(row=14,column=2)
@@ -1179,8 +1180,9 @@ class stdApplicant(appWindow):
     self.l_opclass.grid(row=16,column=2)
     self.e_opclass.grid(row=17,column=2)
 
-    self.l_vafn.grid(row=16, column=3)
-    self.e_vafn.grid(row=17, column=3)
+    #1.0.7 disable pending file number
+    #self.l_vafn.grid(row=16, column=3)
+    #self.e_vafn.grid(row=17, column=3)
 
     self.b_save.grid(row=18,column=1)
     self.b_close.grid(row=18,column=2)
