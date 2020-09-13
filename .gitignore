@@ -3,5 +3,7 @@
 output*
 *txt
 *csv
+*asc
 makefile
 doc/*
+gpg/*

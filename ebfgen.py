@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert AD8GC 
 #                    copyright: 2020
-#                      version: 1.0.7
+#                      version: 2.0.0
 #                         date: Thu, 10 Sep 2020 16:25:27 -0400 
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -39,6 +39,7 @@
 import tkinter as tk
 import configparser as cp
 import pathlib
+import gnupg
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.messagebox import *
@@ -46,13 +47,13 @@ from tkinter.filedialog import *
 from array import *
 
 ## Major Version number
-maver = "1"
+maver = "2"
 
 ## Minor Version Number. Minor versions reset on Major version updates.
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "7"
+ptver = "0"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -147,6 +148,9 @@ clubfm = False
 cluben = True
 b_clubentxt = None
 lcall = None
+
+## PGP Key
+pgpkey=""
 
 ## Enable Visibility features
 vis = False 
@@ -251,6 +255,7 @@ class fileManager():
       global tloc
       global tcnt
       global c
+      global pgpkey
   
       # Format the date for use in the output filename
       fdt = sdt.get().replace("/","")[:4]
@@ -258,33 +263,40 @@ class fileManager():
       deffn = VEC.get()+fdt+tloc.get()+str(tcnt).zfill(2)
       
       # Open saveas dialog box
-      F=asksaveasfile(initialfile=deffn+".dat", mode='w',
-        defaultextension=".dat")
+      F=asksaveasfile(initialfile=deffn+".dat.asc", mode='w',
+        defaultextension=".asc")
       if F is None:
         return
   
-      # Write VE Header to file
-      F.write (VE_str+"\r\n")
-  
+      # Write VE Header to the working string
+      tempstr=VE_str+"\r\n"
+      tempva=""
       # Loop over applicant data, and write to the file.
       for i in range(len(VAs)):
-        F.write("VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
-          + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
-          + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
-          + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
-          + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
-          + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
-          + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
-          + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
-          + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
-          + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
-  #Extra pipes here for attachment file / fax ind ^^^
-          + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
-          + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
-          + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
-          + VAs[i].psqa + "|" + VAs[i].felon + "\r\n")
+        tempva += "VA|" + VAs[i].fn + "|" + VAs[i].call + "|" \
+        + VAs[i].ssn + "|" + VAs[i].entname + "|" + VAs[i].fname \
+        + "|" + VAs[i].mi + "|" + VAs[i].lname + "|" + VAs[i].nmsuf \
+        + "|" + VAs[i].attn + "|" + VAs[i].street + "|" \
+        + VAs[i].pobox + "|" + VAs[i].city + "|" + VAs[i].state \
+        + "|" + VAs[i].zipcd + "|" + VAs[i].phone + "|" + VAs[i].fax \
+        + "|" + VAs[i].email + "|" + VAs[i].appcd + "|" \
+        + VAs[i].opclass + "|" + VAs[i].sigok + "|" \
+        + VAs[i].physcert + "|" + VAs[i].reqexp + "|" \
+        + VAs[i].waivereq + "|" + VAs[i].att + "|||" \
+        + VAs[i].updcall + "|" + VAs[i].trusteecall + "|" \
+        + VAs[i].apptyp + "|" +  VAs[i].frn + "|" + VAs[i].dob + "|" \
+        + VAs[i].lnchg + "|" + VAs[i].psqcd + "|" + VAs[i].psq + "|" \
+        + VAs[i].psqa + "|" + VAs[i].felon + "\r\n"
   
-      # Everything written to filesystem.  Close filehandle
+      txtstr=tempstr+tempva
+      #Encrypt the string
+      gpg = gnupg.GPG(gnupghome="./gpg")
+      enc=gpg.encrypt(txtstr,pgpkey)
+      #print ("ok: ", enc.ok)
+      #print ("status: ", enc.status)
+      #print ("stderr: ", enc.stderr)
+      F.write(str(enc))
+      #Close the file
       F.close()
   
       # Prepare global variables for next session
@@ -317,6 +329,7 @@ class fileManager():
     global clubfm
     global cluben
     global b_clubentxt
+    global pgpkey
 
 
     #there has to ba a better way than writing 'vec.cfg' twice
@@ -346,8 +359,11 @@ class fileManager():
         'DX': 62, '(blank)': 63}
       tloc.set(mycp.get('VEC_CFG','regcd'))
       vestidx = strl[vestate.get()]
+      tkey=mycp.get('VEC_CFG','key', fallback="")
+      pgpkey=tkey.replace('"','').replace("'","")
       #semi-secret option to enable club applications
       clubfm = mycp.getboolean('VEC_CFG', 'club', fallback=False)
+      
 
  
       if clubfm and cluben: 
@@ -356,6 +372,11 @@ class fileManager():
         vestidx = strl[vestate.get()]
         tloc.set("Z")
         b_clubentxt.set("Club Disable")
+
+      if pgpkey == "":
+        showerror("Invalid / No PGP Key", 
+          "Please set PGP Key in vec.cfg.  Press OK to close program")
+        exit()
 
 
 ## mainWindow
@@ -451,6 +472,7 @@ class updVEC(tk.Frame):
     global VE_str
     global VEset
     global VA_list
+    
 
     def UpdateStateIdx (event):
       global vestidx
@@ -662,6 +684,7 @@ class updVEC(tk.Frame):
     if vis:
       self.b_save.config({"background":"Yellow", "foreground":"Black"})
   
+
   def switchClub(self):
     global VEC
     global sdt
@@ -744,6 +767,9 @@ class updVEC(tk.Frame):
     else:
       self.b_save.config({"background":"Red"})
     fileManager.writeFile()
+
+    self.e_tcnt.delete(0,END)
+    self.e_tcnt.insert(0,str(tcnt))
 
   def prepUpd(self):
     global vapl

@@ -9,7 +9,33 @@ creation of non-individual applications is currently outside the scope
 of this tool.  In addition, this document does not cover any special
 requirements the FCC may have for file upload.
 
-## Getting Started
+## First Run
+The following preliminary actions need to be taken in order to use
+pyEBFGen.  If they are not taken, the program will simply present an
+error message and exit.
+
+1. Obtain your VEC's (public) encryption key from your VEC Chairman
+  1. Load key into the program's keystore with the import.py script.
+      Usage: `./importkey.py keyfile.asc`
+  2. Edit the key's trust: `gpg --homedir=./gpg --edit-key <KEY_ID>`
+    * The key's information will be printed out, and the final line of
+      the output will be the prompt `gpg>`.  At this prompt, type the
+      command "trust", and hit <enter>.
+    * You will then be asked how well you trust the key, from 1 (you do
+      not trust it) to 5 (you trust it ultimately).  Choose "5", and
+      press <enter>
+    * You will be asked if you're sure.  Answer "Y", and press <enter>
+    * You will be returned to the `gpg>` prompt at this point.  Type in
+      "save", and GPG will finish, returning you to your normal system 
+      prompt.
+2. Set the default VEC settings in the `vec.cfg` configuration file.
+  * __Mandatory:__ Set VEC encryption key in this file.  Default value 
+    is BLANK, and program will generate errors if you attempt to run
+    without the key defined. Example `key="VEC Key <vec@radio.group>"`.
+    Key fingerprints (e.g. `key=7F08D422`) are also acceptable.
+3. Create a test batch file to ensure all is working.
+
+## Using pyEBFGen
 
 When launching the application, you will initially be presented with a
 main window containing several blank data fields that correspond to a
