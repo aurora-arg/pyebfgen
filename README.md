@@ -4,7 +4,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
 document are to be interpreted as described in 
 [RFC 2119](https://tools.ietf.org/html/rfc2119).
----
 
 Python batch file generator for use with the FCC EBF system.  As this
 program is intended for use by "remote" VE Teams to allow them to send
