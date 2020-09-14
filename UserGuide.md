@@ -1,4 +1,4 @@
-# pyEBFGen Guide v1.0.0
+# pyEBFGen Guide v2.0.0
 
 ## Overview
 
