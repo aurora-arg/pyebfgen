@@ -63,7 +63,9 @@ error message and exit.
 1. Obtain your VEC's (public) encryption key from your VEC Chairman, and
 Load key into the program's keystore with the import.py script. Usage:
 `./importkey.py keyfile.asc`
-2. Edit the key's trust: `gpg --homedir=./gpg --edit-key <KEY_ID>`
+2. Edit the key's trust: `gpg --homedir=./gpg --edit-key <KEY_ID>`. NOTE
+that this must be run from the directory you will be running ebfgen
+from.
   - The key's information will be printed out, and the final line of
     the output will be the prompt `gpg>`.  At this prompt, type the
     command "trust", and hit <enter>.  
