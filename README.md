@@ -64,16 +64,18 @@ error message and exit.
   1. Load key into the program's keystore with the import.py script.
       Usage: `./importkey.py keyfile.asc`
   2. Edit the key's trust: `gpg --homedir=./gpg --edit-key <KEY_ID>`
+
     - The key's information will be printed out, and the final line of
       the output will be the prompt `gpg>`.  At this prompt, type the
-      command "trust", and hit <enter>.
+      command "trust", and hit <enter>.  
     - You will then be asked how well you trust the key, from 1 (you do
       not trust it) to 5 (you trust it ultimately).  Choose "5", and
-      press <enter>
-    - You will be asked if you're sure.  Answer "Y", and press <enter>
+      press <enter>.  
+    - You will be asked if you're sure.  Answer "Y", and press <enter>.  
     - You will be returned to the `gpg>` prompt at this point.  Type in
       "save", and GPG will finish, returning you to your normal system 
-      prompt.
+      prompt.  
+
 2. Set the default VEC settings in the `vec.cfg` configuration file.
   * __Mandatory:__ Set VEC encryption key in this file.  Default value 
     is BLANK, and program will generate errors if you attempt to run
