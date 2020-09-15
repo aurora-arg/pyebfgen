@@ -4,7 +4,7 @@
 #                       script: ebfgen
 #                           by: Dan Purgert AD8GC 
 #                    copyright: 2020
-#                      version: 1.0.7
+#                      version: 1.0.8
 #                         date: Thu, 10 Sep 2020 16:25:27 -0400 
 #                      purpose: Generates a batch file for upload to
 #                             : the FCC EBF system.
@@ -52,7 +52,7 @@ maver = "1"
 miver = "0" 
 
 ## Patch Number. Patch numbers reset on Major or Minor version updates.
-ptver = "7"
+ptver = "8"
 
 ## Array to hold Applicant objects, as new applicants are saved.
 #  The array is flushed on saving of each session batchfile.
@@ -89,10 +89,13 @@ liccls=['N','T','G','A','E']
 
 ## List for answers about the felony question
 #  Used to answer the Basic Qualification Question
-felony=['null','Y','N']
+felony=['(null)','Y','N']
 
 ## Y|N option list for relevant dropdowns
 opts=['Y','N']
+
+## Y|Blank option for licencee name change
+lncg=['(null)','Y']
 
 ## Volunteer Examiner Code
 VEC = None
@@ -834,6 +837,7 @@ class appWindow(tk.Frame):
     va_opclass=""
     va_updcall=""
     va_felon=""
+    va_lnchg=""
     
     self.l_vafn = tk.Label(self, text="Pending File Number")
     self.e_vafn = tk.Entry(self)
@@ -899,8 +903,9 @@ class appWindow(tk.Frame):
     self.e_frn = tk.Entry(self)
     self.l_dob = tk.Label(self, text="Date of Birth")
     self.e_dob = tk.Entry(self)
-    self.l_lnchg = tk.Label(self, text="Licensee Name Change")
-    self.e_lnchg = tk.Entry(self)
+    self.l_lnchg = tk.Label(self, text="Licensee Name Change?")
+    self.e_lnchg = Combobox(self, values=lncg, 
+      textvariable=va_lnchg)
     self.l_psqcd = tk.Label(self, 
       text="Personal Security Question Code")
     self.e_psqcd = tk.Entry(self)
@@ -988,7 +993,7 @@ class appWindow(tk.Frame):
         showerror(title="SSN Error", message="SSN is not 9 digits.")
         return
 
-    if va_felon == "null" or va_felon == "":
+    if va_felon == "(null)" or va_felon == "":
       va_felon = ""
       if va_appcd != "AU":
         showerror(title="Basic Qualification Question Error",
@@ -1005,6 +1010,11 @@ class appWindow(tk.Frame):
       showerror(title="Class Error",
         message="Please select a valid operator class.")
       return
+
+    if va_lnchg == "Y":
+      va_lnchg="N"
+    elif va_lnchg =="(null)":
+      va_lnchg=""
 
     VAs.append(VA( va_fn, va_call, va_ssn, va_ent\
       , va_fname, va_mi, va_lname, va_nmsuf\
@@ -1309,8 +1319,9 @@ class updApplicant(Frame):
     self.e_frn = tk.Entry(frame_a)
     self.l_dob = tk.Label(frame_a, text="Date of Birth")
     self.e_dob = tk.Entry(frame_a)
-    self.l_lnchg = tk.Label(frame_a, text="Licensee Name Change")
-    self.e_lnchg = tk.Entry(frame_a)
+    self.l_lnchg = tk.Label(frame_a, text="Licensee Name Change?")
+    self.e_lnchg = Combobox(self, values=lncg, 
+      textvariable=va_lnchg)
     self.l_psqcd = tk.Label(frame_a, 
       text="Personal Security Question Code")
     self.e_psqcd = tk.Entry(frame_a)
