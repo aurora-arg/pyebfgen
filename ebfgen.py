@@ -1015,6 +1015,12 @@ class appWindow(tk.Frame):
       va_lnchg="N"
     elif va_lnchg =="(null)":
       va_lnchg=""
+    else:
+      showerror(title="Licencee Name Change Error"
+        message="Please answer Licencee Name Change question.")
+      return
+
+      
 
     VAs.append(VA( va_fn, va_call, va_ssn, va_ent\
       , va_fname, va_mi, va_lname, va_nmsuf\
@@ -1512,6 +1518,15 @@ class updApplicant(Frame):
     if va_opclass == "null" or va_opclass == "":
       showerror(title="Class Error",
         message="Please select a valid operator class.")
+      return
+
+    if va_lnchg == "Y":
+      va_lnchg="N"
+    elif va_lnchg =="(null)":
+      va_lnchg=""
+    else:
+      showerror(title="Licencee Name Change Error"
+        message="Please answer Licencee Name Change question.")
       return
 
     VAs[vapl].fn=va_fn
