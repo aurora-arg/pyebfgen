@@ -1016,7 +1016,7 @@ class appWindow(tk.Frame):
     elif va_lnchg =="(null)":
       va_lnchg=""
     else:
-      showerror(title="Licencee Name Change Error"
+      showerror(title="Licencee Name Change Error",
         message="Please answer Licencee Name Change question.")
       return
 
@@ -1525,7 +1525,7 @@ class updApplicant(Frame):
     elif va_lnchg =="(null)":
       va_lnchg=""
     else:
-      showerror(title="Licencee Name Change Error"
+      showerror(title="Licencee Name Change Error",
         message="Please answer Licencee Name Change question.")
       return
 
