@@ -44,6 +44,7 @@ from tkinter.ttk import *
 from tkinter.messagebox import *
 from tkinter.filedialog import * 
 from array import *
+from datetime import date
 
 ## Major Version number
 maver = "1"
@@ -403,6 +404,9 @@ class mainWindow(tk.Tk):
     tloc = StringVar()
     b_clubentxt=StringVar()
     lcall=StringVar()
+    
+    dy=date.today()
+    sdt.set(dy.strftime("%m/%d/%Y"))
 
     fileManager.readCfg()
 
@@ -906,6 +910,7 @@ class appWindow(tk.Frame):
     self.l_lnchg = tk.Label(self, text="Licensee Name Change?")
     self.e_lnchg = Combobox(self, values=lncg, 
       textvariable=va_lnchg)
+    self.e_lnchg.current(0)
     self.l_psqcd = tk.Label(self, 
       text="Personal Security Question Code")
     self.e_psqcd = tk.Entry(self)
