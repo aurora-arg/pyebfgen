@@ -1081,7 +1081,7 @@ class clubApplicant(appWindow):
 
     # Force some static values for attachments, signature, applicant
     # type, and physician certificate
-    self.e_physcert.insert(0,"N")
+    self.e_physcert.insert(0,"")
     self.e_att.insert(0,"N")
     self.e_sigok.insert(0,"Y")
     self.e_apptyp.insert(0,"B")
