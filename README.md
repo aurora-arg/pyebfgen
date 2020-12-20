@@ -9,7 +9,8 @@ is Linux.  If you try on Mac / Windows and find platform-specific bugs,
 please let me know.
 
 ## Requirements
-  - Python 3.5.3+
+  - Python 3.5.3 - 3.8.x (I'm hearing reports 3.9.x fails.  Will look
+    into it after the holidays)
   - python3-tk
 
 ## Installation / Execution
