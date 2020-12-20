@@ -35,6 +35,9 @@ IRC Network in the #efbgen channel.  IRC address is irc.oftc.net ... you
 can connect via Port 6667 for non-secure, or use Port 6697 for SSL.
 
 ## changelog
+v 1.0.10 - Physician Cert
+  - Fix Physisician Cert info.
+
 v 1.0.9 - Name Update & date update
   - Default Name Change question to "(null)"
   - Default Session Date to "Today"
