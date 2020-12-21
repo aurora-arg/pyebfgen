@@ -39,6 +39,7 @@
 import tkinter as tk
 import configparser as cp
 import pathlib
+import platform
 from tkinter import *
 from tkinter.ttk import *
 from tkinter.messagebox import *
@@ -655,9 +656,12 @@ class updVEC(tk.Frame):
       self.e_uappid.grid(row=13,column=4)
 
 
-
-    self.b_save = Button(self, text="Save Session", 
-      command=self.prepWrite, background="Red") 
+    if (platform.python_version_tuple()[1] == "9"):
+      self.b_save = Button(self, text="Save Session", 
+        command=self.prepWrite) 
+    else:
+      self.b_save = Button(self, text="Save Session", 
+        command=self.prepWrite, background = "Red") 
     self.b_save.grid(row=14, column=2)
     b_conv = Button(self, text="Convert .rsp File", 
       command=fileManager.convertFile)
